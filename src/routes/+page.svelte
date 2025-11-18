@@ -24,15 +24,26 @@
 
 		
 	</div>
-	<div id="right" style="flex:10; display:flex; flex-flow:column">
+	<div id="right" style="flex:10; display:flex; flex-flow:row">
 		<div id="red" class="center" style="background-color:#ffaaaa; flex:1;">
 			<h2>Content area 2</h2>
 			Top
 		</div>
-		<div id="red" class="center" style="background-color:yellow; flex:1;display:flex; flex-flow:column; justify-content:center;">
+		<div id="red" class="center" style="background-color:green; flex:1;display:flex; flex-flow:row; justify-content:center;">
 			<h2>Content area 3</h2>
 			Bottom			
 		</div>
+        <div id="right" style="flex:1; display:flex; flex-flow:row">
+        <div id="right" style="flex:10; display:flex; flex-flow:row">
+		<div id="red" class="center" style="background-color:#ffaaaa; flex:1;">
+			<h2>Content area 2</h2>
+			Top
+		</div>
+		<div id="orange" class="center" style="background-color:orange; flex:1;display:flex; flex-flow:row; justify-content:center;">
+			<h2>Content area 3</h2>
+			Bottom			
+		</div>
+        <div id="right" style="flex:10; display:flex; flex-flow:row">
 	</div>
 		
 </div>
