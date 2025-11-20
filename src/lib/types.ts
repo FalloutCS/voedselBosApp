@@ -8,7 +8,7 @@ export class Voedselbos {
   }
 
   populateForest(size: number) {
-    for (let index = 0; index < size; index++) {
+    for (let index = 1; index < size; index++) {
       this.canvas.push({ isPopulated: false, plant: undefined });
     }
   }
