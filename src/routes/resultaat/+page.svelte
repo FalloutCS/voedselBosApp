@@ -4,4 +4,4 @@
     let { data }: PageProps = $props();
 </script>
 
-<h1>HI</h1>
+<h1>Resultaat pagina</h1>
