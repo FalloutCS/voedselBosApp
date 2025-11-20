@@ -55,7 +55,7 @@
     /* scrollable grid */
     .grid-scroll {
         padding: 1rem;
-        max-height: 60vh; /* adjust if you want the modal taller/shorter */
+        max-height: 30vh; /* adjust if you want the modal taller/shorter */
         overflow: auto;
         display: grid;
         /* changed: prefer about 3 boxes wide */
