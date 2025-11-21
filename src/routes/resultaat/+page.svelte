@@ -23,7 +23,9 @@
 </script>
 
 <div class="flex items-center justify-between mb-5">
-    <h1>Resultaat pagina</h1>
+    <h1 class="font-jost text-3xl font-semibold text-foreground">
+        Resultaat pagina
+    </h1>
 
     <Button.Root
         onclick={() => isPanelOpen = !isPanelOpen}
