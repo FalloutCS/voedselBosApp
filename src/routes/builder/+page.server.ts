@@ -16,3 +16,9 @@ export const load = (async () => {
         width: garden_State.width
     };
 }) satisfies PageServerLoad;
+
+
+export const actions = (async() =>{
+    
+})
+

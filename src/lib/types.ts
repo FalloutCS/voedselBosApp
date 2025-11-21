@@ -14,7 +14,7 @@ export class Voedselbos {
   populateForest() {
     const totalSize = this.width * this.height
 
-    for (let index = 1; index < totalSize; index++) {
+    for (let index = 0; index < totalSize; index++) {
       this.canvas.push({ isPopulated: false, plant: undefined });
     }
   }
