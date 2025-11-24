@@ -7,8 +7,10 @@ let garden_State: Voedselbos | null = null;
 
 const PLANT_TO_ADD: Plant = {
     name: "Apple Tree",
-    img: "/images/apple.png"
+    img: "🍎"
 }
+
+
 
 export const load = (async () => {
     if (!garden_State) {
@@ -31,11 +33,11 @@ export const actions = {
         const cellIndex = Number(cellIndexString)
 
         if (!garden_State) {
-            return fail(400, { cellIndex, missing: true })
+            return fail(400, {missing: true })
         }
-        
+
         if (validateIndex(cellIndex, garden_State)) {
-            return fail(400, {cellIndex, incorrect: true})
+            return fail(400, {incorrect: true})
         }
 
         garden_State.canvas[cellIndex].isPopulated = true
