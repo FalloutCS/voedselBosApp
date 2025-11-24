@@ -1,24 +1,19 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
-  import type { voedselbos_Cel } from "$lib/types";
   import type { PageProps } from "./$types";
-  import { invalidate } from "$app/navigation";
-  let { data }: PageProps = $props();
-  let canvas: voedselbos_Cel[] = $state(data.canvas);
-  let width: number = $state(data.width);
-  let heigth: number = $state(data.heigth);
+  let { data, form }: PageProps = $props();
 </script>
-
 
 <form
   class="w-4/5 h-4/5 mx-auto my-auto p-10 bg-violet-100 grid"
-  style="grid-template-columns: repeat({width}, minmax(0, 1fr)); grid-template-rows: repeat({heigth}, minmax(0, 1fr));"
+  style="grid-template-columns: repeat({data.width}, minmax(0, 1fr)); grid-template-rows: repeat({data.heigth}, minmax(0, 1fr));"
   method="POST"
+  use:enhance
 >
-  {#each canvas as cell, index}
+  {#each data.canvas as cell, index}
     <button
       type="submit"
-      name="cellIndex" 
+      name="cellIndex"
       value={index}
       formaction="?/addPlant"
       class="border border-violet-950 text-sm"
