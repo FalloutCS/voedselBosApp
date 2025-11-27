@@ -1,7 +1,7 @@
 import type { PageServerLoad } from './$types';
 
 export const load = (async ({ fetch }) => {
-    console.log("🚀 Server load gestart...");
+    console.log("Server loaden");
 
     try {
         const response = await fetch('http://localhost:5269/api/Plants');
@@ -12,14 +12,14 @@ export const load = (async ({ fetch }) => {
         }
 
         const plants = await response.json();
-        console.log(`✅ ${plants.length} planten opgehaald uit de backend`);
+        console.log(`YUH ${plants.length} planten opgehaald uit de backend`);
 
         return {
             plants
         };
 
     } catch (error) {
-        console.error("❌ Kon niet verbinden met de backend:", error);
+        console.error("Kon niet verbinden met de backend:", error);
         return {
             plants: []
         };
