@@ -1,16 +1,11 @@
 import { Voedselbos, type Plant } from '$lib/types';
 import type { Actions, PageServerLoad } from './$types';
 import { validateIndex } from '$lib/server/utils';
+import { getPlants } from '$lib/server/plantService';
 import { fail } from '@sveltejs/kit';
 
 let garden_State: Voedselbos | null = null;
-
-const PLANT_TO_ADD: Plant = {
-    name: "Apple Tree",
-    img: "🍎"
-}
-
-
+let plants: Plant[]
 
 export const load = (async () => {
     if (!garden_State) {
@@ -18,6 +13,10 @@ export const load = (async () => {
         console.log("Garden Created for the first time.")
         garden_State?.populateForest()
     }
+
+    plants = await getPlants()
+
+    console.log(plants)
 
     return {
         canvas: garden_State.canvas,
@@ -33,17 +32,17 @@ export const actions = {
         const cellIndex = Number(cellIndexString)
 
         if (!garden_State) {
-            return fail(400, {missing: true })
+            return fail(400, { missing: true })
         }
 
         if (validateIndex(cellIndex, garden_State)) {
-            return fail(400, {incorrect: true})
+            return fail(400, { incorrect: true })
         }
 
         garden_State.canvas[cellIndex].isPopulated = true
         garden_State.canvas[cellIndex].plant = { ...PLANT_TO_ADD }
 
-        return {succes: true}
+        return { succes: true }
     },
 
     removePlant: async (event) => {

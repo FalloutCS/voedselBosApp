@@ -28,9 +28,13 @@ export class Voedselbos {
 }
 
 export type Plant = {
-  name: string;
-  img: string;
+  id: number;
+  latinName: string;
+  commonName: string;
+  habit: "Shrub" | "Annual" | "Perennial" | "Tree" | "Perennial Climber" | "Annual/Perennial" | undefined;
+  wind: "N" | "W" | "M" | "F" | undefined;
 };
+
 
 export type voedselbos_Cel = {
   isPopulated: boolean;

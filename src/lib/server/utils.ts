@@ -16,3 +16,9 @@ export function validateIndex (cellIndex: number, garden_State: Voedselbos) {
 
     return false
 }
+
+// export async function requestData(){
+//     try{
+//         const response = fetch()
+//     }
+// }
