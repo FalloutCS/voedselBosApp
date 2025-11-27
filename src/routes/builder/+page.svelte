@@ -4,7 +4,12 @@
   import BuilderMenu from "./components/BuilderMenu.svelte";
   import ErrorInvalidInput from "./components/Error_Invalid_Input.svelte";
   import ErrorMissingData from "./components/Error_MissingData.svelte";
+
   let { data, form }: PageProps = $props();
+
+  function openPlantMenu(index: number) {
+    console.log(index)
+  }
 </script>
 
 <div class="h-4/5 w-4/5 mx-auto my-auto bg-violet-50 rounded">
@@ -26,10 +31,8 @@
   >
     {#each data.canvas as cell, index}
       <button
-        type="submit"
-        name="cellIndex"
-        value={index}
-        formaction="?/addPlant"
+        type="button"
+        onclick={() => openPlantMenu(index)}
         class="border border-violet-400 text-sm"
         disabled={cell.isPopulated}
       >

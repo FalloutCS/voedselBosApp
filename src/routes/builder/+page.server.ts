@@ -22,6 +22,7 @@ export const load = (async () => {
         garden_State?.populateForest()
     }
 
+    // TODO: add error handler
     plants = await getPlants()
 
     return {
