@@ -7,6 +7,14 @@ import { fail } from '@sveltejs/kit';
 let garden_State: Voedselbos | null = null;
 let plants: Plant[]
 
+let PLANT_TO_ADD: Plant = {
+    commonName: "apple",
+    habit: "Tree",
+    id: 0,
+    latinName: "Aplcauts",
+    wind: 'M'
+}
+
 export const load = (async () => {
     if (!garden_State) {
         garden_State = new Voedselbos("Mijn Voedselbos", 10, 10)

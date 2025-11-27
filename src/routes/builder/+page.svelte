@@ -34,7 +34,7 @@
         disabled={cell.isPopulated}
       >
         {#if cell.isPopulated}
-          {cell.plant?.img}
+          {cell.plant?.commonName}
         {:else}
           +
         {/if}
