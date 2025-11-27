@@ -3,83 +3,66 @@
     import { Button, AlertDialog } from "bits-ui";
 
     let { data }: PageProps = $props();
-    $inspect(data.data)
+    
+    let plants = $derived(data.plants); 
 
-    // Button state
-    let isResultsOpen = $state(false);
-    let isSettingsOpen = $state(false);
 
-    // Functie: Toggle Analyse (en sluit settings als die open is)
-    function toggleAnalyse() {
-        if (isResultsOpen) {
-            isResultsOpen = false; // Sluiten als hij al open is
-        } else {
-            isResultsOpen = true;  // Openen
-            isSettingsOpen = false; // Zorg dat de andere dicht is
-        }
-    }
-
-    // Functie: Toggle Settings (en sluit analyse als die open is)
-    function toggleSettings() {
-        if (isSettingsOpen) {
-            isSettingsOpen = false;
-        } else {
-            isSettingsOpen = true;
-            isResultsOpen = false;
-        }
-    }
-
-    // Dummy data
     let feedbackItems = [
-        { id: 1, title: "Melding 1", message: "Een voedselbos is een door mensen ontworpen productief ecosysteem naar het voorbeeld van een natuurlijk bos, met een grote diversiteit aan meerjarige, houtige soorten, waarvan delen (vruchten, zaden, bladeren, stengels, etc.) voor de mens als voedsel dienen’" },
-        { id: 2, title: "Melding 2", message: "Een voedselbos is een door mensen ontworpen productief ecosysteem naar het voorbeeld van een natuurlijk bos, met een grote diversiteit aan meerjarige, houtige soorten, waarvan delen (vruchten, zaden, bladeren, stengels, etc.) voor de mens als voedsel dienen’" },
-        { id: 3, title: "Melding 3", message: "Een voedselbos is een door mensen ontworpen productief ecosysteem naar het voorbeeld van een natuurlijk bos, met een grote diversiteit aan meerjarige, houtige soorten, waarvan delen (vruchten, zaden, bladeren, stengels, etc.) voor de mens als voedsel dienen’" },
-        { id: 4, title: "Melding 4", message: "Een voedselbos is een door mensen ontworpen productief ecosysteem naar het voorbeeld van een natuurlijk bos, met een grote diversiteit aan meerjarige, houtige soorten, waarvan delen (vruchten, zaden, bladeren, stengels, etc.) voor de mens als voedsel dienen’" },
+        { id: 1, title: "Melding 1", message: "Natuurlijke Airco: Eén volwassen boom heeft hetzelfde koelende effect als 10 airconditioners die 24 uur per dag draaien. Bossen kunnen de temperatuur in een stad aanzienlijk verlagen." },
+        { id: 2, title: "Melding 2", message: "Dood doet leven: Een dode boom die op de grond ligt, bevat vaak meer leven dan een levende boom. Het is een hotel voor duizenden soorten kevers, schimmels, mossen en insecten." },
+        { id: 3, title: "Melding 3", message: "De oudste bewoners: De oudste bomen ter wereld, zoals de Bristlecone dennen, zijn meer dan 4.800 jaar oud. Ze stonden er al toen de piramides in Egypte werden gebouwd!" },
+        { id: 4, title: "Melding 4", message: "Snelheidsduivels: Bamboe (technisch gezien gras, maar vormt bossen) is de snelst groeiende plant ter wereld. Sommige soorten kunnen tot wel 91 centimeter per dag groeien. Je kunt het bijna zien gebeuren!" },
     ];
+
+    type SidebarState = 'none' | 'analyse' | 'settings';
+    let activeSidebar = $state<SidebarState>('none');
+
+    function toggleSidebar(view: SidebarState) {
+        activeSidebar = activeSidebar === view ? 'none' : view;
+    }
+
+    const baseBtnClass = "rounded-input shadow-mini inline-flex h-12 items-center justify-center px-[21px] text-[15px] font-semibold border z-50 relative transition-all active:scale-[0.98]";
+    const primaryBtnClass = `${baseBtnClass} bg-dark text-background hover:bg-dark/95 border-background`;
+    const secondaryBtnClass = `${baseBtnClass} text-secondary-foreground border-border`;
+    const actionBtnClass = "w-full rounded-card bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-mini inline-flex h-12 items-center justify-start px-[21px] text-[15px] border font-medium border-border z-50 relative transition-all active:scale-[0.98]";
 </script>
 
 <div class="flex items-center justify-between mb-5">
-    <h1 class="font-jost text-3xl font-semibold text-foreground">
+    <h1 class="text-3xl font-semibold text-foreground">
         Resultaat pagina
     </h1>
 
     <div class="flex items-center gap-3">
         <Button.Root
-            onclick={toggleAnalyse}
-            class="rounded-input bg-dark text-background shadow-mini hover:bg-dark/95 
-                   inline-flex h-12 items-center justify-center px-[21px] text-[15px]
-                   font-semibold border border-background z-50 relative transition-all active:scale-[0.98]"
+            onclick={() => toggleSidebar('analyse')}
+            class={primaryBtnClass}
         >
-            {isResultsOpen ? 'Sluit Analyse' : 'Analyse'}
+            {activeSidebar === 'analyse' ? 'Sluit Analyse' : 'Analyse'}
         </Button.Root>
 
         <Button.Root
-            onclick={toggleSettings}
-            class="rounded-input bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-mini 
-                   inline-flex h-12 items-center justify-center px-[21px] text-[15px]
-                   font-semibold border border-border z-50 relative transition-all active:scale-[0.98]"
+            onclick={() => toggleSidebar('settings')}
+            class={secondaryBtnClass}
         >
-            {isSettingsOpen ? 'Sluit Instellingen' : 'Instellingen'}
+            {activeSidebar === 'settings' ? 'Sluit Instellingen' : 'Instellingen'}
         </Button.Root>
     </div>
 </div>
 
-
 {@render analyseSidebar()}
 {@render settingsSidebar()}
 
-
 {#snippet analyseSidebar()}
     <div 
-        class="fixed top-0 right-0 h-full w-[350px] bg-background border-l border-border shadow-popover z-40 
-               transition-transform duration-300 ease-in-out"
-        class:translate-x-0={isResultsOpen}
-        class:translate-x-full={!isResultsOpen}
+        class="fixed top-0 right-0 h-full w-[350px] bg-background border-l border-border shadow-popover z-40 transition-transform duration-300 ease-in-out"
+        class:translate-x-0={activeSidebar === 'analyse'}
+        class:translate-x-full={activeSidebar !== 'analyse'}
     >
         <div class="p-8 mt-20 h-full overflow-y-auto pb-20">
             <h2 class="text-xl font-bold mb-4">Analyse Resultaten</h2>
             <p class="text-muted-foreground mb-4">
-                Er zijn {feedbackItems.length} punten gevonden
+                Er zijn {feedbackItems.length} punten gevonden.
+                <br>API Planten: {plants.length}
             </p>
             <div class="space-y-4">
                 {#each feedbackItems as item (item.id)}
@@ -99,10 +82,9 @@
 
 {#snippet settingsSidebar()}
     <div 
-        class="fixed top-0 right-0 h-full w-[350px] bg-background border-l border-border shadow-popover z-40 
-               transition-transform duration-300 ease-in-out"
-        class:translate-x-0={isSettingsOpen}
-        class:translate-x-full={!isSettingsOpen}
+        class="fixed top-0 right-0 h-full w-[350px] bg-background border-l border-border shadow-popover z-40 transition-transform duration-300 ease-in-out"
+        class:translate-x-0={activeSidebar === 'settings'}
+        class:translate-x-full={activeSidebar !== 'settings'}
     >
         <div class="p-8 mt-20 h-full overflow-y-auto pb-20">
             <h2 class="text-xl font-bold mb-4">Instellingen</h2>
@@ -113,59 +95,36 @@
             <div class="space-y-6">
                 <div class="space-y-2">
                     <h3 class="font-bold">Bos bewerken</h3>
-                    <Button.Root
-                        class="w-full rounded-card bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-mini 
-                        inline-flex h-12 items-center justify-start px-[21px] text-[15px] 
-                        border font-medium border-border z-50 relative transition-all active:scale-[0.98]"
-                        >
+                    <Button.Root class={actionBtnClass}>
                         Wijzig bodemsoort
                     </Button.Root>
-
-                    <Button.Root
-                        class="w-full rounded-card bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-mini 
-                        inline-flex h-12 items-center justify-start px-[21px] text-[15px] 
-                        border font-medium border-border z-50 relative transition-all active:scale-[0.98]"
-                        >
+                    <Button.Root class={actionBtnClass}>
                         Wijzig oppervlakte
                     </Button.Root>
                 </div>
 
                 <div class="space-y-2">
                     <h3 class="font-bold">Bossen beheren</h3>
-                    
                     <AlertDialog.Root>
-                        <AlertDialog.Trigger
-                            class="w-full rounded-card bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-mini 
-                                   flex h-12 items-center justify-start px-[21px] text-[15px] 
-                                   border font-medium border-border transition-all active:scale-[0.98]"
-                        >
+                        <AlertDialog.Trigger class={actionBtnClass}>
                             Nieuwe bos aanmaken
                         </AlertDialog.Trigger>
-                        
                         <AlertDialog.Portal>
-                            <AlertDialog.Overlay
-                                class="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/80"
-                            />
-                            <AlertDialog.Content
-                                class="rounded-card-lg bg-background shadow-popover data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 outline-hidden fixed left-[50%] top-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 border p-7 sm:max-w-lg md:w-full"
-                            >
-                                <div class="flex flex-col gap-4 pb-6">
-                                    <AlertDialog.Title class="text-lg font-semibold tracking-tight">
+                            <AlertDialog.Overlay class="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
+                            <AlertDialog.Content class="fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg sm:rounded-lg">
+                                <div class="flex flex-col gap-2">
+                                    <AlertDialog.Title class="text-lg font-semibold">
                                         Nieuw bos aanmaken?
                                     </AlertDialog.Title>
-                                    <AlertDialog.Description class="text-muted-foreground text-sm">
-                                        Weet u zeker dat u een nieuw bos wilt aanmaken? Uw huidige niet-opgeslagen wijzigingen gaan mogelijk verloren.
+                                    <AlertDialog.Description class="text-muted-foreground">
+                                        Weet u zeker dat u een nieuw bos wilt aanmaken?
                                     </AlertDialog.Description>
                                 </div>
-                                <div class="flex w-full items-center justify-center gap-2">
-                                    <AlertDialog.Cancel
-                                        class="h-input rounded-input bg-muted shadow-mini hover:bg-muted/80 focus-visible:ring-foreground focus-visible:ring-offset-background focus-visible:outline-hidden inline-flex w-full items-center justify-center text-[15px] font-medium transition-all focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.98]"
-                                    >
+                                <div class="flex justify-end gap-2">
+                                    <AlertDialog.Cancel class="rounded-md bg-muted px-4 py-2 hover:bg-muted/80">
                                         Annuleren
                                     </AlertDialog.Cancel>
-                                    <AlertDialog.Action
-                                        class="h-input rounded-input bg-dark text-background shadow-mini hover:bg-dark/95 focus-visible:ring-dark focus-visible:ring-offset-background focus-visible:outline-hidden inline-flex w-full items-center justify-center text-[15px] font-semibold transition-all focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.98]"
-                                    >
+                                    <AlertDialog.Action class="rounded-md bg-dark text-background px-4 py-2 hover:bg-dark/90">
                                         Aanmaken
                                     </AlertDialog.Action>
                                 </div>
@@ -173,7 +132,6 @@
                         </AlertDialog.Portal>
                     </AlertDialog.Root>
                 </div>
-
             </div>
         </div>
     </div>
