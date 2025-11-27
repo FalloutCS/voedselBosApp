@@ -24,9 +24,8 @@ export const load = (async () => {
 
     plants = await getPlants()
 
-    console.log(plants)
-
     return {
+        plants: plants,
         canvas: garden_State.canvas,
         width: garden_State.width,
         heigth: garden_State.height,
