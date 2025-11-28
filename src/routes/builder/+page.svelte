@@ -8,19 +8,19 @@
   import PlantMenu from "./components/PlantMenu.svelte";
 
   let { data, form }: PageProps = $props();
-  let showModal: boolean = $state(false);
+  let showMenu: boolean = $state(false);
   let activeCellIndex: number | undefined = $state();
 
   const handlePlantSubmission: SubmitFunction = () => {
     return async ({ update }) => {
       await update();
-      showModal = false;
+      showMenu = false;
     };
   };
 
   function openPlantMenu(index: number) {
     activeCellIndex = index;
-    showModal = true;
+    showMenu = true;
   }
 </script>
 
@@ -35,7 +35,7 @@
     <ErrorInvalidInput />
   {/if}
 
-  {#if showModal}
+  {#if showMenu}
     <PlantMenu {handlePlantSubmission} {activeCellIndex} {data} />
   {:else}
     <Canvas {data} {openPlantMenu} />
