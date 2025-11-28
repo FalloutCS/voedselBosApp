@@ -24,6 +24,7 @@ export const load = (async () => {
 
     // TODO: add error handler
     plants = await getPlants()
+    console.log(plants)
 
     return {
         plants: plants,
