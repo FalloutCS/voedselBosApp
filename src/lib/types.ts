@@ -41,3 +41,5 @@ export type voedselbos_Cel = {
   plant?: Plant;
 };
 
+export type sideBarState = "none" | "analyse" | "settings"
+
