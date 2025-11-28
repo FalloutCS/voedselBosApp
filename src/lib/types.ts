@@ -31,7 +31,7 @@ export type Plant = {
   id: number;
   latinName: string;
   commonName: string;
-  habit: "Shrub" | "Annual" | "Perennial" | "Tree" | "Perennial Climber" | "Annual/Perennial" | undefined;
+  habit: "Annual" | "Annual/Biennial" | "Annual Climber" | "Annual/Perennial" | "Bamboo" | "Biennial" | "Bulb" | "Climber" | "Corm" | "Fern" | "Lichen" | "Perennial" | "Perennial Climber" | "Shrub" | "Tree" | undefined;
   wind: "N" | "W" | "M" | "F" | undefined;
 };
 
@@ -40,3 +40,4 @@ export type voedselbos_Cel = {
   isPopulated: boolean;
   plant?: Plant;
 };
+
