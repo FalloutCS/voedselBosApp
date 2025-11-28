@@ -1,5 +1,6 @@
 <script lang="ts">
     import type { Plant, voedselbos_Cel } from "$lib/types";
+    import { gethabitIcon } from "$lib/habitIcon";
     type CanvasProps = {
         data: {
             width: number;
@@ -23,10 +24,15 @@
             class="border border-violet-400 text-sm"
             disabled={cell.isPopulated}
         >
-            {#if cell.isPopulated}
-                {cell.plant?.commonName}
+            {#if cell.isPopulated && cell.plant}
+                <img
+                    src={gethabitIcon(cell.plant.habit)}
+                    alt={cell.plant.habit}
+                    title={cell.plant.commonName}
+                    class="w-full h-full object-contain"
+                />
             {:else}
-                +
+                <span class="text-violet-400 font-bold opacity-50">+</span>
             {/if}
         </button>
     {/each}
