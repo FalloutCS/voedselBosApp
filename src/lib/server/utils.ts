@@ -22,3 +22,4 @@ export function validateIndex (cellIndex: number, garden_State: Voedselbos) {
 //         const response = fetch()
 //     }
 // }
+

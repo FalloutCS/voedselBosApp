@@ -9,7 +9,7 @@ let plants: Plant[]
 
 let PLANT_TO_ADD: Plant = {
     commonName: "apple",
-    habit: "Tree",
+    habit: "Bamboo",
     id: 0,
     latinName: "Aplcauts",
     wind: 'M'
