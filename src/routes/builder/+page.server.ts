@@ -7,13 +7,6 @@ import { fail } from '@sveltejs/kit';
 let garden_State: Voedselbos | null = null;
 let plants: Plant[]
 
-let PLANT_TO_ADD: Plant = {
-    commonName: "apple",
-    habit: "Tree",
-    id: 0,
-    latinName: "Aplcauts",
-    wind: 'M'
-}
 
 export const load = (async () => {
     if (!garden_State) {
@@ -36,8 +29,8 @@ export const load = (async () => {
 export const actions = {
     addPlant: async ({ request }) => {
         const data = await request.formData()
-        const cellIndexString = data.get("cellIndex")
-        const cellIndex = Number(cellIndexString)
+        const cellIndex = Number(data.get("cellIndex"))
+        const plantID = Number(data.get("plantID"))
 
         if (!garden_State) {
             return fail(400, { missing: true })
@@ -48,7 +41,9 @@ export const actions = {
         }
 
         garden_State.canvas[cellIndex].isPopulated = true
-        garden_State.canvas[cellIndex].plant = { ...PLANT_TO_ADD }
+        garden_State.canvas[cellIndex].plant = plants.find((plant) => {
+            return plant.id === plantID
+        })
 
         return { succes: true }
     },
