@@ -1,14 +1,26 @@
 <script lang="ts">
-  import { enhance } from "$app/forms";
   import type { PageProps } from "./$types";
   import BuilderMenu from "./components/BuilderMenu.svelte";
+  import Canvas from "./components/Canvas.svelte";
   import ErrorInvalidInput from "./components/Error_Invalid_Input.svelte";
   import ErrorMissingData from "./components/Error_MissingData.svelte";
+  import { type SubmitFunction } from "@sveltejs/kit";
+  import PlantMenu from "./components/PlantMenu.svelte";
 
   let { data, form }: PageProps = $props();
+  let showModal: boolean = $state(false);
+  let activeCellIndex: number | undefined = $state();
+
+  const handlePlantSubmission: SubmitFunction = () => {
+    return async ({ update }) => {
+      await update();
+      showModal = false;
+    };
+  };
 
   function openPlantMenu(index: number) {
-    console.log(index)
+    activeCellIndex = index;
+    showModal = true;
   }
 </script>
 
@@ -23,25 +35,9 @@
     <ErrorInvalidInput />
   {/if}
 
-  <form
-    class="p-5 grid rounded mx-auto my-auto h-full w-full bg-violet-100"
-    style="grid-template-columns: repeat({data.width}, minmax(0, 1fr)); grid-template-rows: repeat({data.heigth}, minmax(0, 1fr));"
-    method="POST"
-    use:enhance
-  >
-    {#each data.canvas as cell, index}
-      <button
-        type="button"
-        onclick={() => openPlantMenu(index)}
-        class="border border-violet-400 text-sm"
-        disabled={cell.isPopulated}
-      >
-        {#if cell.isPopulated}
-          {cell.plant?.commonName}
-        {:else}
-          +
-        {/if}
-      </button>
-    {/each}
-  </form>
+  {#if showModal}
+    <PlantMenu {handlePlantSubmission} {activeCellIndex} {data} />
+  {:else}
+    <Canvas {data} {openPlantMenu} />
+  {/if}
 </div>
