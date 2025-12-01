@@ -6,6 +6,7 @@
   import ErrorMissingData from "./components/Error_MissingData.svelte";
   import { type SubmitFunction } from "@sveltejs/kit";
   import PlantMenu from "./components/PlantMenu.svelte";
+  import { enhance } from "$app/forms";
 
   let { data, form }: PageProps = $props();
   let showMenu: boolean = $state(false);
@@ -23,6 +24,10 @@
     showMenu = true;
   }
 </script>
+
+<form method="POST" use:enhance>
+  <button type="submit" formaction="?/uploadSim"> Simuleer </button>
+</form>
 
 <div class="h-4/5 w-4/5 mx-auto my-auto bg-violet-50 rounded">
   <BuilderMenu />

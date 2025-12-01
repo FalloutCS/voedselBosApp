@@ -48,8 +48,9 @@ export const actions = {
         return { succes: true }
     },
 
-    removePlant: async (event) => {
-        // TODO remove plant from canvas state
+    uploadSim: async (event) => {
+        console.log(garden_State?.canvas)
+
     }
 } satisfies Actions;
 
