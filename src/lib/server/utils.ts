@@ -2,7 +2,7 @@
 import { Voedselbos } from "$lib/types";
 
 export function validateIndex (cellIndex: number, garden_State: Voedselbos) {
-    if (cellIndex >= garden_State.canvas.length){
+    if (cellIndex >= garden_State.plantSimulationDtos.length){
         return true
     }
 

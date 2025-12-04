@@ -1,19 +1,19 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
     import type { SubmitFunction } from "@sveltejs/kit";
-    import type { Plant } from "$lib/types"; // [cite: 2]
+    import type { Plant } from "$lib/types";
     import { gethabitIcon } from "$lib/habitIcon";
 
     type PlantMenuProps = {
         handlePlantSubmission: SubmitFunction;
-        activeCellIndex: number | undefined; //
+        activeCellIndex: number | undefined; 
         data: {
             plants: Plant[];
         };
-    }; // [cite: 4]
+    };
 
     let { handlePlantSubmission, activeCellIndex, data }: PlantMenuProps =
-        $props(); //
+        $props();
 </script>
 
 <form
@@ -22,6 +22,9 @@
     use:enhance={handlePlantSubmission}
 >
     <input hidden name="cellIndex" value={activeCellIndex} />
+    <input hidden name="xPosition" />
+    <input hidden name="yPosition" />
+    <input hidden name="plantingDelay" />
 
     <h2 class="text-3xl font-extrabold text-violet-900 mb-6 border-b pb-2">
         Plant Selection

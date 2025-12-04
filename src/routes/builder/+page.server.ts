@@ -1,8 +1,11 @@
-import { Voedselbos, type Plant } from '$lib/types';
+import {
+    Voedselbos, type Plant
+} from '$lib/types';
 import type { Actions, PageServerLoad } from './$types';
 import { validateIndex } from '$lib/server/utils';
 import { getPlants } from '$lib/server/plantService';
 import { fail } from '@sveltejs/kit';
+import { postPlants } from '$lib/server/postPlants';
 
 let garden_State: Voedselbos | null = null;
 let plants: Plant[]
@@ -20,7 +23,7 @@ export const load = (async () => {
 
     return {
         plants: plants,
-        canvas: garden_State.canvas,
+        canvas: garden_State.plantSimulationDtos,
         width: garden_State.width,
         heigth: garden_State.height,
     };
@@ -39,8 +42,8 @@ export const actions = {
         if (validateIndex(cellIndex, garden_State)) {
             return fail(400, { incorrect: true })
         }
-        
-        garden_State.canvas[cellIndex].plant = plants.find((plant) => {
+
+        garden_State.plantSimulationDtos[cellIndex].plant = plants.find((plant) => {
             return plant.id === plantID
         })
 
@@ -48,7 +51,14 @@ export const actions = {
     },
 
     uploadSim: async (event) => {
-        console.log(garden_State?.canvas)
+        // TODO: create post request to back-end
+        // const data = await postPlants(garden_State)
+
+        const filteredData = garden_State?.plantSimulationDtos.filter((el) => {
+            return el.plant != undefined
+        })
+
+        const res = await postPlants(filteredData)
     }
 } satisfies Actions;
 
