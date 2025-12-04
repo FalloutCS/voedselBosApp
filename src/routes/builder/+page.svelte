@@ -1,31 +1,48 @@
 <script lang="ts">
-  import { enhance } from "$app/forms";
   import type { PageProps } from "./$types";
+  import BuilderMenu from "./components/BuilderMenu.svelte";
+  import Canvas from "./components/Canvas.svelte";
+  import ErrorInvalidInput from "./components/Error_Invalid_Input.svelte";
+  import ErrorMissingData from "./components/Error_MissingData.svelte";
+  import { type SubmitFunction } from "@sveltejs/kit";
+  import PlantMenu from "./components/PlantMenu.svelte";
+  import { enhance } from "$app/forms";
+
   let { data, form }: PageProps = $props();
+  let showMenu: boolean = $state(false);
+  let activeCellIndex: number = $state(0);
+
+  const handlePlantSubmission: SubmitFunction = () => {
+    return async ({ update }) => {
+      await update();
+      showMenu = false;
+    };
+  };
+
+  function openPlantMenu(index: number) {
+    activeCellIndex = index;
+    showMenu = true;
+  }
 </script>
 
-<form
-  class="w-4/5 h-4/5 mx-auto my-auto p-10 bg-violet-100 grid"
-  style="grid-template-columns: repeat({data.width}, minmax(0, 1fr)); grid-template-rows: repeat({data.heigth}, minmax(0, 1fr));"
-  method="POST"
-  use:enhance
->
-  {#each data.canvas as cell, index}
-    <button
-      type="submit"
-      name="cellIndex"
-      value={index}
-      formaction="?/addPlant"
-      class="border border-violet-950 text-sm"
-      class:bg-violet-600={cell.isPopulated}
-      class:bg-violet-200={!cell.isPopulated}
-      disabled={cell.isPopulated}
-    >
-      {#if cell.isPopulated}
-        {cell.plant?.name}
-      {:else}
-        +
-      {/if}
-    </button>
-  {/each}
+<form method="POST" use:enhance>
+  <button type="submit" formaction="?/uploadSim"> Simuleer </button>
 </form>
+
+<div class="h-4/5 w-4/5 mx-auto my-auto bg-violet-50 rounded">
+  <BuilderMenu />
+
+  {#if form?.missing}
+    <ErrorMissingData />
+  {/if}
+
+  {#if form?.incorrect}
+    <ErrorInvalidInput />
+  {/if}
+
+  {#if showMenu}
+    <PlantMenu {handlePlantSubmission} {activeCellIndex} {data} />
+  {:else}
+    <Canvas {data} {openPlantMenu} />
+  {/if}
+</div>

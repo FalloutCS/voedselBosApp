@@ -1,14 +1,15 @@
-import { Voedselbos, type Plant } from '$lib/types';
+import {
+    Voedselbos, type Plant
+} from '$lib/types';
 import type { Actions, PageServerLoad } from './$types';
 import { validateIndex } from '$lib/server/utils';
+import { getPlants } from '$lib/server/plantService';
 import { fail } from '@sveltejs/kit';
+import { postPlants } from '$lib/server/postPlants';
 
 let garden_State: Voedselbos | null = null;
+let plants: Plant[]
 
-const PLANT_TO_ADD: Plant = {
-    name: "Apple Tree",
-    img: "/images/apple.png"
-}
 
 export const load = (async () => {
     if (!garden_State) {
@@ -17,8 +18,12 @@ export const load = (async () => {
         garden_State?.populateForest()
     }
 
+    // TODO: add error handler
+    plants = await getPlants()
+
     return {
-        canvas: garden_State.canvas,
+        plants: plants,
+        canvas: garden_State.plantSimulationDtos,
         width: garden_State.width,
         heigth: garden_State.height,
     };
@@ -26,26 +31,38 @@ export const load = (async () => {
 
 export const actions = {
     addPlant: async ({ request }) => {
-        const data = await request.formData()
-        const cellIndexString = data.get("cellIndex")
-        const cellIndex = Number(cellIndexString)
+        const data = await request.formData();
+        const cellIndex = Number(data.get("cellIndex"));
+        const plantID = Number(data.get("plantID"));
+        const xPosition = Number(data.get("xPosition"));
+        const yPosition = Number(data.get("yPosition"));
+        const plantingDelay = Number(data.get("plantingDelay"));
 
         if (!garden_State) {
-            return fail(400, { cellIndex, missing: true })
+            return fail(400, { missing: true });
         }
-        
+
         if (validateIndex(cellIndex, garden_State)) {
-            return fail(400, {cellIndex, incorrect: true})
+            return fail(400, { incorrect: true });
         }
 
-        garden_State.canvas[cellIndex].isPopulated = true
-        garden_State.canvas[cellIndex].plant = { ...PLANT_TO_ADD }
+        garden_State.plantSimulationDtos[cellIndex].plant = plants.find((plant) => {
+            return plant.id === plantID
+        })
+        garden_State.plantSimulationDtos[cellIndex].uid = cellIndex;
+        garden_State.plantSimulationDtos[cellIndex].plantingDelay = plantingDelay;
+        garden_State.plantSimulationDtos[cellIndex].xPosition = xPosition;
+        garden_State.plantSimulationDtos[cellIndex].yPosition = yPosition;
 
-        return {succes: true}
+        return { succes: true }
     },
 
-    removePlant: async (event) => {
-        // TODO remove plant from canvas state
+    uploadSim: async (event) => {
+        const filteredData = garden_State?.plantSimulationDtos.filter((el) => {
+            return el.plant != undefined
+        })
+
+        const res = await postPlants(filteredData)
     }
 } satisfies Actions;
 
