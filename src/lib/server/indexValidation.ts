@@ -1,5 +1,5 @@
 
-import { Voedselbos } from "$lib/types";
+import { Voedselbos } from "$lib/server/voedselBos.ts";
 
 export function validateIndex (cellIndex: number, garden_State: Voedselbos) {
     if (cellIndex >= garden_State.plantSimulationDtos.length){
@@ -16,9 +16,3 @@ export function validateIndex (cellIndex: number, garden_State: Voedselbos) {
 
     return false
 }
-
-// export async function requestData(){
-//     try{
-//         const response = fetch()
-//     }
-// }

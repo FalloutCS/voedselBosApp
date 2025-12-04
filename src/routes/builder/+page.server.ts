@@ -1,8 +1,7 @@
-import {
-    Voedselbos, type Plant
-} from '$lib/types';
+import { type Plant } from '$lib/types';
+import { Voedselbos } from '$lib/server/voedselBos';
 import type { Actions, PageServerLoad } from './$types';
-import { validateIndex } from '$lib/server/utils';
+import { validateIndex } from '$lib/server/indexValidation';
 import { getPlants } from '$lib/server/plantService';
 import { fail } from '@sveltejs/kit';
 import { postPlants } from '$lib/server/postPlants';

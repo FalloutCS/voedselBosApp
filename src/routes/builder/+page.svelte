@@ -1,11 +1,11 @@
 <script lang="ts">
   import type { PageProps } from "./$types";
-  import BuilderMenu from "./components/BuilderMenu.svelte";
-  import Canvas from "./components/Canvas.svelte";
-  import ErrorInvalidInput from "./components/Error_Invalid_Input.svelte";
-  import ErrorMissingData from "./components/Error_MissingData.svelte";
+  import BuilderMenu from "../../lib/components/BuilderMenu.svelte";
+  import Canvas from "../../lib/components/Canvas.svelte";
+  import ErrorInvalidInput from "../../lib/components/Error_Invalid_Input.svelte";
+  import ErrorMissingData from "../../lib/components/Error_MissingData.svelte";
   import { type SubmitFunction } from "@sveltejs/kit";
-  import PlantMenu from "./components/PlantMenu.svelte";
+  import PlantMenu from "../../lib/components/PlantMenu.svelte";
   import { enhance } from "$app/forms";
 
   let { data, form }: PageProps = $props();
