@@ -10,7 +10,7 @@
 
   let { data, form }: PageProps = $props();
   let showMenu: boolean = $state(false);
-  let activeCellIndex: number | undefined = $state();
+  let activeCellIndex: number = $state(0);
 
   const handlePlantSubmission: SubmitFunction = () => {
     return async ({ update }) => {

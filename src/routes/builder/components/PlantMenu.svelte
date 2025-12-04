@@ -6,14 +6,24 @@
 
     type PlantMenuProps = {
         handlePlantSubmission: SubmitFunction;
-        activeCellIndex: number | undefined; 
+        activeCellIndex: number;
         data: {
+            width: number;
+            heigth: number
             plants: Plant[];
         };
     };
 
     let { handlePlantSubmission, activeCellIndex, data }: PlantMenuProps =
         $props();
+
+    function calc_X_Position() {
+        return activeCellIndex % data.width;
+    }
+
+    function calc_Y_Position() {
+        return Math.floor(activeCellIndex / data.width);
+    }
 </script>
 
 <form
@@ -22,9 +32,9 @@
     use:enhance={handlePlantSubmission}
 >
     <input hidden name="cellIndex" value={activeCellIndex} />
-    <input hidden name="xPosition" />
-    <input hidden name="yPosition" />
-    <input hidden name="plantingDelay" />
+    <input hidden name="xPosition" value={calc_X_Position()} />
+    <input hidden name="yPosition" value={calc_Y_Position()} />
+    <input hidden name="plantingDelay" value={0} />
 
     <h2 class="text-3xl font-extrabold text-violet-900 mb-6 border-b pb-2">
         Plant Selection

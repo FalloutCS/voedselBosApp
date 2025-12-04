@@ -14,6 +14,10 @@ export async function postPlants(filteredData: voedselbos_Cel[] | undefined) {
             },
             body: JSON.stringify({ "plantSimulationDtos": filteredData })
         })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+            })
     } catch (error) {
 
     }

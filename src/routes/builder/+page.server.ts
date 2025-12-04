@@ -31,29 +31,33 @@ export const load = (async () => {
 
 export const actions = {
     addPlant: async ({ request }) => {
-        const data = await request.formData()
-        const cellIndex = Number(data.get("cellIndex"))
-        const plantID = Number(data.get("plantID"))
+        const data = await request.formData();
+        const cellIndex = Number(data.get("cellIndex"));
+        const plantID = Number(data.get("plantID"));
+        const xPosition = Number(data.get("xPosition"));
+        const yPosition = Number(data.get("yPosition"));
+        const plantingDelay = Number(data.get("plantingDelay"));
 
         if (!garden_State) {
-            return fail(400, { missing: true })
+            return fail(400, { missing: true });
         }
 
         if (validateIndex(cellIndex, garden_State)) {
-            return fail(400, { incorrect: true })
+            return fail(400, { incorrect: true });
         }
 
         garden_State.plantSimulationDtos[cellIndex].plant = plants.find((plant) => {
             return plant.id === plantID
         })
+        garden_State.plantSimulationDtos[cellIndex].uid = cellIndex;
+        garden_State.plantSimulationDtos[cellIndex].plantingDelay = plantingDelay;
+        garden_State.plantSimulationDtos[cellIndex].xPosition = xPosition;
+        garden_State.plantSimulationDtos[cellIndex].yPosition = yPosition;
 
         return { succes: true }
     },
 
     uploadSim: async (event) => {
-        // TODO: create post request to back-end
-        // const data = await postPlants(garden_State)
-
         const filteredData = garden_State?.plantSimulationDtos.filter((el) => {
             return el.plant != undefined
         })
