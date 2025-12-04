@@ -7,8 +7,8 @@
   import { type SubmitFunction } from "@sveltejs/kit";
   import PlantMenu from "$lib/components/PlantMenu.svelte";
   import { enhance } from "$app/forms";
-
   let { data, form }: PageProps = $props();
+
   let showMenu: boolean = $state(false);
   let activeCellIndex: number = $state(0);
 
@@ -19,8 +19,8 @@
     };
   };
 
-  function openPlantMenu(index: number) {
-    activeCellIndex = index;
+  function openMenu(cellIndex: number) {
+    activeCellIndex = cellIndex;
     showMenu = true;
   }
 </script>
@@ -43,6 +43,11 @@
   {#if showMenu}
     <PlantMenu {handlePlantSubmission} {activeCellIndex} {data} />
   {:else}
-    <Canvas {data} {openPlantMenu} />
+    <Canvas
+      canvas={data.canvas}
+      width={data.width}
+      heigth={data.heigth}
+      {openMenu}
+    />
   {/if}
 </div>

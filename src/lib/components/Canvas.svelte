@@ -1,26 +1,25 @@
 <script lang="ts">
-    import type { Plant, voedselbos_Cel } from "$lib/types";
     import { gethabitIcon } from "$lib/habitIcon";
-    type CanvasProps = {
-        data: {
-            width: number;
-            heigth: number;
-            canvas: voedselbos_Cel[];
-            plants: Plant[];
-        };
-        openPlantMenu: (index: number) => void;
+    import type { voedselbos_Cel } from "$lib/types";
+
+    type canvasProps = {
+        canvas: voedselbos_Cel[];
+        width: number;
+        heigth: number;
+        openMenu: (cellIndex: number) => void;
     };
-    let { data, openPlantMenu }: CanvasProps = $props();
+
+    let { canvas, width, heigth, openMenu }: canvasProps = $props();
 </script>
 
 <div
     class="p-5 grid rounded mx-auto my-auto h-full w-full bg-violet-100"
-    style="grid-template-columns: repeat({data.width}, minmax(0, 1fr)); grid-template-rows: repeat({data.heigth}, minmax(0, 1fr));"
+    style="grid-template-columns: repeat({width}, minmax(0, 1fr)); grid-template-rows: repeat({heigth}, minmax(0, 1fr));"
 >
-    {#each data.canvas as cell, index}
+    {#each canvas as cell, index}
         <button
             type="button"
-            onclick={() => openPlantMenu(index)}
+            onclick={() => openMenu(index)}
             class="border border-violet-400 text-sm"
         >
             {#if cell.plant}
