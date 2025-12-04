@@ -15,7 +15,7 @@ export class Voedselbos {
     const totalSize = this.width * this.height
 
     for (let index = 0; index < totalSize; index++) {
-      this.canvas.push({ isPopulated: false, plant: undefined });
+      this.canvas.push({ plant: undefined });
     }
   }
 
@@ -37,7 +37,6 @@ export type Plant = {
 
 
 export type voedselbos_Cel = {
-  isPopulated: boolean;
   plant?: Plant;
 };
 

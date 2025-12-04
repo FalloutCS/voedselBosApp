@@ -39,8 +39,7 @@ export const actions = {
         if (validateIndex(cellIndex, garden_State)) {
             return fail(400, { incorrect: true })
         }
-
-        garden_State.canvas[cellIndex].isPopulated = true
+        
         garden_State.canvas[cellIndex].plant = plants.find((plant) => {
             return plant.id === plantID
         })
@@ -50,7 +49,6 @@ export const actions = {
 
     uploadSim: async (event) => {
         console.log(garden_State?.canvas)
-
     }
 } satisfies Actions;
 

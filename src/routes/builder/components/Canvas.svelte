@@ -22,9 +22,8 @@
             type="button"
             onclick={() => openPlantMenu(index)}
             class="border border-violet-400 text-sm"
-            disabled={cell.isPopulated}
         >
-            {#if cell.isPopulated && cell.plant}
+            {#if cell.plant}
                 <img
                     src={gethabitIcon(cell.plant.habit)}
                     alt={cell.plant.habit}
