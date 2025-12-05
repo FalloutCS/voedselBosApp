@@ -2,7 +2,7 @@
 import { Voedselbos } from "$lib/server/voedselBos.ts";
 
 export function validateIndex (cellIndex: number, garden_State: Voedselbos) {
-    if (cellIndex >= garden_State.plantSimulationDtos.length){
+    if (cellIndex >= garden_State.forest_Cubes_Array.length){
         return true
     }
 

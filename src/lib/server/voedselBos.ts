@@ -4,20 +4,20 @@ export class Voedselbos {
   name: string;
   width: number;
   height: number;
-  plantSimulationDtos: voedselbos_Cel[];
+  forest_Cubes_Array: voedselbos_Cel[];
 
   constructor(name: string, width: number, height: number) {
     this.name = name;
     this.width = width
     this.height = height
-    this.plantSimulationDtos = [];
+    this.forest_Cubes_Array = [];
   }
 
   populateForest() {
     const totalSize = this.width * this.height
 
     for (let index = 0; index < totalSize; index++) {
-      this.plantSimulationDtos.push({ 
+      this.forest_Cubes_Array.push({ 
         uid: 0,
         plantingDelay: 0,
         xPosition: 0,

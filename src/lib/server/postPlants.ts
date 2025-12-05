@@ -12,7 +12,7 @@ export async function postPlants(filteredData: voedselbos_Cel[] | undefined) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ "plantSimulationDtos": filteredData })
+            body: JSON.stringify({ "forest_Cubes_Array": filteredData })
         })
             .then(res => res.json())
             .then(data => {

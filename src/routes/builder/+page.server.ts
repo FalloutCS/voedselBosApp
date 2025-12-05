@@ -22,7 +22,7 @@ export const load = (async () => {
 
     return {
         plants: plants,
-        canvas: garden_State.plantSimulationDtos,
+        canvas: garden_State.forest_Cubes_Array,
         width: garden_State.width,
         heigth: garden_State.height,
     };
@@ -45,19 +45,19 @@ export const actions = {
             return fail(400, { incorrect: true });
         }
 
-        garden_State.plantSimulationDtos[cellIndex].plant = plants.find((plant) => {
+        garden_State.forest_Cubes_Array[cellIndex].plant = plants.find((plant) => {
             return plant.id === plantID
         })
-        garden_State.plantSimulationDtos[cellIndex].uid = cellIndex;
-        garden_State.plantSimulationDtos[cellIndex].plantingDelay = plantingDelay;
-        garden_State.plantSimulationDtos[cellIndex].xPosition = xPosition;
-        garden_State.plantSimulationDtos[cellIndex].yPosition = yPosition;
+        garden_State.forest_Cubes_Array[cellIndex].uid = cellIndex;
+        garden_State.forest_Cubes_Array[cellIndex].plantingDelay = plantingDelay;
+        garden_State.forest_Cubes_Array[cellIndex].xPosition = xPosition;
+        garden_State.forest_Cubes_Array[cellIndex].yPosition = yPosition;
 
         return { succes: true }
     },
 
     uploadSim: async (event) => {
-        const filteredData = garden_State?.plantSimulationDtos.filter((el) => {
+        const filteredData = garden_State?.forest_Cubes_Array.filter((el) => {
             return el.plant != undefined
         })
 
