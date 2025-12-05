@@ -7,8 +7,8 @@
   import { type SubmitFunction } from "@sveltejs/kit";
   import PlantMenu from "$lib/components/PlantMenu.svelte";
   import { enhance } from "$app/forms";
-  let { data, form }: PageProps = $props();
 
+  let { data, form }: PageProps = $props();
   let showMenu: boolean = $state(false);
   let activeCellIndex: number = $state(0);
 
