@@ -1,20 +1,15 @@
 import { type Plant } from '$lib/types';
-import { Voedselbos } from '$lib/server/voedselBos';
 import type { Actions, PageServerLoad } from './$types';
-import { validateIndex } from '$lib/server/indexValidation';
 import { getPlants } from '$lib/server/plantService';
 import { fail } from '@sveltejs/kit';
 import { postPlants } from '$lib/server/postPlants';
 import { forestStore } from '$lib/server/db/forestStore';
 
-let garden_State: Voedselbos | null = null;
 let plants: Plant[]
 
 
 export const load = (async () => {
-
-
-        let globalForest = forestStore.get()
+    let globalForest = forestStore.get()
 
     // AFTER THE MAIN PAGE IS DONE, WE SHOULD REDIRECT THE USER TO THE CREATE FOREST PAGE
     // if (!globalForest) {
@@ -45,13 +40,25 @@ export const actions = {
         const yPosition = Number(data.get("yPosition"));
         const plantingDelay = Number(data.get("plantingDelay"));
 
-        let res = forestStore.addPlant(cellIndex, )
+        // TODO add error handling for missing plant
+        let plant = plants.find((plant) => {
+            return plant.id === plantID
+        })
 
-        return { succes: true }
+        const res = forestStore.addPlant(cellIndex, plant, xPosition, yPosition, plantingDelay)
+        // TODO add index validation on the forestStore
+
+        if (res === "Missing forest") {
+            return fail(400, { missing: true })
+        }
+
+        if (res === "Succes") {
+            return { succes: true }
+        }
     },
 
     uploadSim: async (event) => {
-        const filteredData = garden_State?.forest_Cubes_Array.filter((el) => {
+        const filteredData = forestStore.get()?.forest_Cubes_Array.filter((el) => {
             return el.plant != undefined
         })
 

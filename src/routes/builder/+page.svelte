@@ -35,10 +35,10 @@
   {#if form?.missing}
     <ErrorMissingData />
   {/if}
-
-  {#if form?.incorrect}
+  <!-- Fix with validate Index in forestStore.ts -->
+  <!-- {#if form?.incorrect}
     <ErrorInvalidInput />
-  {/if}
+  {/if} -->
 
   {#if showMenu}
     <PlantMenu {handlePlantSubmission} {activeCellIndex} {data} />
