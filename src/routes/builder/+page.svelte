@@ -1,6 +1,5 @@
 <script lang="ts">
   import type { PageProps } from "./$types";
-  import BuilderMenu from "$lib/components/BuilderMenu.svelte";
   import Canvas from "$lib/components/Canvas.svelte";
   import ErrorInvalidInput from "$lib/components/Error_Invalid_Input.svelte";
   import ErrorMissingData from "$lib/components/Error_MissingData.svelte";
@@ -23,6 +22,10 @@
     activeCellIndex = cellIndex;
     showMenu = true;
   }
+
+  function closeMenu() {
+    showMenu = false;
+  }
 </script>
 
 <form method="POST" use:enhance>
@@ -30,7 +33,6 @@
 </form>
 
 <div class="h-4/5 w-4/5 mx-auto my-auto bg-violet-50 rounded">
-  <BuilderMenu />
 
   {#if form?.missing}
     <ErrorMissingData />
@@ -41,7 +43,7 @@
   {/if}
 
   {#if showMenu}
-    <PlantMenu {handlePlantSubmission} {activeCellIndex} {data} />
+    <PlantMenu {handlePlantSubmission} {activeCellIndex} {data} {closeMenu}/>
   {:else}
     <Canvas
       canvas={data.canvas}
