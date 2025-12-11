@@ -56,6 +56,21 @@ export const actions = {
         return { succes: true }
     },
 
+    removePlant: async ({ request }) => {
+        const data = await request.formData();
+        const cellIndex = Number(data.get("cellIndex"));
+
+        if (!garden_State) return fail(400, { missing: true });
+        if (validateIndex(cellIndex, garden_State)) return fail(400, { incorrect: true });
+
+        // Reset the plant data for this cell
+        garden_State.plantSimulationDtos[cellIndex].plant = undefined;
+        // Optionally reset other properties if needed
+        garden_State.plantSimulationDtos[cellIndex].plantingDelay = 0;
+
+        return { success: true };
+    },
+
     uploadSim: async (event) => {
         const filteredData = garden_State?.plantSimulationDtos.filter((el) => {
             return el.plant != undefined
