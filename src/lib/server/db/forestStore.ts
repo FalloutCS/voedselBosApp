@@ -9,8 +9,8 @@ export const forestStore = {
         return globalForest
     },
 
-    create: (name: string, width: number, height: number) => {
-        globalForest = new Voedselbos(name, width, height)
+    create: (name: string, width: number, height: number, location: string) => {
+        globalForest = new Voedselbos(name, width, height, location)
         globalForest.populateForest()
         return globalForest
     },

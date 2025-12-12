@@ -17,7 +17,7 @@ export const load = (async () => {
     // }
 
     if (!globalForest) {
-        globalForest = forestStore.create("Mijn Bos", 10, 10)
+        globalForest = forestStore.create("Mijn Bos", 10, 10, "Rotterdam")
     }
 
     // TODO: add error handler

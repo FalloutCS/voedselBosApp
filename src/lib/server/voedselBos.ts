@@ -1,15 +1,19 @@
-import type { voedselbos_Cel } from "$lib/types"; 
+import type { voedselbos_Cel } from "$lib/types";
 
 export class Voedselbos {
   name: string;
+  location: string;
   width: number;
   height: number;
+  surfaceArea: number;
   forest_Cubes_Array: voedselbos_Cel[];
 
-  constructor(name: string, width: number, height: number) {
+  constructor(name: string, width: number, height: number, location: string) {
     this.name = name;
-    this.width = width
-    this.height = height
+    this.width = width;
+    this.height = height;
+    this.location = location;
+    this.surfaceArea = width * height;
     this.forest_Cubes_Array = [];
   }
 
@@ -17,12 +21,13 @@ export class Voedselbos {
     const totalSize = this.width * this.height
 
     for (let index = 0; index < totalSize; index++) {
-      this.forest_Cubes_Array.push({ 
+      this.forest_Cubes_Array.push({
         uid: 0,
         plantingDelay: 0,
         xPosition: 0,
         yPosition: 0,
-        plant: undefined });
+        plant: undefined
+      });
     }
   }
 }
