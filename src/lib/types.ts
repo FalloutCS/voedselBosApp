@@ -6,8 +6,11 @@ export type Plant = {
   wind: "N" | "W" | "M" | "F" | undefined;
 };
 
+export type placedPlant = {
+  [uid: number]: plantInfo
+}
 
-export type voedselbos_Cel = {
+export type plantInfo = {
   uid: number;
   xPosition: number;
   yPosition: number;

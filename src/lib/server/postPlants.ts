@@ -1,7 +1,7 @@
-import { type voedselbos_Cel } from "$lib/types";
+import { type plantInfo } from "$lib/types";
 import { fail } from "@sveltejs/kit";
 
-export async function postPlants(filteredData: voedselbos_Cel[] | undefined) {
+export async function postPlants(filteredData: plantInfo[] | undefined) {
     if (!filteredData) {
         return fail(400, { eror: 'Leeg voedselbos' })
     }
