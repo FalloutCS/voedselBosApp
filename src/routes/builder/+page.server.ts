@@ -26,7 +26,7 @@ export const load = (async () => {
 
     return {
         plants: plants,
-        canvas: globalForest.forest_Cubes_Array,
+        placedPlants: globalForest.placedPlants,
         width: globalForest.width,
         heigth: globalForest.height,
     };
@@ -75,7 +75,7 @@ export const actions = {
     },
 
     uploadSim: async (event) => {
-        const filteredData = forestStore.get()?.forest_Cubes_Array.filter((el) => {
+        const filteredData = forestStore.get()?.placedPlants.filter((el) => {
             return el.plant != undefined
         })
 

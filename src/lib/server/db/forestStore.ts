@@ -24,7 +24,7 @@ export const forestStore = {
             return "Plant not found"
         }
 
-        const cell = globalForest.forest_Cubes_Array[cellIndex];
+        const cell = globalForest.placedPlants[cellIndex];
 
         cell.plant = plantID
         cell.uid = cellIndex;
@@ -32,7 +32,7 @@ export const forestStore = {
         cell.xPosition = xPosition;
         cell.yPosition = yPosition; 
 
-        console.log(cell)
+        
 
         return "Succes"
     },
@@ -42,12 +42,12 @@ export const forestStore = {
             return "Missing forest"
         }
 
-        const cell = globalForest.forest_Cubes_Array[cellIndex];
+        const cell = globalForest.placedPlants[cellIndex];
 
         cell.plant = undefined;
         cell.plantingDelay = 0;
         
-        console.log(cell);
+        
 
         return "Succes"
     }

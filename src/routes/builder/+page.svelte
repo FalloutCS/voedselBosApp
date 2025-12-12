@@ -14,7 +14,7 @@
   let activeCellIndex: number = $state(0);
 
   // Helper om de naam van de plant op te halen
-  let selectedPlantName = $derived(data.canvas[activeCellIndex]?.plant?.commonName || "Plant");
+  let selectedPlantName = $derived(data.placedPlants[activeCellIndex]?.plant?.commonName || "Plant");
 
   const handlePlantSubmission: SubmitFunction = () => {
     return async ({ update }) => {
@@ -26,7 +26,7 @@
 
   function handleCellClick(cellIndex: number) {
     activeCellIndex = cellIndex;
-    const cellHasPlant = !!data.canvas[cellIndex].plant;
+    const cellHasPlant = !!data.placedPlants[cellIndex].plant;
 
     if (cellHasPlant) {
       showActionMenu = true; 
@@ -67,7 +67,7 @@
     />
   {:else}
     <Canvas
-      canvas={data.canvas}
+      placedPlants={data.placedPlants}
       width={data.width}
       heigth={data.heigth}
       openMenu={handleCellClick} 

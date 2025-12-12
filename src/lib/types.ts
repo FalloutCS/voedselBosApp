@@ -7,7 +7,7 @@ export type Plant = {
 };
 
 
-export type voedselbos_Cel = {
+export type plantInfo = {
   uid: number;
   xPosition: number;
   yPosition: number;
