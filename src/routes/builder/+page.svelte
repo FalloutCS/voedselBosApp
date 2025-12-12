@@ -44,7 +44,7 @@
     <PlantMenu {handlePlantSubmission} {activeCellIndex} {data} />
   {:else}
     <Canvas
-      canvas={data.canvas}
+      placedPlants={data.placedPlants}
       width={data.width}
       heigth={data.heigth}
       {openMenu}

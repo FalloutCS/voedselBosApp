@@ -25,7 +25,7 @@ export const load = (async () => {
 
     return {
         plants: plants,
-        canvas: globalForest.placedPlants,
+        placedPlants: globalForest.placedPlants,
         width: globalForest.width,
         heigth: globalForest.height,
     };

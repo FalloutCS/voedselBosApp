@@ -3,20 +3,20 @@
     import type { plantInfo } from "$lib/types";
 
     type canvasProps = {
-        canvas: plantInfo[];
+        placedPlants: plantInfo[];
         width: number;
         heigth: number;
         openMenu: (cellIndex: number) => void;
     };
 
-    let { canvas, width, heigth, openMenu }: canvasProps = $props();
+    let { placedPlants, width, heigth, openMenu }: canvasProps = $props();
 </script>
 
 <div
     class="p-5 grid rounded mx-auto my-auto h-full w-full bg-violet-100"
     style="grid-template-columns: repeat({width}, minmax(0, 1fr)); grid-template-rows: repeat({heigth}, minmax(0, 1fr));"
 >
-    {#each canvas as cell, index}
+    {#each placedPlants as cell, index}
         <button
             type="button"
             onclick={() => openMenu(index)}
