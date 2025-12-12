@@ -1,17 +1,14 @@
 <script lang="ts">
+  import { enhance } from "$app/forms";
+  import { fade } from "svelte/transition";
   import type { PageProps } from "./$types";
+  import { Dialog } from "bits-ui";
+  import CreateGardenDialog from "./components/CreateGardenDialog.svelte";
 
   let { data }: PageProps = $props();
+  let showDialog = $state(false);
 </script>
 
-<form method="POST">
-  <label for="name">Forest name:</label>
-  <input id="name" type="text" name="name" class="border" required />
-  <label for="location">Forest location:</label>
-  <input id="location" type="text" name="location" class="border" required />
-  <label for="width">Total Width (m)</label>
-  <input id="width" name="width" type="number" class="border" />
-  <label for="heigth">Total heigth (m)</label>
-  <input id="heigth" name="heigth" type="number" class="border" />
-  <button type="submit" formaction="?/create">Maak</button>
-</form>
+<div class="h-screen w-full flex items-center justify-center bg-violet-50">
+    <CreateGardenDialog />
+</div>

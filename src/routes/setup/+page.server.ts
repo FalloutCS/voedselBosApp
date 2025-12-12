@@ -1,4 +1,5 @@
 import { forestStore } from "$lib/server/db/forestStore.js";
+import { redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
 export const load = (async () => {
@@ -14,5 +15,7 @@ export const actions = {
     const heigth = Number(data.get("heigth"));
 
     forestStore.create(name, width, heigth, location);
+
+    redirect(307, "/builder");
   },
 };
