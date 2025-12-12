@@ -13,7 +13,7 @@
     let { plantName, cellIndex, onEdit, onClose, handleSubmission }: ActionMenuProps = $props();
 </script>
 
-<div class="absolute inset-0 z-50 flex items-center justify-center bg-violet-900/20 backdrop-blur-sm rounded">
+<div class="absolute inset-0 z-50 flex items-center justify-center bg-violet-900/20 backdrop-blur-[1px] rounded">
     <div class="bg-white p-6 rounded-2xl shadow-xl border border-violet-100 max-w-sm w-full text-center">
         
         <h3 class="text-xl font-bold text-violet-900 mb-2">Opties voor {plantName}</h3>

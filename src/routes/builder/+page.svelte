@@ -9,7 +9,6 @@
   import { enhance } from "$app/forms";
 
   let { data, form }: PageProps = $props();
-  
   let showMenu: boolean = $state(false);       
   let showActionMenu: boolean = $state(false); 
   let activeCellIndex: number = $state(0);
@@ -58,10 +57,6 @@
   {#if form?.missing}
     <ErrorMissingData />
   {/if}
-  <!-- Fix with validate Index in forestStore.ts -->
-  <!-- {#if form?.incorrect}
-    <ErrorInvalidInput />
-  {/if} -->
 
   {#if showMenu}
     <PlantMenu 
@@ -70,16 +65,6 @@
         {data} 
         closeMenu={closeAllMenus}
     />
-  
-  {:else if showActionMenu}
-    <ActionMenu 
-        plantName={selectedPlantName}
-        cellIndex={activeCellIndex}
-        onEdit={switchToPlantMenu}
-        onClose={closeAllMenus}
-        handleSubmission={handlePlantSubmission}
-    />
-
   {:else}
     <Canvas
       canvas={data.canvas}
@@ -87,5 +72,15 @@
       heigth={data.heigth}
       openMenu={handleCellClick} 
     />
+
+    {#if showActionMenu}
+       <ActionMenu 
+          plantName={selectedPlantName}
+          cellIndex={activeCellIndex}
+          onEdit={switchToPlantMenu}
+          onClose={closeAllMenus}
+          handleSubmission={handlePlantSubmission}
+      />
+    {/if}
   {/if}
 </div>
