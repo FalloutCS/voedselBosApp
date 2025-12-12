@@ -62,17 +62,14 @@ export const actions = {
         const data = await request.formData();
         const cellIndex = Number(data.get("cellIndex"));
 
-        // Haal de huidige state op via de store in plaats van het ongedefinieerde 'garden_State'
         const globalForest = forestStore.get();
-
-        if (!globalForest) return fail(400, { missing: true });
         
-        // Valideer de index met de geïmporteerde functie
+        // Validatie
+        if (!globalForest) return fail(400, { missing: true });
         if (validateIndex(cellIndex, globalForest)) return fail(400, { incorrect: true });
 
-        // Gebruik de correcte eigenschap 'forest_Cubes_Array' i.p.v. 'plantSimulationDtos'
-        globalForest.forest_Cubes_Array[cellIndex].plant = undefined;
-        globalForest.forest_Cubes_Array[cellIndex].plantingDelay = 0;
+        // Gebruik nu de store functie in plaats van directe manipulatie
+        forestStore.removePlant(cellIndex);
 
         return { success: true };
     },
