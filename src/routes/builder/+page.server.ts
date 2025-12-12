@@ -4,6 +4,7 @@ import { getPlants } from '$lib/server/plantService';
 import { fail } from '@sveltejs/kit';
 import { postPlants } from '$lib/server/postPlants';
 import { forestStore } from '$lib/server/db/forestStore';
+import { validateIndex } from '$lib/server/indexValidation';
 
 let plants: Plant[]
 
@@ -61,13 +62,17 @@ export const actions = {
         const data = await request.formData();
         const cellIndex = Number(data.get("cellIndex"));
 
-        if (!garden_State) return fail(400, { missing: true });
-        if (validateIndex(cellIndex, garden_State)) return fail(400, { incorrect: true });
+        // Haal de huidige state op via de store in plaats van het ongedefinieerde 'garden_State'
+        const globalForest = forestStore.get();
 
-        // Reset the plant data for this cell
-        garden_State.plantSimulationDtos[cellIndex].plant = undefined;
-        // Optionally reset other properties if needed
-        garden_State.plantSimulationDtos[cellIndex].plantingDelay = 0;
+        if (!globalForest) return fail(400, { missing: true });
+        
+        // Valideer de index met de geïmporteerde functie
+        if (validateIndex(cellIndex, globalForest)) return fail(400, { incorrect: true });
+
+        // Gebruik de correcte eigenschap 'forest_Cubes_Array' i.p.v. 'plantSimulationDtos'
+        globalForest.forest_Cubes_Array[cellIndex].plant = undefined;
+        globalForest.forest_Cubes_Array[cellIndex].plantingDelay = 0;
 
         return { success: true };
     },
