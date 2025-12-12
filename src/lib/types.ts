@@ -5,7 +5,15 @@ export type Plant = {
   habit: "Annual" | "Annual/Biennial" | "Annual Climber" | "Annual/Perennial" | "Bamboo" | "Biennial" | "Biennial/Perennial" | "Bulb" | "Climber" | "Corm" | "Fern" | "Grass" | "Lichen" | "Nothofagus Obliqua" | "Perennial" | "Perennial Climber" | "Shrub" | "Tree" | undefined;
   wind: "N" | "W" | "M" | "F" | undefined;
 };
+export type SimulatedPlantResultDto = {
+  uid: number;
+  health: number;
+};
 
+export type SimulationResultDto = {
+  plants: SimulatedPlantResultDto[];
+  warnings: string[];
+};
 
 export type voedselbos_Cel = {
   uid: number;
