@@ -1,4 +1,4 @@
-import type { voedselbos_Cel } from "$lib/types";
+import type { plantInfo } from "$lib/types";
 
 export class Voedselbos {
   name: string;
@@ -6,7 +6,7 @@ export class Voedselbos {
   width: number;
   height: number;
   surfaceArea: number;
-  placedPlants: voedselbos_Cel[];
+  placedPlants: plantInfo[];
 
   constructor(name: string, width: number, height: number, location: string) {
     this.name = name;

@@ -1,9 +1,9 @@
 <script lang="ts">
     import { gethabitIcon } from "$lib/habitIcon";
-    import type { voedselbos_Cel } from "$lib/types";
+    import type { plantInfo } from "$lib/types";
 
     type canvasProps = {
-        canvas: voedselbos_Cel[];
+        canvas: plantInfo[];
         width: number;
         heigth: number;
         openMenu: (cellIndex: number) => void;
