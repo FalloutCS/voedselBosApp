@@ -30,9 +30,7 @@ export const forestStore = {
         cell.uid = cellIndex;
         cell.plantingDelay = plantingDelay;
         cell.xPosition = xPosition;
-        cell.yPosition = yPosition; 
-
-        
+        cell.yPosition = yPosition;
 
         return "Succes"
     },
@@ -46,8 +44,6 @@ export const forestStore = {
 
         cell.plant = undefined;
         cell.plantingDelay = 0;
-        
-        
 
         return "Succes"
     }
