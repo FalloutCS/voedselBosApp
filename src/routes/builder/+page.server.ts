@@ -4,6 +4,7 @@ import { getPlants } from '$lib/server/plantService';
 import { fail } from '@sveltejs/kit';
 import { postPlants } from '$lib/server/postPlants';
 import { forestStore } from '$lib/server/db/forestStore';
+import { validateIndex } from '$lib/server/indexValidation';
 
 let plants: Plant[]
 
@@ -55,6 +56,22 @@ export const actions = {
         if (res === "Succes") {
             return { succes: true }
         }
+    },
+
+    removePlant: async ({ request }) => {
+        const data = await request.formData();
+        const cellIndex = Number(data.get("cellIndex"));
+
+        const globalForest = forestStore.get();
+        
+        // Validatie
+        if (!globalForest) return fail(400, { missing: true });
+        if (validateIndex(cellIndex, globalForest)) return fail(400, { incorrect: true });
+
+        // Gebruik nu de store functie in plaats van directe manipulatie
+        forestStore.removePlant(cellIndex);
+
+        return { success: true };
     },
 
     uploadSim: async (event) => {

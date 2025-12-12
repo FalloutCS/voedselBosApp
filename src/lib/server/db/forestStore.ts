@@ -24,11 +24,30 @@ export const forestStore = {
             return "Plant not found"
         }
 
-        globalForest.placedPlants[cellIndex].plant = plantID
-        globalForest.placedPlants[cellIndex].uid = cellIndex;
-        globalForest.placedPlants[cellIndex].plantingDelay = plantingDelay;
-        globalForest.placedPlants[cellIndex].xPosition = xPosition;
-        globalForest.placedPlants[cellIndex].yPosition = yPosition;
+        const cell = globalForest.placedPlants[cellIndex];
+
+        cell.plant = plantID
+        cell.uid = cellIndex;
+        cell.plantingDelay = plantingDelay;
+        cell.xPosition = xPosition;
+        cell.yPosition = yPosition; 
+
+        
+
+        return "Succes"
+    },
+
+    removePlant: (cellIndex: number) => {
+        if (!globalForest) {
+            return "Missing forest"
+        }
+
+        const cell = globalForest.placedPlants[cellIndex];
+
+        cell.plant = undefined;
+        cell.plantingDelay = 0;
+        
+        
 
         return "Succes"
     }
