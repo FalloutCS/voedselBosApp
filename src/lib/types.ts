@@ -6,9 +6,19 @@ export type Plant = {
   wind: "N" | "W" | "M" | "F" | undefined;
 };
 
+export type SimulatedPlantResultDto = {
+  uid: number;
+  health: number;
+};
+
+export type SimulationResultDto = {
+  plants: SimulatedPlantResultDto[];
+  warnings: string[];
+};
+
 export type placedPlant = {
   [uid: number]: plantInfo
-}
+};
 
 export type plantInfo = {
   uid: number;

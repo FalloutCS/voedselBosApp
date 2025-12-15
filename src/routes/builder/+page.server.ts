@@ -75,9 +75,12 @@ export const actions = {
     },
 
     uploadSim: async (event) => {
-        const filteredData = forestStore.get()?.placedPlants.filter((el) => {
-            return el.plant != undefined
-        })
+        const filteredData = {
+            gardenLocation: "Rotterdam",
+            data: forestStore.get()?.placedPlants.filter((el) => {
+                return el.plant != undefined
+            })
+        }
 
         const res = await postPlants(filteredData)
     }
