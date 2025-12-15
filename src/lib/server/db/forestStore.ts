@@ -9,8 +9,8 @@ export const forestStore = {
         return globalForest
     },
 
-    create: (name: string, width: number, height: number) => {
-        globalForest = new Voedselbos(name, width, height)
+    create: (name: string, width: number, height: number, location: string) => {
+        globalForest = new Voedselbos(name, width, height, location)
         globalForest.populateForest()
         return globalForest
     },
@@ -24,11 +24,26 @@ export const forestStore = {
             return "Plant not found"
         }
 
-        globalForest.forest_Cubes_Array[cellIndex].plant = plantID
-        globalForest.forest_Cubes_Array[cellIndex].uid = cellIndex;
-        globalForest.forest_Cubes_Array[cellIndex].plantingDelay = plantingDelay;
-        globalForest.forest_Cubes_Array[cellIndex].xPosition = xPosition;
-        globalForest.forest_Cubes_Array[cellIndex].yPosition = yPosition;
+        const cell = globalForest.placedPlants[cellIndex];
+
+        cell.plant = plantID
+        cell.uid = cellIndex;
+        cell.plantingDelay = plantingDelay;
+        cell.xPosition = xPosition;
+        cell.yPosition = yPosition;
+
+        return "Succes"
+    },
+
+    removePlant: (cellIndex: number) => {
+        if (!globalForest) {
+            return "Missing forest"
+        }
+
+        const cell = globalForest.placedPlants[cellIndex];
+
+        cell.plant = undefined;
+        cell.plantingDelay = 0;
 
         return "Succes"
     }

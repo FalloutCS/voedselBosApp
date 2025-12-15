@@ -1,7 +1,7 @@
-import { type SimulationResultDto, type voedselbos_Cel } from "$lib/types";
+import { type SimulationResultDto, type plantInfo } from "$lib/types";
 import { fail } from "@sveltejs/kit";
 
-export async function postPlants(filteredData: { location: String, data: voedselbos_Cel[] | undefined }) {
+export async function postPlants(filteredData: { gardenLocation: String, data: plantInfo[] | undefined }) {
     if (!filteredData) {
         return fail(400, { eror: 'Leeg voedselbos' })
     }
@@ -13,7 +13,7 @@ export async function postPlants(filteredData: { location: String, data: voedsel
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ "plantSimulationDtos": filteredData.data, "placeName" : filteredData.location })
+            body: JSON.stringify({ "plantSimulationDtos": filteredData.data, "placeName" : filteredData.gardenLocation })
         })
         
         const data: SimulationResultDto = await response.json();

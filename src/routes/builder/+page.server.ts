@@ -4,6 +4,7 @@ import { getPlants } from '$lib/server/plantService';
 import { fail } from '@sveltejs/kit';
 import { postPlants } from '$lib/server/postPlants';
 import { forestStore } from '$lib/server/db/forestStore';
+import { validateIndex } from '$lib/server/indexValidation';
 
 let plants: Plant[]
 
@@ -17,7 +18,7 @@ export const load = (async () => {
     // }
 
     if (!globalForest) {
-        globalForest = forestStore.create("Mijn Bos", 10, 10)
+        globalForest = forestStore.create("Mijn Bos", 10, 10, "Rotterdam")
     }
 
     // TODO: add error handler
@@ -25,7 +26,7 @@ export const load = (async () => {
 
     return {
         plants: plants,
-        canvas: globalForest.forest_Cubes_Array,
+        placedPlants: globalForest.placedPlants,
         width: globalForest.width,
         heigth: globalForest.height,
     };
@@ -57,10 +58,26 @@ export const actions = {
         }
     },
 
+    removePlant: async ({ request }) => {
+        const data = await request.formData();
+        const cellIndex = Number(data.get("cellIndex"));
+
+        const globalForest = forestStore.get();
+        
+        // Validatie
+        if (!globalForest) return fail(400, { missing: true });
+        if (validateIndex(cellIndex, globalForest)) return fail(400, { incorrect: true });
+
+        // Gebruik nu de store functie in plaats van directe manipulatie
+        forestStore.removePlant(cellIndex);
+
+        return { success: true };
+    },
+
     uploadSim: async (event) => {
         const filteredData = {
-            location: "Rotterdam",
-            data: forestStore.get()?.forest_Cubes_Array.filter((el) => {
+            gardenLocation: "Rotterdam",
+            data: forestStore.get()?.placedPlants.filter((el) => {
                 return el.plant != undefined
             })
         }
