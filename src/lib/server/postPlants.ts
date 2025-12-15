@@ -7,7 +7,6 @@ export async function postPlants(filteredData: { gardenLocation: String, data: p
     }
 
     try {
-        console.log(filteredData)
         const response = await fetch("http://localhost:5269/api/Simulation/simulate", {
             method: "POST",
             headers: {
