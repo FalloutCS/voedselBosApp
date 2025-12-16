@@ -16,8 +16,6 @@
   let activeCellIndex: number = $state(0);
   let editMode = $state("shovel");
 
-  $inspect(editMode);
-
   // Helper om de naam van de plant op te halen
   let selectedPlantName = $derived(
     data.placedPlants[activeCellIndex]?.plant?.commonName || "Plant",
@@ -32,15 +30,20 @@
   };
 
   function handleCellClick(cellIndex: number) {
-    activeCellIndex = cellIndex;
-    const cellHasPlant = !!data.placedPlants[cellIndex].plant;
+    if (editMode === "shovel") {
+      console.log(`Adding ${cellIndex} to forbidden array`);
+    }
+    if (editMode === "planter") {
+      activeCellIndex = cellIndex;
+      const cellHasPlant = !!data.placedPlants[cellIndex].plant;
 
-    if (cellHasPlant) {
-      showActionMenu = true;
-      showMenu = false;
-    } else {
-      showMenu = true;
-      showActionMenu = false;
+      if (cellHasPlant) {
+        showActionMenu = true;
+        showMenu = false;
+      } else {
+        showMenu = true;
+        showActionMenu = false;
+      }
     }
   }
 
@@ -58,7 +61,7 @@
 <div class="h-4/5 w-4/5 mx-auto my-auto rounded relative flex flex-col">
   <div class="flex justify-between items-center pb-2">
     <Toolbar.Root
-      class="rounded-4xl border-violet-500 border-2 bg-violet-100 shadow-mini flex h-10  items-center justify-center px-1 py-1"
+      class="rounded-4xl border-violet-500 border-2 bg-violet-100 shadow-mini flex items-center justify-center px-1 py-1"
     >
       <Toolbar.Group
         bind:value={editMode}
@@ -68,14 +71,14 @@
         <Toolbar.GroupItem
           aria-label="toggle shovel"
           value="shovel"
-          class="rounded-2xl bg-violet-300 text-foreground/60 hover:bg-violet-300 active:bg-dark-10 data-[state=on]:bg-muted data-[state=on]:text-foreground/80 active:data-[state=on]:bg-dark-10 inline-flex size-10 items-center justify-center transition-all active:scale-[0.98]"
+          class="rounded-2xl hover:bg-violet-400 active:bg-violet-300 data-[state=on]:bg-violet-600 data-[state=on]:text-white inline-flex size-9 items-center justify-center transition-all active:scale-[0.98]"
         >
           <Shovel class="size-6" />
         </Toolbar.GroupItem>
         <Toolbar.GroupItem
           aria-label="toggle planter"
           value="planter"
-          class="rounded-9px bg-background-alt text-foreground/60 hover:bg-muted active:bg-dark-10 data-[state=on]:bg-muted data-[state=on]:text-foreground/80 active:data-[state=on]:bg-dark-10 inline-flex size-10 items-center justify-center transition-all active:scale-[0.98]"
+          class="rounded-2xl hover:bg-violet-400 active:bg-violet-300 data-[state=on]:bg-violet-600 data-[state=on]:text-white inline-flex size-9 items-center justify-center transition-all active:scale-[0.98]"
         >
           <Plant class="size-6" />
         </Toolbar.GroupItem>
