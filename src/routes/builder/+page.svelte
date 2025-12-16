@@ -35,7 +35,7 @@
     if (editMode === "planter") {
       activeCellIndex = cellIndex;
       const cellHasPlant = data.placedPlants[cellIndex].plant;
-      cellHasPlant ? (menuState = "") : (menuState = "plantMenu");
+      cellHasPlant ? (menuState = "actionMenu") : (menuState = "plantMenu");
     }
   }
 </script>
