@@ -53,8 +53,6 @@
                 plant.habit && layerMapping[filterState.selectedLayer!]?.includes(plant.habit)
               )
     );
-
-    $inspect(data.plants)
 </script>
 
 <form
