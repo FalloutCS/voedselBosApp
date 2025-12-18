@@ -46,5 +46,17 @@ export const forestStore = {
         cell.plantingDelay = 0;
 
         return "Succes"
+    },
+
+    disableCell: (cellIndex: number) => {
+        if (globalForest?.shapeArray.includes(cellIndex)) {
+            let index = globalForest?.shapeArray.indexOf(cellIndex)
+            globalForest?.shapeArray.splice(index, 1)
+
+            return "Succes"
+        }
+        globalForest?.shapeArray.push(cellIndex)
+
+        return "Success"
     }
 }

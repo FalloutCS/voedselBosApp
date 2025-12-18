@@ -27,6 +27,7 @@ export const load = (async () => {
     return {
         plants: plants,
         placedPlants: globalForest.placedPlants,
+        shapeArray: globalForest.shapeArray,
         width: globalForest.width,
         heigth: globalForest.height,
     };
@@ -63,7 +64,7 @@ export const actions = {
         const cellIndex = Number(data.get("cellIndex"));
 
         const globalForest = forestStore.get();
-        
+
         // Validatie
         if (!globalForest) return fail(400, { missing: true });
         if (validateIndex(cellIndex, globalForest)) return fail(400, { incorrect: true });
@@ -83,6 +84,15 @@ export const actions = {
         }
 
         const res = await postPlants(filteredData)
+    },
+
+    disableCell: async ({ request }) => {
+        const data = await request.formData();
+        const cellIndex = Number(data.get("cellIndex"));
+
+        console.log(cellIndex)
+
+        const res = forestStore.disableCell(cellIndex)
     }
 } satisfies Actions;
 
