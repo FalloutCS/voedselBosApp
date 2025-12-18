@@ -90,8 +90,6 @@ export const actions = {
         const data = await request.formData();
         const cellIndex = Number(data.get("cellIndex"));
 
-        console.log(cellIndex)
-
         const res = forestStore.disableCell(cellIndex)
     }
 } satisfies Actions;
