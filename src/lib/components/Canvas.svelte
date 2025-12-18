@@ -23,7 +23,7 @@
 </script>
 
 <form
-  class="p-5 grid rounded mx-auto my-auto h-full w-full bg-violet-100"
+  class="p-5 grid rounded mx-auto my-auto h-full w-full bg-emerald-100"
   style="grid-template-columns: repeat({width}, minmax(0, 1fr)); grid-template-rows: repeat({heigth}, minmax(0, 1fr));"
   method="POST"
   use:enhance
@@ -38,8 +38,8 @@
       value={index}
       type={isShovel ? "submit" : "button"}
       onclick={() => (isShovel ? undefined : openMenu(index))}
-      class="border border-violet-400 text-sm"
-      style={isBlocked ? "background-color: #a684ff;" : ""}
+      class="border border-green-900 text-sm"
+      style={isBlocked ? "background-color: #0d542b;" : ""}
       disabled={isBlocked && !isShovel}
     >
       {#if cell.plant}
@@ -52,4 +52,4 @@
       {/if}
     </button>
   {/each}
-</form>
+</form> 
