@@ -53,6 +53,8 @@
                 plant.habit && layerMapping[filterState.selectedLayer!]?.includes(plant.habit)
               )
     );
+
+    $inspect(data.plants)
 </script>
 
 <form
@@ -94,7 +96,7 @@
         {#each filteredPlants as plant (plant.id)}
             <div class="bg-violet-50/50 border border-violet-100 rounded-xl p-4 flex flex-col justify-between transition-shadow hover:shadow-lg hover:border-violet-300">
                 <div>
-                    <h3 class="text-lg font-semibold text-violet-800 leading-tight">{plant.commonName}</h3>
+                    <h3 class="text-lg font-semibold text-violet-800 leading-tight">{plant.nlName}</h3>
                     <p class="text-sm italic text-violet-500 mt-0.5 mb-3">{plant.latinName}</p>
                 </div>
 
