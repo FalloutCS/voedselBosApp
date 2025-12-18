@@ -9,50 +9,45 @@
   import { enhance } from "$app/forms";
   import { Button } from "bits-ui";
   import LoadingComponent from "$lib/components/LoadingComponent.svelte";
+  import type { menuMode } from "$lib/types";
+  import Toolbar from "./components/Toolbar.svelte";
 
   let { data, form }: PageProps = $props();
-  let showMenu: boolean = $state(false);       
-  let showActionMenu: boolean = $state(false); 
+  let menuState: menuMode = $state("");
   let activeCellIndex: number = $state(0);
-  let selectedPlantName = $derived(data.placedPlants[activeCellIndex]?.plant?.commonName || "Plant");
   let loading = $state(false);
+  let editMode: "shovel" | "planter" = $state("shovel");
+  let selectedPlantName = $derived(
+    data.placedPlants[activeCellIndex]?.plant?.commonName || "Plant",
+  );
 
+  // Waits for the browser to finish updating before closing the menu
   const handlePlantSubmission: SubmitFunction = () => {
     return async ({ update }) => {
       await update();
-      showMenu = false;
-      showActionMenu = false; 
+      menuState = "";
     };
   };
 
   const loadingDuration = 2000;
 
   function handleCellClick(cellIndex: number) {
-    activeCellIndex = cellIndex;
-    const cellHasPlant = !!data.placedPlants[cellIndex].plant;
-
-    if (cellHasPlant) {
-      showActionMenu = true; 
-      showMenu = false;
-    } else {
-      showMenu = true; 
-      showActionMenu = false;
+    if (editMode === "shovel") {
+      console.log(`Adding ${cellIndex} to forbidden array`);
     }
-  }
-
-  function switchToPlantMenu() {
-    showActionMenu = false;
-    showMenu = true;
-  }
-
-  function closeAllMenus() {
-    showMenu = false;
-    showActionMenu = false;
+    if (editMode === "planter") {
+      activeCellIndex = cellIndex;
+      const cellHasPlant = data.placedPlants[cellIndex].plant;
+      cellHasPlant ? (menuState = "actionMenu") : (menuState = "plantMenu");
+    }
   }
 </script>
 
-<div class="absolute top-4 left-4 z-10">
-  <form 
+<div class="h-4/5 w-4/5 mx-auto my-auto rounded relative flex flex-col">
+  <div class="flex justify-between items-center pb-2">
+    <Toolbar bind:editMode />
+    
+    <form 
     method="POST" 
     use:enhance={() => {
       loading = true;
@@ -83,37 +78,39 @@
       {/if}
     </Button.Root>
   </form>
-</div>
-
-<div class="h-4/5 w-4/5 mx-auto my-auto bg-violet-50 rounded relative">
+  </div>
 
   {#if form?.missing}
     <ErrorMissingData />
   {/if}
 
-  {#if showMenu}
-    <PlantMenu 
-        {handlePlantSubmission} 
-        {activeCellIndex} 
-        {data} 
-        closeMenu={closeAllMenus}
+  {#if menuState === "plantMenu"}
+    <PlantMenu
+      {handlePlantSubmission}
+      {activeCellIndex}
+      {data}
+      closeMenu={() => {
+        menuState = "";
+      }}
+    />
+  {:else if menuState === "actionMenu"}
+    <ActionMenu
+      plantName={selectedPlantName}
+      cellIndex={activeCellIndex}
+      onEdit={() => {
+        menuState = "plantMenu";
+      }}
+      onClose={() => {
+        menuState = "";
+      }}
+      handleSubmission={handlePlantSubmission}
     />
   {:else}
     <Canvas
       placedPlants={data.placedPlants}
       width={data.width}
       heigth={data.heigth}
-      openMenu={handleCellClick} 
+      openMenu={handleCellClick}
     />
-
-    {#if showActionMenu}
-       <ActionMenu 
-          plantName={selectedPlantName}
-          cellIndex={activeCellIndex}
-          onEdit={switchToPlantMenu}
-          onClose={closeAllMenus}
-          handleSubmission={handlePlantSubmission}
-      />
-    {/if}
   {/if}
 </div>

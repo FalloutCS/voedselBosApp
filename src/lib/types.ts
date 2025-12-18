@@ -29,3 +29,5 @@ export type plantInfo = {
 };
 
 export type sideBarState = "none" | "analyse" | "settings"
+
+export type menuMode = "" | "plantMenu" | "actionMenu"
