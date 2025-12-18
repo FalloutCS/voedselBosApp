@@ -20,7 +20,6 @@
     shapeArray,
     openMenu,
   }: canvasProps = $props();
-
 </script>
 
 <form
@@ -29,19 +28,19 @@
   method="POST"
   use:enhance
 >
-
   {#each placedPlants as cell, index}
+    {@const isShovel = editMode === "shovel" ? true : false}
+    {@const isBlocked = shapeArray.includes(index)}
+
     <button
-      type={editMode === "shovel" ? "submit" : "button"}
-      onclick={() => {
-        editMode === "shovel" ? null : openMenu(index);
-      }}
-      class="border border-violet-400 text-sm"
       formaction="?/disableCell"
-      style={shapeArray.includes(index) ? "background-color: #FFFFFF;" : ""}
-      disabled={shapeArray.includes(index) && editMode === "planter"}
       name="cellIndex"
       value={index}
+      type={isShovel ? "submit" : "button"}
+      onclick={() => (isShovel ? undefined : openMenu(index))}
+      class="border border-violet-400 text-sm"
+      style={isBlocked ? "background-color: #a684ff;" : ""}
+      disabled={isBlocked && !isShovel}
     >
       {#if cell.plant}
         <img
@@ -50,9 +49,7 @@
           title={cell.plant.commonName}
           class="w-full h-full object-contain"
         />
-      {:else}
-        <span class="text-violet-400 font-bold opacity-50">+</span>
       {/if}
     </button>
-  {/each}   
+  {/each}
 </form>
