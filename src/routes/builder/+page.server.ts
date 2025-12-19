@@ -25,6 +25,7 @@ export const load = (async () => {
 
   return {
     plants: plants,
+    surfaceArea: globalForest.surfaceArea,
     placedPlants: globalForest.placedPlants,
     shapeArray: globalForest.shapeArray,
     width: globalForest.width,
@@ -82,15 +83,16 @@ export const actions = {
   },
 
   uploadSim: async (event) => {
-    const filteredData = {
+    const voedselBos = forestStore.get();
+
+    const data = {
       gardenLocation: "Rotterdam",
-      data: forestStore.get()?.placedPlants.filter((el) => {
-        return el.plant != undefined;
-      }),
+      data: voedselBos?.placedPlants,
     };
 
     try {
-      postPlants(filteredData);
+      console.log(data)
+      postPlants(data);
 
       return { success: true };
     } catch (err) {

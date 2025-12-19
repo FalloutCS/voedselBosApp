@@ -1,4 +1,4 @@
-import type { plantInfo } from "$lib/types";
+import type { PlacedPlant } from "$lib/types";
 
 export class Voedselbos {
   name: string;
@@ -6,7 +6,7 @@ export class Voedselbos {
   width: number;
   height: number;
   surfaceArea: number;
-  placedPlants: plantInfo[];
+  placedPlants: PlacedPlant;
   shapeArray: number[];
 
   constructor(name: string, width: number, height: number, location: string) {
@@ -15,21 +15,7 @@ export class Voedselbos {
     this.height = height;
     this.location = location;
     this.surfaceArea = width * height;
-    this.placedPlants = [];
+    this.placedPlants = {}
     this.shapeArray = [];
-  }
-
-  populateForest() {
-    const totalSize = this.width * this.height
-
-    for (let index = 0; index < totalSize; index++) {
-      this.placedPlants.push({
-        uid: 0,
-        plantingDelay: 0,
-        xPosition: 0,
-        yPosition: 0,
-        plant: undefined
-      });
-    }
   }
 }

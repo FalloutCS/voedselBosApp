@@ -1,10 +1,10 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import { gethabitIcon } from "$lib/habitIcon";
-  import type { plantInfo } from "$lib/types";
-
+  import type { PlacedPlant } from "$lib/types";
   type canvasProps = {
-    placedPlants: plantInfo[];
+    placedPlants: PlacedPlant;
+    surfaceArea: number;
     shapeArray: number[];
     width: number;
     heigth: number;
@@ -18,8 +18,11 @@
     heigth,
     editMode,
     shapeArray,
+    surfaceArea,
     openMenu,
   }: canvasProps = $props();
+
+  $inspect(placedPlants);
 </script>
 
 <form
@@ -28,7 +31,7 @@
   method="POST"
   use:enhance
 >
-  {#each placedPlants as cell, index}
+  {#each { length: surfaceArea }, index}
     {@const isShovel = editMode === "shovel" ? true : false}
     {@const isBlocked = shapeArray.includes(index)}
 
@@ -42,14 +45,14 @@
       style={isBlocked ? "background-color: #0d542b;" : ""}
       disabled={isBlocked && !isShovel}
     >
-      {#if cell.plant}
+      {#if placedPlants[index] && placedPlants[index].plant}
         <img
-          src={gethabitIcon(cell.plant.habit)}
-          alt={cell.plant.habit}
-          title={cell.plant.commonName}
+          src={gethabitIcon(placedPlants[index].plant.habit)}
+          alt={placedPlants[index].plant.habit}
+          title={placedPlants[index].plant.commonName}
           class="w-full h-full object-contain"
         />
       {/if}
     </button>
   {/each}
-</form> 
+</form>
