@@ -7,6 +7,7 @@ export class Voedselbos {
   height: number;
   surfaceArea: number;
   placedPlants: plantInfo[];
+  shapeArray: number[];
 
   constructor(name: string, width: number, height: number, location: string) {
     this.name = name;
@@ -15,6 +16,7 @@ export class Voedselbos {
     this.location = location;
     this.surfaceArea = width * height;
     this.placedPlants = [];
+    this.shapeArray = [];
   }
 
   populateForest() {

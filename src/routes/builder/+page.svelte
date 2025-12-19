@@ -46,38 +46,37 @@
 <div class="h-4/5 w-4/5 mx-auto my-auto rounded relative flex flex-col">
   <div class="flex justify-between items-center pb-2">
     <Toolbar bind:editMode />
-    
-    <form 
-    method="POST" 
-    use:enhance={() => {
-      loading = true;
 
-      const timer = new Promise(resolve => setTimeout(resolve, loadingDuration));
+    <form
+      method="POST"
+      use:enhance={() => {
+        loading = true;
 
-      return async ({ update }) => {
-        await Promise.all([
-          update(), 
-          timer
-        ]);
-        
-        loading = false;
-      };
-    }}
-  >
-    <Button.Root 
-      type="submit" 
-      formaction="?/uploadSim"
-      disabled={loading}
-      class="bg-violet-600 hover:bg-violet-700 disabled:bg-violet-400 disabled:cursor-not-allowed text-white font-bold py-2 px-6 rounded-lg shadow-md transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
+        const timer = new Promise((resolve) =>
+          setTimeout(resolve, loadingDuration),
+        );
+
+        return async ({ update }) => {
+          await Promise.all([update(), timer]);
+
+          loading = false;
+        };
+      }}
     >
-      {#if loading}
-        <LoadingComponent size="20" color="#ffffff" unit="px" duration="1s" />
-        <span>Simuleren...</span>
-      {:else}
-        Simuleer
-      {/if}
-    </Button.Root>
-  </form>
+      <Button.Root
+        type="submit"
+        formaction="?/uploadSim"
+        disabled={loading}
+        class="bg-violet-600 hover:bg-violet-700 disabled:bg-violet-400 disabled:cursor-not-allowed text-white font-bold py-2 px-6 rounded-lg shadow-md transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
+      >
+        {#if loading}
+          <LoadingComponent size="20" color="#ffffff" unit="px" duration="1s" />
+          <span>Simuleren...</span>
+        {:else}
+          Simuleer
+        {/if}
+      </Button.Root>
+    </form>
   </div>
 
   {#if form?.missing}
@@ -107,6 +106,8 @@
     />
   {:else}
     <Canvas
+      {editMode}
+      shapeArray={data.shapeArray}
       placedPlants={data.placedPlants}
       width={data.width}
       heigth={data.heigth}
