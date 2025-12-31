@@ -82,29 +82,51 @@ export const actions = {
     return { success: true };
   },
 
-  uploadSim: async (event) => {
+  // uploadSim: async (event) => {
+  //   const filteredData = {
+  //     gardenLocation: "Rotterdam",
+  //     data: forestStore.get()?.placedPlants.filter((el) => {
+  //       return el.plant != undefined;
+  //     }),
+  //   };
+
+  //   try {
+  //     postPlants(filteredData);
+
+  //     return { success: true };
+  //   } catch (err) {
+  //     console.error(err);
+  //     return fail(400, { error: "Failed to run simulation" });
+  //   }
+  // },
+  //   uploadSim: async () => {
+  //   // We redirect to the results page. The simulation will run in the load function there
+  //   // to ensure we always have fresh data when landing on that page.
+  //   throw redirect(303, "/ResultatenMenu");
+  // },
+uploadSim: async (event) => {
+    // 1. Prepare the data
     const filteredData = {
-      gardenLocation: "Rotterdam",
-      data: forestStore.get()?.placedPlants.filter((el) => {
-        return el.plant != undefined;
-      }),
+        gardenLocation: "Rotterdam",
+        data: forestStore.get()?.placedPlants.filter((el) => {
+            return el.plant != undefined;
+        }),
     };
 
     try {
-      postPlants(filteredData);
+        // 2. Attempt to upload/post the plants
+        // IMPORTANT: We use 'await' here to make sure the upload finishes before redirecting.
+        await postPlants(filteredData);
 
-      return { success: true };
     } catch (err) {
-      console.error(err);
-      return fail(400, { error: "Failed to run simulation" });
+        // 3. If the upload fails, log the error and return the failure object
+        console.error("Simulation upload error:", err);
+        return fail(400, { error: "Failed to run simulation" });
     }
-  // },
-    // uploadSim: async () => {
-    // We redirect to the results page. The simulation will run in the load function there
-    // to ensure we always have fresh data when landing on that page.
-    throw redirect(303, "/ResultatenMenu");
-  },
 
+    // 4. If the try block finishes without error, redirect the user
+    throw redirect(303, "/ResultatenMenu");
+},
   disableCell: async ({ request }) => {
     const data = await request.formData();
     const cellIndex = Number(data.get("cellIndex"));

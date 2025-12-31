@@ -2,34 +2,30 @@
   import type { PageProps } from "./$types";
   import Canvas from "$lib/components/Canvas.svelte";
   import { Button } from "bits-ui";
-  import { getUniqueMessagesForLocation } from "$lib/simulationUtils";
+  import { getUniqueMessagesForLocation, getStressLevels } from "$lib/simulationUtils";
   import { fade, fly } from "svelte/transition";
 
   let { data }: PageProps = $props();
 
   let activeCellIndex: number | null = $state(null);
-  
-  // FIXED: We check if 'warnings' exists inside data.simulationResults using the 'in' operator
+
+  // Calculate stress levels (count of warnings per cell)
+  let stressMap = $derived.by(() => {
+    if (data.simulationResults && 'warnings' in data.simulationResults) {
+      return getStressLevels(data.simulationResults.warnings);
+    }
+    return {};
+  });
+
+  // Calculate messages for the popup
   let currentMessages = $derived.by(() => {
     const results = data.simulationResults;
-
-    // 1. Check if we have an active cell
-    if (activeCellIndex === null) return [];
-
-    // 2. Check if results exist AND if 'warnings' is a property of results.
-    // The 'in' operator narrows the type, proving to TS that this is not an ActionFailure.
-    if (!results || !('warnings' in results)) {
-      return [];
-    }
-    
-    // 3. Now TS knows 'results' is the valid DTO
+    if (activeCellIndex === null || !results || !('warnings' in results)) return [];
     return getUniqueMessagesForLocation(results.warnings, activeCellIndex);
   });
 
   function handleCellClick(cellIndex: number) {
-    // Only open popup if there is a plant at this location
     const cellHasPlant = data.placedPlants[cellIndex]?.plant;
-    
     if (cellHasPlant) {
       activeCellIndex = cellIndex;
     } else {
@@ -58,6 +54,7 @@
       width={data.width}
       heigth={data.heigth}
       openMenu={handleCellClick}
+      stressMap={stressMap} 
     />
 
     {#if activeCellIndex !== null}
@@ -75,12 +72,7 @@
           <h2 class="text-white font-bold text-lg">
             {data.placedPlants[activeCellIndex]?.plant?.commonName || "Plant"} Resultaten
           </h2>
-          <button 
-            onclick={closePopup} 
-            class="text-emerald-100 hover:text-white transition-colors"
-          >
-            ✕
-          </button>
+          <button onclick={closePopup} class="text-emerald-100 hover:text-white transition-colors">✕</button>
         </div>
 
         <div class="p-6 overflow-y-auto flex-grow">
@@ -96,19 +88,12 @@
               </div>
             </div>
           {:else}
-            <div class="text-center py-8 text-gray-400 italic">
-              Geen specifieke meldingen voor deze plant.
-            </div>
+            <div class="text-center py-8 text-gray-400 italic">Geen meldingen voor deze plant.</div>
           {/if}
         </div>
 
         <div class="bg-gray-50 p-4 border-t border-gray-100 flex justify-end">
-          <Button.Root
-            onclick={closePopup}
-            class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded shadow-sm transition-all"
-          >
-            Sluiten
-          </Button.Root>
+          <Button.Root onclick={closePopup} class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded shadow-sm transition-all">Sluiten</Button.Root>
         </div>
       </div>
     {/if}
