@@ -82,28 +82,6 @@ export const actions = {
     return { success: true };
   },
 
-  // uploadSim: async (event) => {
-  //   const filteredData = {
-  //     gardenLocation: "Rotterdam",
-  //     data: forestStore.get()?.placedPlants.filter((el) => {
-  //       return el.plant != undefined;
-  //     }),
-  //   };
-
-  //   try {
-  //     postPlants(filteredData);
-
-  //     return { success: true };
-  //   } catch (err) {
-  //     console.error(err);
-  //     return fail(400, { error: "Failed to run simulation" });
-  //   }
-  // },
-  //   uploadSim: async () => {
-  //   // We redirect to the results page. The simulation will run in the load function there
-  //   // to ensure we always have fresh data when landing on that page.
-  //   throw redirect(303, "/ResultatenMenu");
-  // },
 uploadSim: async (event) => {
     // 1. Prepare the data
     const filteredData = {

@@ -36,7 +36,7 @@
     // Calculate intensity:
     // 1 warning = 0.25 opacity
     // 3+ warnings = max 0.75 opacity (so we can still see the plant)
-    const opacity = Math.min(count * 0.25, 0.75);
+    const opacity = Math.min(count * 0.10, 0.80);
     
     // We use a large spread radius (100px) to ensure the inset shadow covers the whole cell
     return `box-shadow: inset 0 0 0 100px rgba(220, 38, 38, ${opacity});`;
