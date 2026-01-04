@@ -59,8 +59,11 @@
 
     {#if activeCellIndex !== null}
       <div 
+        role="button"
+        tabindex="0"
         class="absolute inset-0 bg-black/20 z-10 backdrop-blur-[1px]"
         onclick={closePopup}
+        onkeydown={(e) => e.key === 'Escape' && closePopup()}
         transition:fade={{ duration: 200 }}
       ></div>
 
@@ -77,7 +80,7 @@
 
         <div class="p-6 overflow-y-auto flex-grow">
           {#if currentMessages.length > 0}
-            <div class="space-y-4">
+            <div class="space-y-4"> //deze houden we omdat er mogelijk dingen zoals zon bij komen
               <div>
                 <h3 class="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Wind</h3>
                 <ul class="list-disc pl-5 space-y-1">
