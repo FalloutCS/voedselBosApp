@@ -73,14 +73,14 @@
       >
         <div class="bg-emerald-600 p-4 flex justify-between items-center">
           <h2 class="text-white font-bold text-lg">
-            {data.placedPlants[activeCellIndex]?.plant?.commonName || "Plant"} Resultaten
+            {data.placedPlants[activeCellIndex]?.plant?.nlName || "Plant"} Resultaten
           </h2>
           <button onclick={closePopup} class="text-emerald-100 hover:text-white transition-colors">✕</button>
         </div>
 
         <div class="p-6 overflow-y-auto flex-grow">
           {#if currentMessages.length > 0}
-            <div class="space-y-4"> //deze houden we omdat er mogelijk dingen zoals zon bij komen
+            <div class="space-y-4"> <!-- deze houden we omdat er mogelijk dingen zoals zon bij komen -->
               <div>
                 <h3 class="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Wind</h3>
                 <ul class="list-disc pl-5 space-y-1">
