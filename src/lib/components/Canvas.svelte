@@ -1,10 +1,10 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import { gethabitIcon } from "$lib/habitIcon";
-  import type { plantInfo } from "$lib/types";
-
+  import type { PlacedPlant } from "$lib/types";
   type canvasProps = {
-    placedPlants: plantInfo[];
+    placedPlants: PlacedPlant;
+    surfaceArea: number;
     shapeArray: number[];
     width: number;
     heigth: number;
@@ -20,6 +20,7 @@
     heigth,
     editMode,
     shapeArray,
+    surfaceArea,
     openMenu,
     stressMap = {} // Default to empty object so it works in Builder
   }: canvasProps = $props();
@@ -49,7 +50,7 @@
   method="POST"
   use:enhance
 >
-  {#each placedPlants as cell, index}
+  {#each { length: surfaceArea }, index}
     {@const isShovel = editMode === "shovel" ? true : false}
     {@const isBlocked = shapeArray.includes(index)}
     {@const stressStyle = getStressStyle(index)}
@@ -64,7 +65,7 @@
       style="{isBlocked ? 'background-color: #0d542b;' : ''} {stressStyle}"
       disabled={isBlocked && !isShovel}
     >
-      {#if cell.plant}
+      {#if placedPlants[index] && placedPlants[index].plant}
         <img
           src={gethabitIcon(cell.plant.habit)}
           alt={cell.plant.habit}

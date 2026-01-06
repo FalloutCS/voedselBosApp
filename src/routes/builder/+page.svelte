@@ -18,8 +18,9 @@
   let loading = $state(false);
   let editMode: "shovel" | "planter" = $state("shovel");
   let selectedPlantName = $derived(
-    data.placedPlants[activeCellIndex]?.plant?.commonName || "Plant",
+    data.placedPlants[activeCellIndex]?.plant?.commonName || "Plant"
   );
+  const loadingDuration = 2000;
 
   // Waits for the browser to finish updating before closing the menu
   const handlePlantSubmission: SubmitFunction = () => {
@@ -29,16 +30,12 @@
     };
   };
 
-  const loadingDuration = 2000;
-
   function handleCellClick(cellIndex: number) {
-    if (editMode === "shovel") {
-      console.log(`Adding ${cellIndex} to forbidden array`);
-    }
     if (editMode === "planter") {
       activeCellIndex = cellIndex;
-      const cellHasPlant = data.placedPlants[cellIndex].plant;
-      cellHasPlant ? (menuState = "actionMenu") : (menuState = "plantMenu");
+      data.placedPlants[cellIndex]
+        ? (menuState = "actionMenu")
+        : (menuState = "plantMenu");
     }
   }
 </script>
@@ -53,7 +50,7 @@
         loading = true;
 
         const timer = new Promise((resolve) =>
-          setTimeout(resolve, loadingDuration),
+          setTimeout(resolve, loadingDuration)
         );
 
         return async ({ update }) => {
@@ -107,6 +104,7 @@
   {:else}
     <Canvas
       {editMode}
+      surfaceArea={data.surfaceArea}
       shapeArray={data.shapeArray}
       placedPlants={data.placedPlants}
       width={data.width}
