@@ -67,9 +67,9 @@
     >
       {#if placedPlants[index] && placedPlants[index].plant}
         <img
-          src={gethabitIcon(cell.plant.habit)}
-          alt={cell.plant.habit}
-          title={cell.plant.commonName}
+          src={gethabitIcon(placedPlants[index].plant.habit)}
+          alt={placedPlants[index].plant.habit}
+          title={placedPlants[index].plant.commonName}
           class="w-full h-full object-contain pointer-events-none"
         />
       {/if}
