@@ -5,6 +5,7 @@ import { fail } from "@sveltejs/kit";
 import { postPlants } from "$lib/server/postPlants";
 import { forestStore } from "$lib/server/db/forestStore";
 import { validateIndex } from "$lib/server/indexValidation";
+import { redirect } from "@sveltejs/kit"; // Add this import
 
 let plants: Plant[];
 
@@ -82,25 +83,27 @@ export const actions = {
     return { success: true };
   },
 
-  uploadSim: async (event) => {
-    const voedselBos = forestStore.get();
-
-    const data = {
-      gardenLocation: "Rotterdam",
-      data: voedselBos?.placedPlants,
+uploadSim: async (event) => {
+    // 1. Prepare the data
+    const filteredData = {
+        gardenLocation: "Rotterdam",
+        data: forestStore.get()?.placedPlants,
     };
 
     try {
-      console.log(data)
-      postPlants(data);
+        // 2. Attempt to upload/post the plants
+        // IMPORTANT: We use 'await' here to make sure the upload finishes before redirecting.
+        await postPlants(filteredData);
 
-      return { success: true };
     } catch (err) {
-      console.error(err);
-      return fail(400, { error: "Failed to run simulation" });
+        // 3. If the upload fails, log the error and return the failure object
+        console.error("Simulation upload error:", err);
+        return fail(400, { error: "Failed to run simulation" });
     }
-  },
 
+    // 4. If the try block finishes without error, redirect the user
+    throw redirect(303, "/ResultatenMenu");
+},
   disableCell: async ({ request }) => {
     const data = await request.formData();
     const cellIndex = Number(data.get("cellIndex"));
