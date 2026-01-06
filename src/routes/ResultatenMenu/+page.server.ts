@@ -15,8 +15,10 @@ export const load = (async () => {
   // Prepare data for simulation
   const filteredData = {
     gardenLocation: "Rotterdam", // Could be dynamic based on globalForest properties
-    data: globalForest?.placedPlants,
+    data: globalForest.placedPlants,
   };
+
+  console.log(filteredData)
 
   // Fetch simulation results
   let simulationResults = null;

@@ -21,10 +21,7 @@ export async function postPlants(filteredData: {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          plantSimulationDtos: filteredData.data,
-          placeName: filteredData.gardenLocation,
-        }),
+        body: JSON.stringify({ "plantSimulationDtos": filteredData.data, "placeName" : filteredData.gardenLocation })
       }
     );
 
