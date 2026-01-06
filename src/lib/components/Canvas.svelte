@@ -10,8 +10,6 @@
     heigth: number;
     editMode: "shovel" | "planter";
     openMenu: (cellIndex: number) => void;
-    // New optional prop for simulation results
-    stressMap?: Record<number, number>;
   };
 
   let {
@@ -22,26 +20,9 @@
     shapeArray,
     surfaceArea,
     openMenu,
-    stressMap = {} // Default to empty object so it works in Builder
   }: canvasProps = $props();
 
-  /**
-   * Calculates a red overlay style based on the number of warnings.
-   * Returns a CSS box-shadow string.
-   */
-  function getStressStyle(index: number): string {
-    const count = stressMap[index] || 0;
-    
-    if (count === 0) return "";
-
-    // Calculate intensity:
-    // 1 warning = 0.25 opacity
-    // 3+ warnings = max 0.75 opacity (so we can still see the plant)
-    const opacity = Math.min(count * 0.10, 0.80);
-    
-    // We use a large spread radius (100px) to ensure the inset shadow covers the whole cell
-    return `box-shadow: inset 0 0 0 100px rgba(220, 38, 38, ${opacity});`;
-  }
+  $inspect(placedPlants);
 </script>
 
 <form
@@ -53,7 +34,6 @@
   {#each { length: surfaceArea }, index}
     {@const isShovel = editMode === "shovel" ? true : false}
     {@const isBlocked = shapeArray.includes(index)}
-    {@const stressStyle = getStressStyle(index)}
 
     <button
       formaction="?/disableCell"
@@ -61,16 +41,16 @@
       value={index}
       type={isShovel ? "submit" : "button"}
       onclick={() => (isShovel ? undefined : openMenu(index))}
-      class="border border-green-900 text-sm relative transition-all duration-300"
-      style="{isBlocked ? 'background-color: #0d542b;' : ''} {stressStyle}"
+      class="border border-green-900 text-sm"
+      style={isBlocked ? "background-color: #0d542b;" : ""}
       disabled={isBlocked && !isShovel}
     >
       {#if placedPlants[index] && placedPlants[index].plant}
         <img
-          src={gethabitIcon(cell.plant.habit)}
-          alt={cell.plant.habit}
-          title={cell.plant.commonName}
-          class="w-full h-full object-contain pointer-events-none"
+          src={gethabitIcon(placedPlants[index].plant.habit)}
+          alt={placedPlants[index].plant.habit}
+          title={placedPlants[index].plant.commonName}
+          class="w-full h-full object-contain"
         />
       {/if}
     </button>
