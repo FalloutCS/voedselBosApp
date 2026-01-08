@@ -34,6 +34,7 @@ export const load = (async () => {
   return {
     placedPlants: globalForest.placedPlants,
     shapeArray: globalForest.shapeArray,
+    surfaceArea: globalForest.surfaceArea,
     width: globalForest.width,
     heigth: globalForest.height, // Note: keeping your typo 'heigth' to match existing Canvas prop
     simulationResults: simulationResults

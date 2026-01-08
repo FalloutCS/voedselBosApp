@@ -49,6 +49,7 @@
   <div class="relative flex-grow border-2 border-emerald-100 rounded-lg overflow-hidden bg-white shadow-sm">
     <Canvas
       editMode="planter"
+      surfaceArea={data.surfaceArea}
       shapeArray={data.shapeArray}
       placedPlants={data.placedPlants}
       width={data.width}

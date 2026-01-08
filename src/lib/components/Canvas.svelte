@@ -10,7 +10,6 @@
     heigth: number;
     editMode: "shovel" | "planter";
     openMenu: (cellIndex: number) => void;
-    // New optional prop for simulation results
     stressMap?: Record<number, number>;
   };
 
@@ -22,24 +21,17 @@
     shapeArray,
     surfaceArea,
     openMenu,
-    stressMap = {} // Default to empty object so it works in Builder
+    stressMap = {} 
   }: canvasProps = $props();
 
-  /**
-   * Calculates a red overlay style based on the number of warnings.
-   * Returns a CSS box-shadow string.
-   */
+
   function getStressStyle(index: number): string {
     const count = stressMap[index] || 0;
-    
-    if (count === 0) return "";
 
-    // Calculate intensity:
-    // 1 warning = 0.25 opacity
-    // 3+ warnings = max 0.75 opacity (so we can still see the plant)
+    if (count === 0) return "";
+    
     const opacity = Math.min(count * 0.10, 0.80);
     
-    // We use a large spread radius (100px) to ensure the inset shadow covers the whole cell
     return `box-shadow: inset 0 0 0 100px rgba(220, 38, 38, ${opacity});`;
   }
 </script>
