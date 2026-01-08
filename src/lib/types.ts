@@ -3,7 +3,26 @@ export type Plant = {
   latinName: string;
   commonName: string;
   nlName: string;
-  habit: "Annual" | "Annual/Biennial" | "Annual Climber" | "Annual/Perennial" | "Bamboo" | "Biennial" | "Biennial/Perennial" | "Bulb" | "Climber" | "Corm" | "Fern" | "Grass" | "Lichen" | "Nothofagus Obliqua" | "Perennial" | "Perennial Climber" | "Shrub" | "Tree" | undefined;
+  habit:
+    | "Annual"
+    | "Annual/Biennial"
+    | "Annual Climber"
+    | "Annual/Perennial"
+    | "Bamboo"
+    | "Biennial"
+    | "Biennial/Perennial"
+    | "Bulb"
+    | "Climber"
+    | "Corm"
+    | "Fern"
+    | "Grass"
+    | "Lichen"
+    | "Nothofagus Obliqua"
+    | "Perennial"
+    | "Perennial Climber"
+    | "Shrub"
+    | "Tree"
+    | undefined;
   wind: "N" | "W" | "M" | "F" | undefined;
 };
 
@@ -17,11 +36,8 @@ export type SimulationResultDto = {
   warnings: string[];
 };
 
-export type placedPlant = {
-  [uid: number]: plantInfo
-};
 
-export type plantInfo = {
+export type PlantInfo = {
   uid: number;
   xPosition: number;
   yPosition: number;
@@ -29,6 +45,8 @@ export type plantInfo = {
   plant?: Plant;
 };
 
-export type sideBarState = "none" | "analyse" | "settings"
+export type sideBarState = "none" | "analyse" | "settings";
 
-export type menuMode = "" | "plantMenu" | "actionMenu"
+export type menuMode = "" | "plantMenu" | "actionMenu";
+
+export type PlacedPlant = Record<number, PlantInfo>;

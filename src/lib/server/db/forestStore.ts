@@ -1,4 +1,4 @@
-import type { Plant } from "$lib/types";
+import type {Plant, PlantInfo } from "$lib/types";
 import { Voedselbos } from "../voedselBos";
 
 let globalForest: Voedselbos | null = null;
@@ -10,7 +10,6 @@ export const forestStore = {
 
   create: (name: string, width: number, height: number, location: string) => {
     globalForest = new Voedselbos(name, width, height, location);
-    globalForest.populateForest();
     return globalForest;
   },
 
@@ -29,13 +28,15 @@ export const forestStore = {
       return "Plant not found";
     }
 
-    const cell = globalForest.placedPlants[cellIndex];
+    const newPlantInfo: PlantInfo = {
+      uid: cellIndex,
+      plantingDelay: plantingDelay,
+      xPosition: xPosition,
+      yPosition: yPosition,
+      plant: plantID,
+    };
 
-    cell.plant = plantID;
-    cell.uid = cellIndex;
-    cell.plantingDelay = plantingDelay;
-    cell.xPosition = xPosition;
-    cell.yPosition = yPosition;
+    globalForest.placedPlants[cellIndex] = newPlantInfo;
 
     return "Succes";
   },
@@ -45,10 +46,7 @@ export const forestStore = {
       return "Missing forest";
     }
 
-    const cell = globalForest.placedPlants[cellIndex];
-
-    cell.plant = undefined;
-    cell.plantingDelay = 0;
+    delete globalForest.placedPlants[cellIndex];
 
     return "Succes";
   },

@@ -1,15 +1,16 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import { gethabitIcon } from "$lib/habitIcon";
-  import type { plantInfo } from "$lib/types";
-
+  import type { PlacedPlant } from "$lib/types";
   type canvasProps = {
-    placedPlants: plantInfo[];
+    placedPlants: PlacedPlant;
+    surfaceArea: number;
     shapeArray: number[];
     width: number;
     heigth: number;
     editMode: "shovel" | "planter";
     openMenu: (cellIndex: number) => void;
+    stressMap?: Record<number, number>;
   };
 
   let {
@@ -18,8 +19,21 @@
     heigth,
     editMode,
     shapeArray,
+    surfaceArea,
     openMenu,
+    stressMap = {} 
   }: canvasProps = $props();
+
+
+  function getStressStyle(index: number): string {
+    const count = stressMap[index] || 0;
+
+    if (count === 0) return "";
+    
+    const opacity = Math.min(count * 0.10, 0.80);
+    
+    return `box-shadow: inset 0 0 0 100px rgba(220, 38, 38, ${opacity});`;
+  }
 </script>
 
 <form
@@ -28,9 +42,10 @@
   method="POST"
   use:enhance
 >
-  {#each placedPlants as cell, index}
+  {#each { length: surfaceArea }, index}
     {@const isShovel = editMode === "shovel" ? true : false}
     {@const isBlocked = shapeArray.includes(index)}
+    {@const stressStyle = getStressStyle(index)}
 
     <button
       formaction="?/disableCell"
@@ -38,18 +53,18 @@
       value={index}
       type={isShovel ? "submit" : "button"}
       onclick={() => (isShovel ? undefined : openMenu(index))}
-      class="border border-green-900 text-sm"
-      style={isBlocked ? "background-color: #0d542b;" : ""}
+      class="border border-green-900 text-sm relative transition-all duration-300"
+      style="{isBlocked ? 'background-color: #0d542b;' : ''} {stressStyle}"
       disabled={isBlocked && !isShovel}
     >
-      {#if cell.plant}
+      {#if placedPlants[index] && placedPlants[index].plant}
         <img
-          src={gethabitIcon(cell.plant.habit)}
-          alt={cell.plant.habit}
-          title={cell.plant.commonName}
-          class="w-full h-full object-contain"
+          src={gethabitIcon(placedPlants[index].plant.habit)}
+          alt={placedPlants[index].plant.habit}
+          title={placedPlants[index].plant.commonName}
+          class="w-full h-full object-contain pointer-events-none"
         />
       {/if}
     </button>
   {/each}
-</form> 
+</form>
