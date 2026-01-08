@@ -22,7 +22,6 @@
     openMenu,
   }: canvasProps = $props();
 
-  $inspect(placedPlants);
 </script>
 
 <form
