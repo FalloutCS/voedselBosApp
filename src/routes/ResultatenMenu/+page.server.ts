@@ -14,11 +14,9 @@ export const load = (async () => {
 
   // Prepare data for simulation
   const filteredData = {
-    gardenLocation: "Rotterdam", // Could be dynamic based on globalForest properties
-    data: globalForest.placedPlants,
+    gardenLocation: forestStore.get()?.location,
+    data: forestStore.get()?.placedPlants,
   };
-
-  console.log(filteredData)
 
   // Fetch simulation results
   let simulationResults = null;
@@ -27,7 +25,7 @@ export const load = (async () => {
     simulationResults = await postPlants(filteredData);
   } catch (err) {
     console.error("Simulation failed:", err);
-    // We continue loading the page even if simulation fails, 
+    // We continue loading the page even if simulation fails,
     // though you might want to handle this differently in the UI.
   }
 
@@ -37,6 +35,6 @@ export const load = (async () => {
     surfaceArea: globalForest.surfaceArea,
     width: globalForest.width,
     heigth: globalForest.height, // Note: keeping your typo 'heigth' to match existing Canvas prop
-    simulationResults: simulationResults
+    simulationResults: simulationResults,
   };
 }) satisfies PageServerLoad;

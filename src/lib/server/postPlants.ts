@@ -6,7 +6,7 @@ import {
 import { fail } from "@sveltejs/kit";
 
 export async function postPlants(filteredData: {
-  gardenLocation: String;
+  gardenLocation: String | undefined;
   data: PlacedPlant | undefined;
 }) {
   if (!filteredData) {

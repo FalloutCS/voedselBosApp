@@ -86,7 +86,7 @@ export const actions = {
 uploadSim: async (event) => {
     // 1. Prepare the data
     const filteredData = {
-        gardenLocation: "Rotterdam",
+        gardenLocation: forestStore.get()?.location,
         data: forestStore.get()?.placedPlants,
     };
 
