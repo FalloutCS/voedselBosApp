@@ -8,7 +8,7 @@
     type PlantMenuProps = {
         handlePlantSubmission: SubmitFunction;
         activeCellIndex: number;
-        closeMenu: () => void; // Nieuwe prop
+        closeMenu: () => void;
         data: {
             width: number;
             heigth: number

@@ -3,29 +3,32 @@ export type Plant = {
   latinName: string;
   commonName: string;
   nlName: string;
-  habit:
-    | "Annual"
-    | "Annual/Biennial"
-    | "Annual Climber"
-    | "Annual/Perennial"
-    | "Bamboo"
-    | "Biennial"
-    | "Biennial/Perennial"
-    | "Bulb"
-    | "Climber"
-    | "Corm"
-    | "Fern"
-    | "Grass"
-    | "Lichen"
-    | "Nothofagus Obliqua"
-    | "Perennial"
-    | "Perennial Climber"
-    | "Shrub"
-    | "Tree"
-    | undefined;
-  wind: "N" | "W" | "M" | "F" | undefined;
+  habit: Habit | undefined;
+  wind: Wind | undefined;
 };
 
+export type Wind = "N" | "W" | "M" | "F";
+
+export type Habit =
+  | "Annual"
+  | "Annual/Biennial"
+  | "Annual Climber"
+  | "Annual/Perennial"
+  | "Bamboo"
+  | "Biennial"
+  | "Biennial/Perennial"
+  | "Bulb"
+  | "Climber"
+  | "Corm"
+  | "Fern"
+  | "Grass"
+  | "Lichen"
+  | "Nothofagus Obliqua"
+  | "Perennial"
+  | "Perennial Climber"
+  | "Shrub"
+  | "Tree";
+  
 export type SimulatedPlantResultDto = {
   uid: number;
   health: number;
@@ -36,7 +39,6 @@ export type SimulationResultDto = {
   warnings: string[];
 };
 
-
 export type PlantInfo = {
   uid: number;
   xPosition: number;
@@ -44,8 +46,6 @@ export type PlantInfo = {
   plantingDelay: number;
   plant?: Plant;
 };
-
-export type sideBarState = "none" | "analyse" | "settings";
 
 export type menuMode = "" | "plantMenu" | "actionMenu";
 
