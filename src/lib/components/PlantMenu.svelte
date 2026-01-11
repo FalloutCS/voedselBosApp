@@ -16,7 +16,6 @@
         };
     };
     
-    // closeMenu toegevoegd aan de props destructuring
     let { handlePlantSubmission, activeCellIndex, data, closeMenu }: PlantMenuProps = $props();
 
     function calc_X_Position() {
