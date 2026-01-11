@@ -4,6 +4,7 @@
     import type { Plant } from "$lib/types";
     import { gethabitIcon } from "$lib/habitIcon";
     import { filterState } from '$lib/filterState.svelte';
+    import { layerMapping } from '$lib/constants';
 
     type PlantMenuProps = {
         handlePlantSubmission: SubmitFunction;
@@ -33,17 +34,6 @@
         }
         return `${baseClass} bg-white hover:bg-violet-100 text-violet-900`;
     }
-
-    const layerMapping: Record<string, string[]> = {
-        "Boom": ["Tree", "Nothofagus Obliqua"],
-        "Struik": ["Shrub", "Bamboo", "Climber", "Perennial Climber"],
-        "Kruid": [
-            "Annual", "Annual/Biennial", "Annual Climber", "Annual/Perennial", 
-            "Biennial", "Biennial/Perennial", "Fern", "Grass", 
-            "Perennial"
-        ],
-        "Grond": ["Bulb", "Corm", "Lichen"]
-    };
 
     let filteredPlants = $derived(
         !filterState.selectedLayer 
