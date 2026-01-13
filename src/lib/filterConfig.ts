@@ -11,7 +11,6 @@ export const activeFilters: FilterConfig[] = [
             { value: 'Kruid', label: 'Kruidlaag' },
             { value: 'Grond', label: 'Grondlaag' }
         ],
-        // Logica: kijk of de habit van de plant voorkomt in de lijst van de gekozen laag
         matcher: (plant, value) => {
             if (!plant.habit) return false;
             const allowedHabits = layerMapping[value];
@@ -27,7 +26,6 @@ export const activeFilters: FilterConfig[] = [
             { value: 'M', label: 'Matig (M)' },
             { value: 'F', label: 'Sterk (F)' }
         ],
-        // Logica: Exacte match (bijv. "W" === "W")
         matcher: (plant, value) => plant.wind === value
     },
     {
@@ -47,7 +45,6 @@ export const activeFilters: FilterConfig[] = [
             { value: 'M', label: 'Medium / Leem' },
             { value: 'H', label: 'Zwaar / Klei' }
         ],
-        // Logica: Check of de waarde in de string zit (omdat data "L, M, H" kan zijn)
         matcher: (plant, value) => plant.soil ? plant.soil.includes(value) : false
     },
     {

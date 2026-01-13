@@ -193,7 +193,6 @@
 </form>
 
 <style>
-    /* Helper class voor consistente tags */
     .tag {
         font-size: 0.65rem;
         font-weight: 600;
@@ -201,6 +200,6 @@
         border-radius: 0.25rem;
         border-width: 1px;
         white-space: nowrap;
-        cursor: help;
+        cursor: default;
     }
 </style>
