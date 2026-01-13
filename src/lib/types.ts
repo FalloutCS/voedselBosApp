@@ -4,7 +4,26 @@ export type Plant = {
   commonName: string;
   nlName: string;
   habit: Habit | undefined;
-  wind: Wind | undefined;
+  wind?: string;
+  deciduousEvergreen?: string;
+  soil?: string;
+  shade?: string;
+  moisture?: string;
+  pH?: string;
+  nitrogenFixer?: string;
+  sandGround?: string;
+  clayGround?: string;
+  wellDrained?: string;
+  height?: number;
+  width?: number;
+  ukHardiness?: string;
+};
+
+export type FilterConfig = {
+    key: string;
+    label: string;
+    options: { value: string, label: string }[];
+    matcher: (plant: Plant, selectedValue: string) => boolean;
 };
 
 export type Wind = "N" | "W" | "M" | "F";

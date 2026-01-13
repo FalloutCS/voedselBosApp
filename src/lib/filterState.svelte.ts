@@ -1,8 +1,20 @@
 class FilterState {
-    selectedLayer = $state<string | null>(null);
+    selected = $state<Record<string, string>>({});
 
-    setLayer(layer: string | null) {
-        this.selectedLayer = layer;
+    set(key: string, value: string | null) {
+        if (!value) {
+            delete this.selected[key];
+        } else {
+            this.selected[key] = value;
+        }
+    }
+
+    reset() {
+        this.selected = {};
+    }
+
+    get(key: string) {
+        return this.selected[key] || "";
     }
 }
 
