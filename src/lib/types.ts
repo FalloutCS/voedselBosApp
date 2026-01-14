@@ -19,6 +19,15 @@ export type Plant = {
   ukHardiness?: string;
 };
 
+export type PlantBadgeConfig = {
+    key: keyof Plant;
+    prefix?: string;
+    suffix?: string;
+    classes?: string;
+    title?: string;
+    valueMap?: Record<string, { label: string, classes: string, title: string }>;
+};
+
 export type FilterConfig = {
     key: string;
     label: string;

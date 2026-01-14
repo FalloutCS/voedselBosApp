@@ -6,6 +6,7 @@
     import { gethabitIcon } from "$lib/habitIcon";
     import { filterState } from '$lib/filterState.svelte';
     import { activeFilters } from '$lib/filterConfig';
+    import { propertyConfig } from '$lib/constants';
 
     type PlantMenuProps = {
         handlePlantSubmission: SubmitFunction;
@@ -18,16 +19,23 @@
         };
     };
 
+    type Badge = {
+        label: string;
+        classes: string;
+        title?: string;
+    };
+
     let { handlePlantSubmission, activeCellIndex, data, closeMenu }: PlantMenuProps = $props();
+
     let showFilters = $state(false);
     let activeFilterCount = $derived(Object.keys(filterState.selected).length);
 
-    function calc_X_Position() {
-        return activeCellIndex % data.width;
+    function calc_X_Position() { 
+        return activeCellIndex % data.width; 
     }
-
-    function calc_Y_Position() {
-        return Math.floor(activeCellIndex / data.width);
+    
+    function calc_Y_Position() { 
+        return Math.floor(activeCellIndex / data.width); 
     }
 
     let filteredPlants = $derived(
@@ -39,6 +47,28 @@
             });
         })
     );
+
+    function getPlantBadges(plant: Plant): Badge[] {
+        const badges: Badge[] = [];
+
+        propertyConfig.forEach(prop => {
+            const rawVal = plant[prop.key]; 
+            const valStr = String(rawVal);
+
+            if (prop.valueMap && prop.valueMap[valStr]) {
+                badges.push(prop.valueMap[valStr]);
+            } 
+            else if (rawVal && prop.classes && prop.title) {
+                badges.push({
+                    label: `${prop.prefix || ''} ${rawVal}${prop.suffix || ''}`.trim(),
+                    classes: prop.classes,
+                    title: prop.title
+                });
+            }
+        });
+
+        return badges;
+    }
 </script>
 
 <form
@@ -96,12 +126,10 @@
                         </select>
                     </div>
                 {/each}
+                
                 {#if activeFilterCount > 0}
                     <div class="col-span-full flex justify-end mt-2 pt-2 border-t border-violet-200/50">
-                        <button type="button" onclick={() => filterState.reset()} class="text-xs text-violet-500 hover:text-violet-700 hover:underline flex items-center gap-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 15"/><path d="M3 3v12h12"/></svg>
-                            Alle filters wissen
-                        </button>
+                        <button type="button" onclick={() => filterState.reset()} class="text-xs text-violet-500 hover:text-violet-700 hover:underline"> Alle filters wissen </button>
                     </div>
                 {/if}
             </div>
@@ -118,43 +146,11 @@
                     <p class="text-sm italic text-violet-500 mt-0.5 mb-2">{plant.latinName}</p>
 
                     <div class="flex flex-wrap gap-1.5 mb-3">
-                        {#if plant.nitrogenFixer === 'TRUE'}
-                            <span class="tag bg-green-100 text-green-800 border-green-200">N-binder</span>
-                        {/if}
-                        
-                        {#if plant.deciduousEvergreen === 'E'}
-                            <span class="tag bg-emerald-100 text-emerald-800 border-emerald-200">Wintergroen</span>
-                        {:else if plant.deciduousEvergreen === 'D'}
-                            <span class="tag bg-orange-100 text-orange-800 border-orange-200">Bladverliezend</span>
-                        {/if}
-
-                        {#if plant.wind}
-                            <span class="tag bg-slate-100 text-slate-700 border-slate-200" title="Wind Tolerantie">💨 {plant.wind}</span>
-                        {/if}
-
-                        {#if plant.shade}
-                            <span class="tag bg-yellow-100 text-yellow-800 border-yellow-200" title="Zon/Schaduw">☀ {plant.shade}</span>
-                        {/if}
-
-                        {#if plant.moisture}
-                            <span class="tag bg-cyan-100 text-cyan-800 border-cyan-200" title="Vochtbehoefte">💧 {plant.moisture}</span>
-                        {/if}
-                        
-                        {#if plant.soil}
-                            <span class="tag bg-stone-100 text-stone-700 border-stone-200" title="Grondsoort">🌱 {plant.soil}</span>
-                        {/if}
-
-                         {#if plant.pH}
-                            <span class="tag bg-purple-100 text-purple-800 border-purple-200" title="Zuurgraad">pH {plant.pH}</span>
-                        {/if}
-
-                        {#if plant.ukHardiness}
-                            <span class="tag bg-rose-100 text-rose-800 border-rose-200" title="Hardheid (UK Zone)">Zone {plant.ukHardiness}</span>
-                        {/if}
-
-                        {#if plant.height}
-                            <span class="tag bg-gray-100 text-gray-700 border-gray-200" title="Hoogte">↕ {plant.height}m</span>
-                        {/if}
+                        {#each getPlantBadges(plant) as badge}
+                            <span class="tag {badge.classes}" title={badge.title}>
+                                {badge.label}
+                            </span>
+                        {/each}
                     </div>
                 </div>
 
@@ -173,7 +169,7 @@
                     class="mt-3 w-full bg-violet-600 hover:bg-violet-700 active:bg-violet-800 text-white font-medium py-2 rounded-lg transition-colors shadow-md flex justify-center items-center gap-2"
                 >
                     <span>Plaats</span>
-                    <span class="text-violet-200 text-xs font-normal">#{plant.id}</span>
+                    <span class="text-violet-200 text-sm font-normal">{plant.nlName}</span> 
                 </button>
             </div>
         {:else}
