@@ -30,43 +30,44 @@
     let showFilters = $state(false);
     let activeFilterCount = $derived(Object.keys(filterState.selected).length);
 
-    function calc_X_Position() { 
-        return activeCellIndex % data.width; 
-    }
-    
-    function calc_Y_Position() { 
-        return Math.floor(activeCellIndex / data.width); 
-    }
+    let activeQuery = $derived(
+        activeFilters
+            .filter(f => filterState.selected[f.key])
+            .map(f => ({ matcher: f.matcher, value: filterState.selected[f.key] }))
+    );
 
     let filteredPlants = $derived(
         data.plants.filter(plant => {
-            return activeFilters.every(filterDef => {
-                const selectedValue = filterState.selected[filterDef.key];
-                if (!selectedValue) return true;
-                return filterDef.matcher(plant, selectedValue);
-            });
+            if (activeQuery.length === 0) return true;
+            return activeQuery.every(({ matcher, value }) => matcher(plant, value));
         })
     );
 
+    function calc_X_Position() { return activeCellIndex % data.width; }
+    function calc_Y_Position() { return Math.floor(activeCellIndex / data.width); }
+
     function getPlantBadges(plant: Plant): Badge[] {
         const badges: Badge[] = [];
+        for (const prop of propertyConfig) {
+            const rawVal = plant[prop.key];
+            
+            if (rawVal === undefined || rawVal === null || rawVal === "") continue;
 
-        propertyConfig.forEach(prop => {
-            const rawVal = plant[prop.key]; 
             const valStr = String(rawVal);
 
             if (prop.valueMap && prop.valueMap[valStr]) {
                 badges.push(prop.valueMap[valStr]);
+                continue;
             } 
-            else if (rawVal && prop.classes && prop.title) {
+            
+            if (prop.classes && prop.title) {
                 badges.push({
-                    label: `${prop.prefix || ''} ${rawVal}${prop.suffix || ''}`.trim(),
+                    label: `${prop.prefix || ''} ${valStr}${prop.suffix || ''}`, 
                     classes: prop.classes,
                     title: prop.title
                 });
             }
-        });
-
+        }
         return badges;
     }
 </script>
@@ -88,6 +89,7 @@
             onclick={closeMenu}
             class="p-2 -mr-2 -mt-2 text-violet-400 hover:text-violet-700 hover:bg-violet-50 rounded-full transition-colors"
             title="Sluiten"
+            aria-label="Sluit menu"
         >
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
@@ -138,7 +140,7 @@
 
     <div class="text-xs text-gray-400 mb-2 px-1">{filteredPlants.length} resultaten gevonden</div>
 
-    <div class="grow overflow-y-auto pr-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="grow overflow-y-auto pr-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" style="content-visibility: auto;">
         {#each filteredPlants as plant (plant.id)}
             <div class="bg-violet-50/50 border border-violet-100 rounded-xl p-4 flex flex-col justify-between transition-all hover:shadow-lg hover:border-violet-300 hover:bg-white group">
                 <div>
@@ -158,9 +160,9 @@
                     src={gethabitIcon(plant.habit)}
                     alt={plant.habit}
                     title={plant.commonName}
+                    loading="lazy" 
                     class="w-full h-32 object-contain my-2 transition-transform group-hover:scale-105"
                 />
-
                 <button
                     type="submit"
                     name="plantID"
@@ -169,8 +171,7 @@
                     class="mt-3 w-full bg-violet-600 hover:bg-violet-700 active:bg-violet-800 text-white font-medium py-2 rounded-lg transition-colors shadow-md flex justify-center items-center gap-2"
                 >
                     <span>Plaats</span>
-                    <span class="text-violet-200 text-sm font-normal">{plant.nlName}</span> 
-                </button>
+                    <span class="text-violet-200 text-sm font-normal">{plant.nlName}</span> </button>
             </div>
         {:else}
             <div class="col-span-full flex flex-col items-center justify-center text-gray-400 py-12 bg-gray-50 rounded-xl border border-dashed border-gray-200">
