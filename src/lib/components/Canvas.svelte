@@ -3,7 +3,6 @@
   import { gethabitIcon } from "$lib/habitIcon";
   import type { PlacedPlant } from "$lib/types";
 
-  import { ContextMenu } from "bits-ui";
   type canvasProps = {
     placedPlants: PlacedPlant;
     surfaceArea: number;
