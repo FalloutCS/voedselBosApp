@@ -72,12 +72,9 @@ export const actions = {
 
     const globalForest = forestStore.get();
 
-    // Validatie
     if (!globalForest) return fail(400, { missing: true });
     if (validateIndex(cellIndex, globalForest))
       return fail(400, { incorrect: true });
-
-    // Gebruik nu de store functie in plaats van directe manipulatie
     forestStore.removePlant(cellIndex);
 
     return { success: true };

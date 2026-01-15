@@ -3,29 +3,60 @@ export type Plant = {
   latinName: string;
   commonName: string;
   nlName: string;
-  habit:
-    | "Annual"
-    | "Annual/Biennial"
-    | "Annual Climber"
-    | "Annual/Perennial"
-    | "Bamboo"
-    | "Biennial"
-    | "Biennial/Perennial"
-    | "Bulb"
-    | "Climber"
-    | "Corm"
-    | "Fern"
-    | "Grass"
-    | "Lichen"
-    | "Nothofagus Obliqua"
-    | "Perennial"
-    | "Perennial Climber"
-    | "Shrub"
-    | "Tree"
-    | undefined;
-  wind: "N" | "W" | "M" | "F" | undefined;
+  habit: Habit | undefined;
+  wind?: string;
+  deciduousEvergreen?: string;
+  soil?: string;
+  shade?: string;
+  moisture?: string;
+  pH?: string;
+  nitrogenFixer?: string;
+  sandGround?: string;
+  clayGround?: string;
+  wellDrained?: string;
+  height?: number;
+  width?: number;
+  ukHardiness?: string;
 };
 
+export type PlantBadgeConfig = {
+    key: keyof Plant;
+    prefix?: string;
+    suffix?: string;
+    classes?: string;
+    title?: string;
+    valueMap?: Record<string, { label: string, classes: string, title: string }>;
+};
+
+export type FilterConfig = {
+    key: string;
+    label: string;
+    options: { value: string, label: string }[];
+    matcher: (plant: Plant, selectedValue: string) => boolean;
+};
+
+export type Wind = "N" | "W" | "M" | "F";
+
+export type Habit =
+  | "Annual"
+  | "Annual/Biennial"
+  | "Annual Climber"
+  | "Annual/Perennial"
+  | "Bamboo"
+  | "Biennial"
+  | "Biennial/Perennial"
+  | "Bulb"
+  | "Climber"
+  | "Corm"
+  | "Fern"
+  | "Grass"
+  | "Lichen"
+  | "Nothofagus Obliqua"
+  | "Perennial"
+  | "Perennial Climber"
+  | "Shrub"
+  | "Tree";
+  
 export type SimulatedPlantResultDto = {
   uid: number;
   health: number;
@@ -36,7 +67,6 @@ export type SimulationResultDto = {
   warnings: string[];
 };
 
-
 export type PlantInfo = {
   uid: number;
   xPosition: number;
@@ -44,8 +74,6 @@ export type PlantInfo = {
   plantingDelay: number;
   plant?: Plant;
 };
-
-export type sideBarState = "none" | "analyse" | "settings";
 
 export type menuMode = "" | "plantMenu" | "actionMenu";
 
