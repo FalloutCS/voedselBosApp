@@ -4,7 +4,6 @@ import { getPlants } from "$lib/server/plantService";
 import { fail } from "@sveltejs/kit";
 import { postPlants } from "$lib/server/postPlants";
 import { forestStore } from "$lib/server/db/forestStore";
-import { validateIndex } from "$lib/server/indexValidation";
 import { redirect } from "@sveltejs/kit"; // Add this import
 
 let plants: Plant[];
@@ -73,8 +72,6 @@ export const actions = {
     const globalForest = forestStore.get();
 
     if (!globalForest) return fail(400, { missing: true });
-    if (validateIndex(cellIndex, globalForest))
-      return fail(400, { incorrect: true });
     forestStore.removePlant(cellIndex);
 
     return { success: true };
