@@ -1,13 +1,16 @@
 <script lang="ts">
-  let { 
-    size = "40", 
-    color = "#7c3aed", 
-    unit = "px", 
-    duration = "1s" 
+  let {
+    size = "40",
+    color = "#7c3aed",
+    unit = "px",
+    duration = "1s",
   } = $props();
 </script>
 
-<div class="wrapper" style="--size: {size}{unit}; --color: {color}; --duration: {duration};">
+<div
+  class="wrapper"
+  style="--size: {size}{unit}; --color: {color}; --duration: {duration};"
+>
   <div class="circle"></div>
   <div class="circle"></div>
   <div class="circle"></div>
