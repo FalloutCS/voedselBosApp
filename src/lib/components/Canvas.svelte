@@ -25,8 +25,6 @@
     stressMap = {},
   }: canvasProps = $props();
 
-  const values = ["one", "two", "three"];
-  let value = $state("one");
 
   function getStressStyle(index: number): string {
     const count = stressMap[index] || 0;
