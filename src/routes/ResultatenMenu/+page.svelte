@@ -46,7 +46,7 @@
     </a>
   </div>
 
-  <div class="relative flex-grow border-2 border-emerald-100 rounded-lg overflow-hidden bg-white shadow-sm">
+  <div class="relative grow border-2 border-emerald-100 rounded-lg overflow-hidden bg-white shadow-sm">
     <Canvas
       editMode="planter"
       surfaceArea={data.surfaceArea}
@@ -79,7 +79,7 @@
           <button onclick={closePopup} class="text-emerald-100 hover:text-white transition-colors">✕</button>
         </div>
 
-        <div class="p-6 overflow-y-auto flex-grow">
+        <div class="p-6 overflow-y-auto grow">
           {#if currentMessages.length > 0}
             <div class="space-y-4"> <!-- deze houden we omdat er mogelijk dingen zoals zon bij komen -->
               <div>
