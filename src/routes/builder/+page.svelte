@@ -1,7 +1,6 @@
 <script lang="ts">
   import type { PageProps } from "./$types";
   import Canvas from "$lib/components/Canvas.svelte";
-  import ErrorInvalidInput from "$lib/components/Error_Invalid_Input.svelte";
   import ErrorMissingData from "$lib/components/Error_MissingData.svelte";
   import { type SubmitFunction } from "@sveltejs/kit";
   import PlantMenu from "$lib/components/PlantMenu.svelte";
@@ -18,7 +17,7 @@
   let loading = $state(false);
   let editMode: "shovel" | "planter" = $state("shovel");
   let selectedPlantName = $derived(
-    data.placedPlants[activeCellIndex]?.plant?.commonName || "Plant"
+    data.placedPlants[activeCellIndex]?.plant?.commonName || "Plant",
   );
   const loadingDuration = 2000;
 
@@ -50,7 +49,7 @@
         loading = true;
 
         const timer = new Promise((resolve) =>
-          setTimeout(resolve, loadingDuration)
+          setTimeout(resolve, loadingDuration),
         );
 
         return async ({ update }) => {

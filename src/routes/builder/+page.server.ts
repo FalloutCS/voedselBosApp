@@ -11,11 +11,6 @@ let plants: Plant[];
 export const load = (async () => {
   let globalForest = forestStore.get();
 
-  // AFTER THE MAIN PAGE IS DONE, WE SHOULD REDIRECT THE USER TO THE CREATE FOREST PAGE
-  // if (!globalForest) {
-  //     redirect(307, "/")
-  // }
-
   if (!globalForest) {
     globalForest = forestStore.create("Mijn Bos", 10, 10, "Rotterdam");
   }
@@ -77,27 +72,21 @@ export const actions = {
     return { success: true };
   },
 
-uploadSim: async (event) => {
-    // 1. Prepare the data
+  uploadSim: async (event) => {
     const filteredData = {
-        gardenLocation: forestStore.get()?.location,
-        data: forestStore.get()?.placedPlants,
+      gardenLocation: forestStore.get()?.location,
+      data: forestStore.get()?.placedPlants,
     };
 
     try {
-        // 2. Attempt to upload/post the plants
-        // IMPORTANT: We use 'await' here to make sure the upload finishes before redirecting.
-        await postPlants(filteredData);
+      await postPlants(filteredData);
 
     } catch (err) {
-        // 3. If the upload fails, log the error and return the failure object
-        console.error("Simulation upload error:", err);
-        return fail(400, { error: "Failed to run simulation" });
+      console.error("Simulation upload error:", err);
+      return fail(400, { error: "Failed to run simulation" });
     }
-
-    // 4. If the try block finishes without error, redirect the user
     throw redirect(303, "/ResultatenMenu");
-},
+  },
   disableCell: async ({ request }) => {
     const data = await request.formData();
     const cellIndex = Number(data.get("cellIndex"));

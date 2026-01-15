@@ -21,17 +21,16 @@
     shapeArray,
     surfaceArea,
     openMenu,
-    stressMap = {} 
+    stressMap = {},
   }: canvasProps = $props();
-
 
   function getStressStyle(index: number): string {
     const count = stressMap[index] || 0;
 
     if (count === 0) return "";
-    
-    const opacity = Math.min(count * 0.10, 0.80);
-    
+
+    const opacity = Math.min(count * 0.1, 0.8);
+
     return `box-shadow: inset 0 0 0 100px rgba(220, 38, 38, ${opacity});`;
   }
 </script>
