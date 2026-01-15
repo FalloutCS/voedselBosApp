@@ -30,7 +30,7 @@ export const load = (async () => {
     placedPlants: globalForest.placedPlants,
     shapeArray: globalForest.shapeArray,
     width: globalForest.width,
-    heigth: globalForest.height,
+    height: globalForest.height,
   };
 }) satisfies PageServerLoad;
 

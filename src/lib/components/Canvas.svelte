@@ -7,7 +7,7 @@
     surfaceArea: number;
     shapeArray: number[];
     width: number;
-    heigth: number;
+    height: number;
     editMode: "shovel" | "planter";
     openMenu: (cellIndex: number) => void;
     stressMap?: Record<number, number>;
@@ -16,7 +16,7 @@
   let {
     placedPlants,
     width,
-    heigth,
+    height,
     editMode,
     shapeArray,
     surfaceArea,
@@ -38,7 +38,7 @@
 
 <form
   class="p-5 grid rounded mx-auto my-auto h-full w-full bg-emerald-100"
-  style="grid-template-columns: repeat({width}, minmax(0, 1fr)); grid-template-rows: repeat({heigth}, minmax(0, 1fr));"
+  style="grid-template-columns: repeat({width}, minmax(0, 1fr)); grid-template-rows: repeat({height}, minmax(0, 1fr));"
   method="POST"
   use:enhance
 >

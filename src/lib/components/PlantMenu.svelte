@@ -14,7 +14,7 @@
         closeMenu: () => void;
         data: {
             width: number;
-            heigth: number;
+            height: number;
             plants: Plant[];
         };
     };

@@ -34,7 +34,7 @@ export const load = (async () => {
     shapeArray: globalForest.shapeArray,
     surfaceArea: globalForest.surfaceArea,
     width: globalForest.width,
-    heigth: globalForest.height, // Note: keeping your typo 'heigth' to match existing Canvas prop
+    height: globalForest.height, // Note: keeping your typo 'height' to match existing Canvas prop
     simulationResults: simulationResults,
   };
 }) satisfies PageServerLoad;

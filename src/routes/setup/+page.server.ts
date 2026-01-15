@@ -12,9 +12,9 @@ export const actions = {
     const name = String(data.get("name"));
     const location = String(data.get("location"));
     const width = Number(data.get("width"));
-    const heigth = Number(data.get("heigth"));
+    const height = Number(data.get("height"));
 
-    forestStore.create(name, width, heigth, location);
+    forestStore.create(name, width, height, location);
 
     redirect(307, "/builder");
   },

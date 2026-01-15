@@ -71,12 +71,12 @@
             />
           </div>
           <div class="space-y-1">
-            <label for="heigth" class="text-sm font-medium text-violet-700"
+            <label for="height" class="text-sm font-medium text-violet-700"
               >Height (m)</label
             >
             <input
-              id="heigth"
-              name="heigth"
+              id="height"
+              name="height"
               type="number"
               min="1"
               placeholder="10"

@@ -108,7 +108,7 @@
       shapeArray={data.shapeArray}
       placedPlants={data.placedPlants}
       width={data.width}
-      heigth={data.heigth}
+      height={data.height}
       openMenu={handleCellClick}
     />
   {/if}
