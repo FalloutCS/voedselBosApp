@@ -15,11 +15,13 @@
   let menuState: menuMode = $state("");
   let activeCellIndex: number = $state(0);
   let loading = $state(false);
-  let editMode: "shovel" | "planter" = $state("shovel");
+  let editMode: "shovel" | "planter" | "view" = $state("shovel");
   let selectedPlantName = $derived(
-    data.placedPlants[activeCellIndex]?.plant?.commonName || "Plant",
+    data.placedPlants[activeCellIndex]?.plant?.commonName || "Plant"
   );
   const loadingDuration = 2000;
+  let endScrollTop = $state(0);
+  let endScrollLeft = $state(0);
 
   // Waits for the browser to finish updating before closing the menu
   const handlePlantSubmission: SubmitFunction = () => {
@@ -49,7 +51,7 @@
         loading = true;
 
         const timer = new Promise((resolve) =>
-          setTimeout(resolve, loadingDuration),
+          setTimeout(resolve, loadingDuration)
         );
 
         return async ({ update }) => {
@@ -109,6 +111,8 @@
       width={data.width}
       height={data.height}
       openMenu={handleCellClick}
+      bind:endScrollLeft
+      bind:endScrollTop
     />
   {/if}
 </div>
