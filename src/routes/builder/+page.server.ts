@@ -5,6 +5,7 @@ import { fail } from "@sveltejs/kit";
 import { postPlants } from "$lib/server/postPlants";
 import { forestStore } from "$lib/server/db/forestStore";
 import { redirect } from "@sveltejs/kit"; // Add this import
+import type { TerrainType } from "$lib/server/voedselBos";
 
 let plants: Plant[];
 
@@ -22,7 +23,7 @@ export const load = (async () => {
     plants: plants,
     surfaceArea: globalForest.surfaceArea,
     placedPlants: globalForest.placedPlants,
-    shapeArray: globalForest.shapeArray,
+    terrain: globalForest.terrain,
     width: globalForest.width,
     height: globalForest.height,
   };
@@ -80,22 +81,21 @@ export const actions = {
 
     try {
       await postPlants(filteredData);
-
     } catch (err) {
       console.error("Simulation upload error:", err);
       return fail(400, { error: "Failed to run simulation" });
     }
     throw redirect(303, "/ResultatenMenu");
   },
-  disableCell: async ({ request }) => {
+  terraform: async ({ request }) => {
     const data = await request.formData();
     const cellIndex = Number(data.get("cellIndex"));
+    const type = data.get("terraformType") as TerrainType;
 
-    try {
-      forestStore.disableCell(cellIndex);
-      return { success: true };
-    } catch (err) {
-      return fail(400, { error: "Failed to update cell shape" });
-    }
+    if (!forestStore.get()) return fail(400, { missing: true });
+
+    forestStore.terraformCell(cellIndex, type);
+
+    return { success: true };
   },
 } satisfies Actions;

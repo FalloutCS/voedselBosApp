@@ -1,15 +1,17 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import { gethabitIcon } from "$lib/habitIcon";
+  import type { TerrainType } from "$lib/server/voedselBos";
   import type { PlacedPlant } from "$lib/types";
 
   type canvasProps = {
     placedPlants: PlacedPlant;
     surfaceArea: number;
-    shapeArray: number[];
+    terrain: Record<number, string>;
     width: number;
     height: number;
     editMode: "shovel" | "planter" | "view";
+    shovelType: TerrainType;
     openMenu: (cellIndex: number) => void;
     endScrollLeft: number;
     endScrollTop: number;
@@ -20,7 +22,8 @@
     width,
     height,
     editMode,
-    shapeArray,
+    terrain,
+    shovelType,
     surfaceArea,
     openMenu,
     endScrollLeft = $bindable(0),
@@ -39,6 +42,13 @@
   let scrollLeft = $state(0);
   let scrollTop = $state(0);
 
+  function finishDrag() {
+    if (editMode !== "view" || !scrollContainer) return;
+    isDown = false;
+    endScrollLeft = scrollContainer.scrollLeft;
+    endScrollTop = scrollContainer.scrollTop;
+  }
+
   function handleMouseDown(e: MouseEvent) {
     if (editMode !== "view" || !scrollContainer) return;
 
@@ -47,20 +57,6 @@
     startY = e.pageY - scrollContainer.offsetTop;
     scrollLeft = scrollContainer.scrollLeft;
     scrollTop = scrollContainer.scrollTop;
-  }
-
-  function handleMouseUp(e: MouseEvent) {
-    if (editMode !== "view" || !scrollContainer) return;
-    isDown = false;
-    endScrollLeft = scrollContainer.scrollLeft;
-    endScrollTop = scrollContainer.scrollTop;
-  }
-
-  function handleMouseLeave(e: MouseEvent) {
-    if (editMode !== "view" || !scrollContainer) return;
-    isDown = false;
-    endScrollLeft = scrollContainer.scrollLeft;
-    endScrollTop = scrollContainer.scrollTop;
   }
 
   function handleMouseMove(e: MouseEvent) {
@@ -82,9 +78,15 @@
 
     $effect(() => {
       // setup goes here
-      scrollContainer?.scroll(endScrollLeft, endScrollTop);
+      node.scroll(endScrollLeft, endScrollTop);
     });
   };
+
+  function getTerrainStyle(type?: TerrainType) {
+    if (type === "blocked") return "bg-gray-500 border-slate-300";
+    if (type === "water") return "bg-blue-200 border-blue-300";
+    return "bg-white hover:border-violet-500";
+  }
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -92,8 +94,8 @@
   bind:this={scrollContainer}
   use:scrollToLastPos
   onmousedown={handleMouseDown}
-  onmouseleave={handleMouseLeave}
-  onmouseup={handleMouseUp}
+  onmouseleave={finishDrag}
+  onmouseup={finishDrag}
   onmousemove={handleMouseMove}
   class="w-full h-full overflow-hidden bg-violet-50 rounded select-none border border-violet-200 shadow-inner transition-colors
   {editMode === 'view'
@@ -113,12 +115,15 @@
     method="POST"
     use:enhance
   >
+    <input type="hidden" name="terraformType" value={shovelType} />
+
     {#each { length: surfaceArea }, index}
       {@const isShovel = editMode === "shovel"}
-      {@const isBlocked = shapeArray.includes(index)}
+      {@const currentTerrain = terrain[index] as TerrainType}
+      {@const isBlocked = !!currentTerrain}
 
       <button
-        formaction="?/disableCell"
+        formaction="?/terraform"
         name="cellIndex"
         value={index}
         type={isShovel ? "submit" : "button"}
@@ -126,11 +131,8 @@
         class="
           relative border border-violet-300/50 rounded-md
           flex items-center justify-center transition-all duration-200
-          {isBlocked
-          ? 'bg-slate-100'
-          : 'bg-white hover:border-violet-500 hover:shadow-md hover:z-10'}
+          {getTerrainStyle(currentTerrain)}
         "
-        style="{isBlocked ? 'background-color: #f1f5f9;' : ''}"
         disabled={isBlocked && !isShovel}
       >
         {#if placedPlants[index]}

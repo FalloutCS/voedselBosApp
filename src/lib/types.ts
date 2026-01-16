@@ -78,3 +78,4 @@ export type PlantInfo = {
 export type menuMode = "" | "plantMenu" | "actionMenu";
 
 export type PlacedPlant = Record<number, PlantInfo>;
+

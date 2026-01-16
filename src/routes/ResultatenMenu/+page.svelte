@@ -58,7 +58,7 @@
   >
     <ResultatenCanvas
       surfaceArea={data.surfaceArea}
-      shapeArray={data.shapeArray}
+      terrain={data.terrain}
       placedPlants={data.placedPlants}
       width={data.width}
       height={data.height}
