@@ -1,9 +1,12 @@
 <script lang="ts">
   import type { PageProps } from "./$types";
-  import Canvas from "$lib/components/Canvas.svelte";
   import { Button } from "bits-ui";
-  import { getUniqueMessagesForLocation, getStressLevels } from "$lib/simulationUtils";
+  import {
+    getUniqueMessagesForLocation,
+    getStressLevels,
+  } from "$lib/simulationUtils";
   import { fade, fly } from "svelte/transition";
+  import ResultatenCanvas from "$lib/components/ResultatenCanvas.svelte";
 
   let { data }: PageProps = $props();
 
@@ -11,7 +14,7 @@
 
   // Calculate stress levels (count of warnings per cell)
   let stressMap = $derived.by(() => {
-    if (data.simulationResults && 'warnings' in data.simulationResults) {
+    if (data.simulationResults && "warnings" in data.simulationResults) {
       return getStressLevels(data.simulationResults.warnings);
     }
     return {};
@@ -20,7 +23,8 @@
   // Calculate messages for the popup
   let currentMessages = $derived.by(() => {
     const results = data.simulationResults;
-    if (activeCellIndex === null || !results || !('warnings' in results)) return [];
+    if (activeCellIndex === null || !results || !("warnings" in results))
+      return [];
     return getUniqueMessagesForLocation(results.warnings, activeCellIndex);
   });
 
@@ -41,34 +45,38 @@
 <div class="h-4/5 w-4/5 mx-auto my-auto rounded relative flex flex-col">
   <div class="flex justify-between items-center pb-4">
     <h1 class="text-2xl font-bold text-emerald-800">Simulatie Resultaten</h1>
-    <a href="/builder" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition-colors">
+    <a
+      href="/builder"
+      class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition-colors"
+    >
       Terug naar Ontwerp
     </a>
   </div>
 
-  <div class="relative grow border-2 border-emerald-100 rounded-lg overflow-hidden bg-white shadow-sm">
-    <Canvas
-      editMode="planter"
+  <div
+    class="relative grow border-2 border-emerald-100 rounded-lg overflow-hidden bg-white shadow-sm"
+  >
+    <ResultatenCanvas
       surfaceArea={data.surfaceArea}
       shapeArray={data.shapeArray}
       placedPlants={data.placedPlants}
       width={data.width}
       height={data.height}
-      openMenu={handleCellClick}
-      stressMap={stressMap} 
+      onCellClick={handleCellClick}
+      {stressMap}
     />
 
     {#if activeCellIndex !== null}
-      <div 
+      <div
         role="button"
         tabindex="0"
         class="absolute inset-0 bg-black/20 z-10 backdrop-blur-[1px]"
         onclick={closePopup}
-        onkeydown={(e) => e.key === 'Escape' && closePopup()}
+        onkeydown={(e) => e.key === "Escape" && closePopup()}
         transition:fade={{ duration: 200 }}
       ></div>
 
-      <div 
+      <div
         class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 max-h-[80%] bg-white rounded-xl shadow-2xl z-20 flex flex-col overflow-hidden border border-emerald-200"
         transition:fly={{ y: 20, duration: 300 }}
       >
@@ -76,14 +84,23 @@
           <h2 class="text-white font-bold text-lg">
             {data.placedPlants[activeCellIndex]?.plant?.nlName || "Plant"} Resultaten
           </h2>
-          <button onclick={closePopup} class="text-emerald-100 hover:text-white transition-colors">✕</button>
+          <button
+            onclick={closePopup}
+            class="text-emerald-100 hover:text-white transition-colors"
+            >✕</button
+          >
         </div>
 
         <div class="p-6 overflow-y-auto grow">
           {#if currentMessages.length > 0}
-            <div class="space-y-4"> <!-- deze houden we omdat er mogelijk dingen zoals zon bij komen -->
+            <div class="space-y-4">
+              <!-- deze houden we omdat er mogelijk dingen zoals zon bij komen -->
               <div>
-                <h3 class="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Wind</h3>
+                <h3
+                  class="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1"
+                >
+                  Wind
+                </h3>
                 <ul class="list-disc pl-5 space-y-1">
                   {#each currentMessages as msg}
                     <li class="text-gray-600 text-sm leading-relaxed">{msg}</li>
@@ -92,12 +109,18 @@
               </div>
             </div>
           {:else}
-            <div class="text-center py-8 text-gray-400 italic">Geen meldingen voor deze plant.</div>
+            <div class="text-center py-8 text-gray-400 italic">
+              Geen meldingen voor deze plant.
+            </div>
           {/if}
         </div>
 
         <div class="bg-gray-50 p-4 border-t border-gray-100 flex justify-end">
-          <Button.Root onclick={closePopup} class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded shadow-sm transition-all">Sluiten</Button.Root>
+          <Button.Root
+            onclick={closePopup}
+            class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded shadow-sm transition-all"
+            >Sluiten</Button.Root
+          >
         </div>
       </div>
     {/if}

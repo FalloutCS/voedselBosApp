@@ -1,37 +1,32 @@
 <script lang="ts">
-  import { enhance } from "$app/forms";
   import { gethabitIcon } from "$lib/habitIcon";
   import type { PlacedPlant } from "$lib/types";
 
-  type canvasProps = {
+  type ResultsCanvasProps = {
     placedPlants: PlacedPlant;
     surfaceArea: number;
     shapeArray: number[];
     width: number;
     height: number;
-    editMode: "shovel" | "planter" | "view";
-    openMenu: (cellIndex: number) => void;
-    endScrollLeft: number;
-    endScrollTop: number;
+    stressMap?: Record<number, number>; // Specific to Results
+    onCellClick: (cellIndex: number) => void; // Simplified callback
   };
 
   let {
     placedPlants,
     width,
     height,
-    editMode,
     shapeArray,
     surfaceArea,
-    openMenu,
-    endScrollLeft = $bindable(0),
-    endScrollTop = $bindable(0),
-  }: canvasProps = $props();
+    onCellClick,
+    stressMap = {},
+  }: ResultsCanvasProps = $props();
 
   // --- Constants ---
-  const CELL_SIZE = 64; // px
-  const GAP_SIZE = 0; // px
+  const CELL_SIZE = 64;
+  const GAP_SIZE = 0;
 
-  // --- Drag Logic ---
+  // --- Drag Logic (Always Active) ---
   let scrollContainer: HTMLDivElement | undefined = $state();
   let isDown = $state(false);
   let startX = $state(0);
@@ -40,8 +35,7 @@
   let scrollTop = $state(0);
 
   function handleMouseDown(e: MouseEvent) {
-    if (editMode !== "view" || !scrollContainer) return;
-
+    if (!scrollContainer) return;
     isDown = true;
     startX = e.pageX - scrollContainer.offsetLeft;
     startY = e.pageY - scrollContainer.offsetTop;
@@ -49,100 +43,84 @@
     scrollTop = scrollContainer.scrollTop;
   }
 
-  function handleMouseUp(e: MouseEvent) {
-    if (editMode !== "view" || !scrollContainer) return;
+  function handleMouseUp() {
     isDown = false;
-    endScrollLeft = scrollContainer.scrollLeft;
-    endScrollTop = scrollContainer.scrollTop;
   }
 
-  function handleMouseLeave(e: MouseEvent) {
-    if (editMode !== "view" || !scrollContainer) return;
+  function handleMouseLeave() {
     isDown = false;
-    endScrollLeft = scrollContainer.scrollLeft;
-    endScrollTop = scrollContainer.scrollTop;
   }
 
   function handleMouseMove(e: MouseEvent) {
-    if (!isDown || !scrollContainer || editMode !== "view") return;
-
+    if (!isDown || !scrollContainer) return;
     e.preventDefault();
     const x = e.pageX - scrollContainer.offsetLeft;
     const y = e.pageY - scrollContainer.offsetTop;
     const walkX = (x - startX) * 1.5;
     const walkY = (y - startY) * 1.5;
-
     scrollContainer.scrollLeft = scrollLeft - walkX;
     scrollContainer.scrollTop = scrollTop - walkY;
   }
 
-  import type { Action } from "svelte/action";
-  const scrollToLastPos: Action = (node) => {
-    // the node has been mounted in the DOM
-
-    $effect(() => {
-      // setup goes here
-      scrollContainer?.scroll(endScrollLeft, endScrollTop);
-    });
-  };
+  function getStressStyle(index: number): string {
+    const count = stressMap[index] || 0;
+    if (count === 0) return "";
+    const opacity = Math.min(count * 0.1, 0.8);
+    return `box-shadow: inset 0 0 0 100px rgba(220, 38, 38, ${opacity});`;
+  }
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
   bind:this={scrollContainer}
-  use:scrollToLastPos
   onmousedown={handleMouseDown}
   onmouseleave={handleMouseLeave}
   onmouseup={handleMouseUp}
   onmousemove={handleMouseMove}
   class="w-full h-full overflow-hidden bg-violet-50 rounded select-none border border-violet-200 shadow-inner transition-colors
-  {editMode === 'view'
-    ? isDown
-      ? 'cursor-grabbing'
-      : 'cursor-grab'
-    : 'cursor-default'}"
+  {isDown ? 'cursor-grabbing' : 'cursor-grab'}
+  "
 >
-  <form
-    class="grid bg-violet-100 p-10 w-max h-max transition-opacity duration-200
-    {editMode === 'view' ? 'pointer-events-none opacity-90' : ''}"
+  <div
+    class="grid bg-violet-100 p-10 w-max h-max"
     style="
       grid-template-columns: repeat({width}, {CELL_SIZE}px); 
       grid-template-rows: repeat({height}, {CELL_SIZE}px);
       gap: {GAP_SIZE}px;
     "
-    method="POST"
-    use:enhance
   >
     {#each { length: surfaceArea }, index}
-      {@const isShovel = editMode === "shovel"}
       {@const isBlocked = shapeArray.includes(index)}
+      {@const stressStyle = getStressStyle(index)}
 
       <button
-        formaction="?/disableCell"
-        name="cellIndex"
-        value={index}
-        type={isShovel ? "submit" : "button"}
-        onclick={() => (isShovel ? undefined : openMenu(index))}
-        class="
+        type="button"
+        onclick={() => onCellClick(index)}
+        class="{!placedPlants[index]
+          ? isDown
+            ? 'cursor-grabbing'
+            : 'cursor-grab'
+          : 'cursor-help'}
           relative border border-violet-300/50 rounded-md
           flex items-center justify-center transition-all duration-200
           {isBlocked
           ? 'bg-slate-100'
           : 'bg-white hover:border-violet-500 hover:shadow-md hover:z-10'}
         "
-        style="{isBlocked ? 'background-color: #f1f5f9;' : ''}"
-        disabled={isBlocked && !isShovel}
+        style="{isBlocked ? 'background-color: #f1f5f9;' : ''} {stressStyle}"
+        disabled={isBlocked}
       >
         {#if placedPlants[index]}
           <img
             src={gethabitIcon(placedPlants[index].plant?.habit)}
             alt={placedPlants[index].plant?.habit}
-            class="w-4/5 h-4/5 object-contain"
+            class="w-4/5 h-4/5 object-contain pointer-events-none"
           />
-        {:else if !isBlocked}
-          <span class="text-violet-200 font-bold text-xl select-none">+</span>
         {/if}
+        <span class="absolute top-0 left-1 text-[8px] text-violet-300"
+          >{index}</span
+        >
       </button>
     {/each}
-  </form>
+  </div>
 </div>
