@@ -15,9 +15,9 @@
   let menuState: menuMode = $state("");
   let activeCellIndex: number = $state(0);
   let loading = $state(false);
-  let editMode: "shovel" | "planter" = $state("shovel");
+  let editMode: "shovel" | "planter" | "view" = $state("shovel");
   let selectedPlantName = $derived(
-    data.placedPlants[activeCellIndex]?.plant?.commonName || "Plant",
+    data.placedPlants[activeCellIndex]?.plant?.commonName || "Plant"
   );
   const loadingDuration = 2000;
 
@@ -49,7 +49,7 @@
         loading = true;
 
         const timer = new Promise((resolve) =>
-          setTimeout(resolve, loadingDuration),
+          setTimeout(resolve, loadingDuration)
         );
 
         return async ({ update }) => {
