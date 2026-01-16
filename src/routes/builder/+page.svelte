@@ -10,12 +10,14 @@
   import LoadingComponent from "$lib/components/LoadingComponent.svelte";
   import type { menuMode } from "$lib/types";
   import Toolbar from "./components/Toolbar.svelte";
+  import type { TerrainType } from "$lib/server/voedselBos";
 
   let { data, form }: PageProps = $props();
   let menuState: menuMode = $state("");
   let activeCellIndex: number = $state(0);
   let loading = $state(false);
   let editMode: "shovel" | "planter" | "view" = $state("view");
+  let shovelType: TerrainType = $state('blocked')
   let selectedPlantName = $derived(
     data.placedPlants[activeCellIndex]?.plant?.commonName || "Plant"
   );
@@ -43,7 +45,7 @@
 
 <div class="h-4/5 w-4/5 mx-auto my-auto rounded relative flex flex-col">
   <div class="flex justify-between items-center pb-2">
-    <Toolbar bind:editMode />
+    <Toolbar bind:editMode bind:shovelType />
 
     <form
       method="POST"
@@ -105,8 +107,9 @@
   {:else}
     <Canvas
       {editMode}
+      {shovelType}
       surfaceArea={data.surfaceArea}
-      shapeArray={data.shapeArray}
+      terrain={data.terrain}
       placedPlants={data.placedPlants}
       width={data.width}
       height={data.height}

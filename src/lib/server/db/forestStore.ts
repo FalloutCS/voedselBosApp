@@ -1,5 +1,5 @@
-import type {Plant, PlantInfo } from "$lib/types";
-import { Voedselbos } from "../voedselBos";
+import type { Plant, PlantInfo } from "$lib/types";
+import { Voedselbos, type TerrainType } from "../voedselBos";
 
 let globalForest: Voedselbos | null = null;
 
@@ -51,19 +51,21 @@ export const forestStore = {
     return "Succes";
   },
 
-  disableCell: (cellIndex: number) => {
+  terraformCell: (cellIndex: number, type: TerrainType) => {
     if (!globalForest) {
       throw new Error("Forest not initialized");
     }
 
-    const index = globalForest.shapeArray.indexOf(cellIndex);
+    const currentType = globalForest.terrain[cellIndex];
 
-    if (index > -1) {
-      globalForest.shapeArray.splice(index, 1);
+    if (currentType === type) {
+      // Toggle OFF if clicking the same tool
+      delete globalForest.terrain[cellIndex];
     } else {
-      globalForest.shapeArray.push(cellIndex);
+      // Overwrite/Set if new tool
+      globalForest.terrain[cellIndex] = type;
     }
 
-    return globalForest.shapeArray;
+    return "success";
   },
 };

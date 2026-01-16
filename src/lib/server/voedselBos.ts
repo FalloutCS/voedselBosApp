@@ -1,5 +1,7 @@
 import type { PlacedPlant } from "$lib/types";
 
+export type TerrainType = "blocked" | "water";
+
 export class Voedselbos {
   name: string;
   location: string;
@@ -7,7 +9,7 @@ export class Voedselbos {
   height: number;
   surfaceArea: number;
   placedPlants: PlacedPlant;
-  shapeArray: number[];
+  terrain: Record<number, string>;
 
   constructor(name: string, width: number, height: number, location: string) {
     this.name = name;
@@ -16,6 +18,6 @@ export class Voedselbos {
     this.location = location;
     this.surfaceArea = width * height;
     this.placedPlants = {}
-    this.shapeArray = [];
+    this.terrain = {};  
   }
 }
