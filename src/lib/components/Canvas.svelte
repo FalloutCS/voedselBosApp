@@ -12,6 +12,8 @@
     editMode: "shovel" | "planter" | "view";
     openMenu: (cellIndex: number) => void;
     stressMap?: Record<number, number>;
+    endScrollLeft: number;
+    endScrollTop: number;
   };
 
   let {
@@ -23,6 +25,8 @@
     surfaceArea,
     openMenu,
     stressMap = {},
+    endScrollLeft = $bindable(0),
+    endScrollTop = $bindable(0),
   }: canvasProps = $props();
 
   // --- Constants ---
@@ -48,11 +52,17 @@
   }
 
   function handleMouseUp(e: MouseEvent) {
+    if (editMode !== "view" || !scrollContainer) return;
     isDown = false;
+    endScrollLeft = scrollContainer.scrollLeft;
+    endScrollTop = scrollContainer.scrollTop;
   }
 
   function handleMouseLeave(e: MouseEvent) {
+    if (editMode !== "view" || !scrollContainer) return;
     isDown = false;
+    endScrollLeft = scrollContainer.scrollLeft;
+    endScrollTop = scrollContainer.scrollTop;
   }
 
   function handleMouseMove(e: MouseEvent) {
@@ -74,11 +84,24 @@
     const opacity = Math.min(count * 0.1, 0.8);
     return `box-shadow: inset 0 0 0 100px rgba(220, 38, 38, ${opacity});`;
   }
+
+  import type { Action } from 'svelte/action';
+	const scrollToLastPos: Action = (node) => {
+		// the node has been mounted in the DOM
+
+		$effect(() => {
+			// setup goes here
+      scrollContainer?.scroll(endScrollLeft, endScrollTop)
+
+		});
+	};
 </script>
+
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
   bind:this={scrollContainer}
+  use:scrollToLastPos
   onmousedown={handleMouseDown}
   onmouseleave={handleMouseLeave}
   onmouseup={handleMouseUp}

@@ -20,6 +20,8 @@
     data.placedPlants[activeCellIndex]?.plant?.commonName || "Plant"
   );
   const loadingDuration = 2000;
+  let endScrollTop = $state(0);
+  let endScrollLeft = $state(0);
 
   // Waits for the browser to finish updating before closing the menu
   const handlePlantSubmission: SubmitFunction = () => {
@@ -109,6 +111,8 @@
       width={data.width}
       height={data.height}
       openMenu={handleCellClick}
+      bind:endScrollLeft
+      bind:endScrollTop
     />
   {/if}
 </div>
