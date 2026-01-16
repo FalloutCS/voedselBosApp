@@ -7,12 +7,10 @@ import { redirect } from "@sveltejs/kit";
 export const load = (async () => {
   let globalForest = forestStore.get();
 
-  // Redirect back if no forest exists
   if (!globalForest) {
     throw redirect(307, "/builder");
   }
 
-  // Prepare data for simulation
   const filteredData = {
     gardenLocation: forestStore.get()?.location,
     data: forestStore.get()?.placedPlants,
