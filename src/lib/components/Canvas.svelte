@@ -82,7 +82,7 @@
 
     $effect(() => {
       // setup goes here
-      scrollContainer?.scroll(endScrollLeft, endScrollTop);
+      node.scroll(endScrollLeft, endScrollTop);
     });
   };
 </script>
