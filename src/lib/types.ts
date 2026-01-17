@@ -17,6 +17,7 @@ export type Plant = {
   height?: number;
   width?: number;
   ukHardiness?: string;
+  nitrogenNeed?: number;
 };
 
 export type PlantBadgeConfig = {
