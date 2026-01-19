@@ -39,7 +39,7 @@ export const propertyConfig: PlantBadgeConfig[] = [
                 title: 'Deze plant blijft groen in de winter' 
             },
             'D': { 
-                label: '🍃 Bladverliezend', 
+                label: '🍂 Bladverliezend', 
                 classes: 'bg-emerald-100 text-emerald-800 border-emerald-200', 
                 title: 'Deze plant verliest zijn blad in de winter' 
             }
@@ -68,12 +68,12 @@ export const propertyConfig: PlantBadgeConfig[] = [
         separator: ',',
         valueMap: {
             'F': {
-                label: '☀️ Volle Schaduw',
+                label: '🌑 Volle Schaduw',
                 classes: 'bg-yellow-100 text-yellow-800 border-yellow-200', 
                 title: 'Groeit in volledige schaduw' 
             },
             'S': {
-                label: '☀️ Halfschaduw',
+                label: '🌓 Halfschaduw',
                 classes: 'bg-yellow-100 text-yellow-800 border-yellow-200', 
                 title: 'Groeit in zowel zon als schaduw' 
             },
