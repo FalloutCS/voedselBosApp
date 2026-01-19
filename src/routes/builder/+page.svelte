@@ -17,9 +17,9 @@
   let activeCellIndex: number = $state(0);
   let loading = $state(false);
   let editMode: "shovel" | "planter" | "view" = $state("view");
-  let shovelType: TerrainType = $state('blocked')
+  let shovelType: TerrainType = $state("blocked");
   let selectedPlantName = $derived(
-    data.placedPlants[activeCellIndex]?.plant?.commonName || "Plant"
+    data.placedPlants[activeCellIndex]?.plant?.commonName || "Plant",
   );
   const loadingDuration = 2000;
   let endScrollTop = $state(0);
@@ -53,7 +53,7 @@
         loading = true;
 
         const timer = new Promise((resolve) =>
-          setTimeout(resolve, loadingDuration)
+          setTimeout(resolve, loadingDuration),
         );
 
         return async ({ update }) => {
