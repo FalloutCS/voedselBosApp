@@ -2,16 +2,42 @@
 
 Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
 
-## Creating a project
+## Getting Started
 
-If you're seeing this, you've probably already done this step. Congrats!
+### Prerequisites
+
+- npm
+```sh
+# Install the latest version of Node Package Manager
+npm install npm@latest -g
+```
+
+
+### Installation
+1. Clone the repo
+```sh
+git clone https://github.com/FalloutCS/voedselBosApp.git
+```
+
+2. Install NPM Packages
+```sh
+npm install
+```
+
+3. Change git remote url to avoid accidental pushes to base project
+``` sh 
+git remote set-url origin github_username/repo_name
+git remote -v # confirm the changes
+```
+
+### Running
+Once you've installed the project and dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
 ```sh
-# create a new project in the current directory
-npx sv create
+npm run dev
 
-# create a new project in my-app
-npx sv create my-app
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
 ```
 
 ## Developing
@@ -25,14 +51,3 @@ npm run dev
 npm run dev -- --open
 ```
 
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
