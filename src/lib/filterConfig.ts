@@ -21,10 +21,9 @@ export const activeFilters: FilterConfig[] = [
         key: 'wind',
         label: 'Wind Tolerantie',
         options: [
-            { value: 'N', label: 'Niet tolerant (N)' },
-            { value: 'W', label: 'Weinig (W)' },
-            { value: 'M', label: 'Matig (M)' },
-            { value: 'F', label: 'Sterk (F)' }
+            { value: 'N', label: 'Niet Tolerant' },
+            { value: 'W', label: 'Windbestendig' },
+            { value: 'M', label: 'Zee- & Windbestendig' }
         ],
         matcher: (plant, value) => plant.wind === value
     },
@@ -37,16 +36,16 @@ export const activeFilters: FilterConfig[] = [
         ],
         matcher: (plant, value) => plant.deciduousEvergreen === value
     },
-    {
-        key: 'soil',
-        label: 'Grondsoort',
-        options: [
-            { value: 'L', label: 'Licht / Zand' },
-            { value: 'M', label: 'Medium / Leem' },
-            { value: 'H', label: 'Zwaar / Klei' }
-        ],
-        matcher: (plant, value) => plant.soil ? plant.soil.includes(value) : false
-    },
+    // {
+    //     key: 'soil',
+    //     label: 'Grondsoort',
+    //     options: [
+    //         { value: 'L', label: 'Licht' },
+    //         { value: 'M', label: 'Middel' },
+    //         { value: 'H', label: 'Zwaar' }
+    //     ],
+    //     matcher: (plant, value) => plant.soil ? plant.soil.includes(value) : false
+    // },
     {
         key: 'shade',
         label: 'Schaduw',

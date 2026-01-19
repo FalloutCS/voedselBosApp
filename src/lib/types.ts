@@ -25,6 +25,7 @@ export type PlantBadgeConfig = {
     suffix?: string;
     classes?: string;
     title?: string;
+    separator?: string
     valueMap?: Record<string, { label: string, classes: string, title: string }>;
 };
 
