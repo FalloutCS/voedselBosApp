@@ -4,7 +4,7 @@ let plantsTest: Plant[] = []
 
 export async function getPlants() {
     try {
-        const response = await fetch('http://localhost:5269/api/Plants/FilterSearch')
+        const response = await fetch('http://localhost:5269/api/Plants/MediumFilterSearch')
 
         if (response.ok) {
             const data = await response.json()

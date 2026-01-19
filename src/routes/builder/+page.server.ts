@@ -1,68 +1,101 @@
-import {
-    Voedselbos, type Plant
-} from '$lib/types';
-import type { Actions, PageServerLoad } from './$types';
-import { validateIndex } from '$lib/server/utils';
-import { getPlants } from '$lib/server/plantService';
-import { fail } from '@sveltejs/kit';
-import { postPlants } from '$lib/server/postPlants';
+import { type Plant } from "$lib/types";
+import type { Actions, PageServerLoad } from "./$types";
+import { getPlants } from "$lib/server/plantService";
+import { fail } from "@sveltejs/kit";
+import { postPlants } from "$lib/server/postPlants";
+import { forestStore } from "$lib/server/db/forestStore";
+import { redirect } from "@sveltejs/kit"; // Add this import
+import type { TerrainType } from "$lib/server/voedselBos";
 
-let garden_State: Voedselbos | null = null;
-let plants: Plant[]
-
+let plants: Plant[];
 
 export const load = (async () => {
-    if (!garden_State) {
-        garden_State = new Voedselbos("Mijn Voedselbos", 10, 10)
-        console.log("Garden Created for the first time.")
-        garden_State?.populateForest()
-    }
+  let globalForest = forestStore.get();
 
-    // TODO: add error handler
-    plants = await getPlants()
+  if (!globalForest) {
+    globalForest = forestStore.create("Mijn Bos", 10, 10, "Rotterdam");
+  }
 
-    return {
-        plants: plants,
-        canvas: garden_State.plantSimulationDtos,
-        width: garden_State.width,
-        heigth: garden_State.height,
-    };
+  // TODO: add error handler
+  plants = await getPlants();
+
+  return {
+    plants: plants,
+    surfaceArea: globalForest.surfaceArea,
+    placedPlants: globalForest.placedPlants,
+    terrain: globalForest.terrain,
+    width: globalForest.width,
+    height: globalForest.height,
+  };
 }) satisfies PageServerLoad;
 
 export const actions = {
-    addPlant: async ({ request }) => {
-        const data = await request.formData();
-        const cellIndex = Number(data.get("cellIndex"));
-        const plantID = Number(data.get("plantID"));
-        const xPosition = Number(data.get("xPosition"));
-        const yPosition = Number(data.get("yPosition"));
-        const plantingDelay = Number(data.get("plantingDelay"));
+  addPlant: async ({ request }) => {
+    const data = await request.formData();
+    const cellIndex = Number(data.get("cellIndex"));
+    const plantID = Number(data.get("plantID"));
+    const xPosition = Number(data.get("xPosition"));
+    const yPosition = Number(data.get("yPosition"));
+    const plantingDelay = Number(data.get("plantingDelay"));
 
-        if (!garden_State) {
-            return fail(400, { missing: true });
-        }
+    // TODO add error handling for missing plant
+    let plant = plants.find((plant) => {
+      return plant.id === plantID;
+    });
 
-        if (validateIndex(cellIndex, garden_State)) {
-            return fail(400, { incorrect: true });
-        }
+    const res = forestStore.addPlant(
+      cellIndex,
+      plant,
+      xPosition,
+      yPosition,
+      plantingDelay
+    );
+    // TODO add index validation on the forestStore
 
-        garden_State.plantSimulationDtos[cellIndex].plant = plants.find((plant) => {
-            return plant.id === plantID
-        })
-        garden_State.plantSimulationDtos[cellIndex].uid = cellIndex;
-        garden_State.plantSimulationDtos[cellIndex].plantingDelay = plantingDelay;
-        garden_State.plantSimulationDtos[cellIndex].xPosition = xPosition;
-        garden_State.plantSimulationDtos[cellIndex].yPosition = yPosition;
-
-        return { succes: true }
-    },
-
-    uploadSim: async (event) => {
-        const filteredData = garden_State?.plantSimulationDtos.filter((el) => {
-            return el.plant != undefined
-        })
-
-        const res = await postPlants(filteredData)
+    if (res === "Missing forest") {
+      return fail(400, { missing: true });
     }
-} satisfies Actions;
 
+    if (res === "Succes") {
+      return { succes: true };
+    }
+  },
+
+  removePlant: async ({ request }) => {
+    const data = await request.formData();
+    const cellIndex = Number(data.get("cellIndex"));
+
+    const globalForest = forestStore.get();
+
+    if (!globalForest) return fail(400, { missing: true });
+    forestStore.removePlant(cellIndex);
+
+    return { success: true };
+  },
+
+  uploadSim: async (event) => {
+    const filteredData = {
+      gardenLocation: forestStore.get()?.location,
+      data: forestStore.get()?.placedPlants,
+    };
+
+    try {
+      await postPlants(filteredData);
+    } catch (err) {
+      console.error("Simulation upload error:", err);
+      return fail(400, { error: "Failed to run simulation" });
+    }
+    throw redirect(303, "/ResultatenMenu");
+  },
+  terraform: async ({ request }) => {
+    const data = await request.formData();
+    const cellIndex = Number(data.get("cellIndex"));
+    const type = data.get("terraformType") as TerrainType;
+
+    if (!forestStore.get()) return fail(400, { missing: true });
+
+    forestStore.terraformCell(cellIndex, type);
+
+    return { success: true };
+  },
+} satisfies Actions;
