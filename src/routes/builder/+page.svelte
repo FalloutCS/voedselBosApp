@@ -11,6 +11,7 @@
   import type { menuMode } from "$lib/types";
   import Toolbar from "./components/Toolbar.svelte";
   import type { TerrainType } from "$lib/server/voedselBos";
+  import { Compass } from "phosphor-svelte";
 
   let { data, form }: PageProps = $props();
   let menuState: menuMode = $state("");
@@ -24,7 +25,6 @@
   const loadingDuration = 2000;
   let endScrollTop = $state(0);
   let endScrollLeft = $state(0);
-
   // Waits for the browser to finish updating before closing the menu
   const handlePlantSubmission: SubmitFunction = () => {
     return async ({ update }) => {
@@ -47,18 +47,19 @@
   <div class="flex justify-between items-center pb-2">
     <Toolbar bind:editMode bind:shovelType />
 
+    <div class="flex flex-col items-center justify-center text-violet-600 bg-white/50 p-1 rounded-full shadow-sm select-none">
+        <Compass size={32} weight="duotone" />
+        <span class="text-xs font-bold">N</span>
+    </div>
     <form
       method="POST"
       use:enhance={() => {
         loading = true;
-
         const timer = new Promise((resolve) =>
           setTimeout(resolve, loadingDuration)
         );
-
         return async ({ update }) => {
           await Promise.all([update(), timer]);
-
           loading = false;
         };
       }}
@@ -71,6 +72,7 @@
       >
         {#if loading}
           <LoadingComponent size="20" color="#ffffff" unit="px" duration="1s" />
+         
           <span>Simuleren...</span>
         {:else}
           Simuleer
