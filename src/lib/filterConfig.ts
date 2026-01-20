@@ -36,33 +36,30 @@ export const activeFilters: FilterConfig[] = [
         ],
         matcher: (plant, value) => plant.deciduousEvergreen === value
     },
-    // {
-    //     key: 'soil',
-    //     label: 'Grondsoort',
-    //     options: [
-    //         { value: 'L', label: 'Licht' },
-    //         { value: 'M', label: 'Middel' },
-    //         { value: 'H', label: 'Zwaar' }
-    //     ],
-    //     matcher: (plant, value) => plant.soil ? plant.soil.includes(value) : false
-    // },
+    {
+        key: 'moisture',
+        label: 'Vochtbehoefte',
+        options: [
+            { value: 'D', label: 'Droge bodem' },
+            { value: 'M', label: 'Vochthoudende bodem' },
+            { value: 'We', label: 'Natte bodem' }
+        ],
+        matcher: (plant, value) => {
+            if (!plant.moisture) return false;
+            return plant.moisture.split('').includes(value) || plant.moisture.includes(value);
+        }
+    },
     {
         key: 'shade',
-        label: 'Schaduw',
+        label: 'Schaduw Tolerantie',
         options: [
-            { value: 'N', label: 'Geen schaduw (Volle zon)' },
+            { value: 'N', label: 'Geen schaduw' },
             { value: 'S', label: 'Halfschaduw' },
             { value: 'F', label: 'Volle schaduw' }
         ],
-        matcher: (plant, value) => plant.shade ? plant.shade.includes(value) : false
+        matcher: (plant, value) => {
+            if (!plant.shade) return false;
+            return plant.shade.split('').includes(value) || plant.shade.includes(value);
+        }
     },
-    {
-        key: 'nitrogen',
-        label: 'Stikstofbinder',
-        options: [
-            { value: 'TRUE', label: 'Ja' },
-            { value: 'FALSE', label: 'Nee' }
-        ],
-        matcher: (plant, value) => plant.nitrogenFixer === value
-    }
 ];
