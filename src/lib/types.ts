@@ -77,6 +77,12 @@ export type PlantInfo = {
   plant?: Plant;
 };
 
+export type Badge = {
+        label: string;
+        classes: string;
+        title?: string;
+    };
+
 export type menuMode = "" | "plantMenu" | "actionMenu";
 
 export type PlacedPlant = Record<number, PlantInfo>;

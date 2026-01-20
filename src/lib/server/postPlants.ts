@@ -1,6 +1,5 @@
 import {
   type SimulationResultDto,
-  type PlantInfo,
   type PlacedPlant,
 } from "$lib/types";
 import { fail } from "@sveltejs/kit";
@@ -26,7 +25,6 @@ export async function postPlants(filteredData: {
     );
 
     const data: SimulationResultDto = await response.json();
-    //console.log("Raw:", data);
     console.log(data.plants);
     console.log(data.warnings);
 

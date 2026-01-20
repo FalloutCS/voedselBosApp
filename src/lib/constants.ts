@@ -31,96 +31,120 @@ export const layerMapping: Record<string, Habit[]> = {
 };
 
 export const propertyConfig: PlantBadgeConfig[] = [
-    {   key: 'nitrogenFixer',
-        valueMap: {
-            'TRUE': { 
-                label: 'N-binder', 
-                classes: 'bg-green-100 text-green-800 border-green-200', 
-                title: 'Stikstofbinder' }
-        }
-    },
     {   key: 'deciduousEvergreen',
         valueMap: {
             'E': { 
-                label: 'Wintergroen', 
+                label: '🍃 Wintergroen', 
                 classes: 'bg-emerald-100 text-emerald-800 border-emerald-200', 
-                title: 'Bladbehoud: Wintergroen' 
+                title: 'Deze plant blijft groen in de winter' 
             },
             'D': { 
-                label: 'Bladverliezend', 
+                label: '🍂 Bladverliezend', 
                 classes: 'bg-emerald-100 text-emerald-800 border-emerald-200', 
-                title: 'Bladbehoud: Bladverliezend' 
+                title: 'Deze plant verliest zijn blad in de winter' 
             }
         }
     },
-    {   key: 'wind', 
-        prefix: '💨', 
-        title: 'Wind Tolerantie',
+    {   key: 'wind',  
         valueMap: {
             'N': { 
-                label: '💨 Niet windtolerant', 
+                label: '💨 Niet windbestendig', 
                 classes: 'bg-slate-100 text-slate-700 border-slate-200', 
-                title: 'Wind: Niet tolerant' 
+                title: 'Heeft een beschutte plek nodig' 
             },
             'W': { 
                 label: '💨 Windbestendig', 
                 classes: 'bg-slate-100 text-slate-700 border-slate-200', 
-                title: 'Wind: Bestendig' 
+                title: 'Kan goed tegen wind' 
             },
             'M': { 
                 label: '💨 Zee- & windbestendig', 
                 classes: 'bg-slate-100 text-slate-700 border-slate-200', 
-                title: 'Wind: Geschikt voor zeewind' 
+                title: 'Bestand tegen harde wind en zoute zeewind' 
             }
         }
     },
     {   key: 'shade', 
-        prefix: '☀', 
-        classes: 'bg-yellow-100 text-yellow-800 border-yellow-200', 
-        title: 'Zon/Schaduw' 
-    },
-    { 
-        key: 'moisture', 
-        prefix: '💧', 
-        title: 'Vochtbehoefte',
         separator: ',',
         valueMap: {
-            'D': { 
-                label: '💧 Droog', 
-                classes: 'bg-cyan-100 text-cyan-800 border-cyan-200', 
-                title: 'Vochtbehoefte: Droge grond' 
+            'F': {
+                label: '🌑 Volle Schaduw',
+                classes: 'bg-yellow-100 text-yellow-800 border-yellow-200', 
+                title: 'Groeit in volledige schaduw' 
             },
-            'M': { 
-                label: '💧 Vochtig', 
-                classes: 'bg-cyan-100 text-cyan-800 border-cyan-200', 
-                title: 'Vochtbehoefte: Vochtige grond' 
+            'S': {
+                label: '🌓 Halfschaduw',
+                classes: 'bg-yellow-100 text-yellow-800 border-yellow-200', 
+                title: 'Groeit in zowel zon als schaduw' 
             },
-            'We': { 
-                label: '💧 Natte grond', 
-                classes: 'bg-cyan-100 text-cyan-800 border-cyan-200', 
-                title: 'Vochtbehoefte: Natte grond' 
+            'N': {
+                label: '☀️ Geen Schaduw',
+                classes: 'bg-yellow-100 text-yellow-800 border-yellow-200', 
+                title: 'Heeft een plek in de volle zon nodig' 
+            },
+        }
+        
+    },
+    { 
+        key: 'nitrogenNeed', 
+        valueMap: {
+            '0': { 
+                label: '🧪 Stikstofbehoefte: Geen', 
+                classes: 'bg-orange-200 text-orange-900 border-orange-300', 
+                title: 'Heeft geen extra stikstof nodig' 
+            },
+            '1': { 
+                label: '🧪 Stikstofbehoefte: Zeer laag', 
+                classes: 'bg-orange-200 text-orange-900 border-orange-300', 
+                title: 'Heeft zeer weinig stikstof nodig' 
+            },
+            '2': { 
+                label: '🧪 Stikstofbehoefte: Laag', 
+                classes: 'bg-orange-200 text-orange-900 border-orange-300', 
+                title: 'Heeft weinig stikstof nodig' 
+            },
+            '3': { 
+                label: '🧪 Stikstofbehoefte: Gemiddeld', 
+                classes: 'bg-orange-200 text-orange-900 border-orange-300', 
+                title: 'Heeft een gemiddelde hoeveelheid stikstof nodig' 
+            },
+            '4': { 
+                label: '🧪 Stikstofbehoefte: Hoog', 
+                classes: 'bg-orange-200 text-orange-900 border-orange-300', 
+                title: 'Heeft veel stikstof nodig' 
+            },
+            '5': { 
+                label: '🧪 Stikstofbehoefte: Zeer hoog', 
+                classes: 'bg-orange-200 text-orange-900 border-orange-300', 
+                title: 'Heeft zeer veel stikstof nodig' 
             }
         }
     },
-    // { key: 'soil', 
-    //     prefix: '🌱', 
-    //     classes: 'bg-stone-100 text-stone-700 border-stone-200', 
-    //     title: 'Grondsoort'
-    // },
-    // { key: 'pH', 
-    //     prefix: 'pH', 
-    //     classes: 'bg-purple-100 text-purple-800 border-purple-200', 
-    //     title: 'Zuurgraad' 
-    // },
-    // { key: 'ukHardiness', 
-    //     prefix: 'Zone', 
-    //     classes: 'bg-rose-100 text-rose-800 border-rose-200', 
-    //     title: 'Hardheid (UK Zone)' 
-    // },
+    { 
+        key: 'moisture', 
+        separator: ',',
+        valueMap: {
+            'D': { 
+                label: '💧 Droge bodem', 
+                classes: 'bg-cyan-100 text-cyan-800 border-cyan-200', 
+                title: 'Geschikt voor droge grond' 
+            },
+            'M': { 
+                label: '💧 Vochthoudende bodem', 
+                classes: 'bg-cyan-100 text-cyan-800 border-cyan-200', 
+                title: 'Geschikt voor vochthoudende grond' 
+            },
+            'We': { 
+                label: '💧 Natte bodem', 
+                classes: 'bg-cyan-100 text-cyan-800 border-cyan-200', 
+                title: 'Geschikt voor natte grond' 
+            }
+        }
+    },
     { key: 'height', 
         prefix: 'Hoogte ↕', 
         suffix: 'm', 
         classes: 'bg-gray-100 text-gray-700 border-gray-200', 
-        title: 'Hoogte' 
+        title: 'De maximale hoogte van de plant' 
     }
 ];
