@@ -1,6 +1,12 @@
-# sv
+# Forest Garden Builder
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Create your own Forest Garden in your browser. Create a canvas, personalise your land, place plants and trees and simulate your forest against the elements. 
+
+## Built With
+- TypeScript
+- Svelte 5
+- Svelte-kit
+- Bits-ui & TailwindCSS
 
 ## Getting Started
 
@@ -11,7 +17,6 @@ Everything you need to build a Svelte project, powered by [`sv`](https://github.
 # Install the latest version of Node Package Manager
 npm install npm@latest -g
 ```
-
 
 ### Installation
 1. Clone the repo
