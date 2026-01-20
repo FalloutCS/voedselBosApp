@@ -165,36 +165,36 @@
         <div class="p-6 overflow-y-auto grow bg-stone-50/50">
           
             <div class="flex gap-4 mb-4 p-3 bg-white rounded-lg border border-stone-200 shadow-sm">
-                <div class="flex-1 flex items-center gap-3 px-2 border-r border-stone-100 last:border-0">
-                    <div class="text-amber-500 bg-amber-50 p-1.5 rounded-full shrink-0">
-                        <Sun size={16} />
-                    </div>
-                    <div class="overflow-hidden">
-                        <span class="block text-[9px] uppercase text-stone-400 font-bold leading-none mb-1 truncate">Lichtbehoefte</span>
-                        <span class="font-semibold text-sm text-stone-700 leading-none block truncate">{translateSun(activePlantData.shade)}</span>
-                    </div>
-                </div>
+    <div class="flex-1 flex items-center gap-3 px-2 border-r border-stone-100 last:border-0">
+        <div class="text-amber-500 bg-amber-50 p-1.5 rounded-full shrink-0">
+            <Sun size={16} />
+        </div>
+        <div class="overflow-hidden">
+            <span class="block text-[9px] uppercase text-stone-400 font-bold leading-none mb-1 truncate">Lichtbehoefte</span>
+            <span class="font-semibold text-sm text-stone-700 leading-tight block truncate">{translateSun(activePlantData.shade)}</span>
+        </div>
+    </div>
 
-                <div class="flex-1 flex items-center gap-3 px-2 border-r border-stone-100 last:border-0">
-                    <div class="text-blue-500 bg-blue-50 p-1.5 rounded-full shrink-0">
-                        <Wind size={16} />
-                    </div>
-                    <div class="overflow-hidden">
-                        <span class="block text-[9px] uppercase text-stone-400 font-bold leading-none mb-1 truncate">Windbestendigheid</span>
-                        <span class="font-semibold text-sm text-stone-700 leading-none block truncate">{translateWind(activePlantData.wind)}</span>
-                    </div>
-                </div>
+    <div class="flex-1 flex items-center gap-3 px-2 border-r border-stone-100 last:border-0">
+        <div class="text-blue-500 bg-blue-50 p-1.5 rounded-full shrink-0">
+            <Wind size={16} />
+        </div>
+        <div class="overflow-hidden">
+            <span class="block text-[9px] uppercase text-stone-400 font-bold leading-none mb-1 truncate">Windbestendigheid</span>
+            <span class="font-semibold text-sm text-stone-700 leading-tight block truncate">{translateWind(activePlantData.wind)}</span>
+        </div>
+    </div>
 
-                <div class="flex-1 flex items-center gap-3 px-2">
-                    <div class="text-emerald-500 bg-emerald-50 p-1.5 rounded-full shrink-0">
-                        <Leaf size={16} />
-                    </div>
-                    <div class="overflow-hidden">
-                        <span class="block text-[9px] uppercase text-stone-400 font-bold leading-none mb-1 truncate">Stikstofbehoefte</span>
-                        <span class="font-semibold text-sm text-stone-700 leading-none block truncate">{translateNitrogen(activePlantData.nitrogenNeed)}</span>
-                    </div>
-                </div>
-            </div>
+    <div class="flex-1 flex items-center gap-3 px-2">
+        <div class="text-emerald-500 bg-emerald-50 p-1.5 rounded-full shrink-0">
+            <Leaf size={16} />
+        </div>
+        <div class="overflow-hidden">
+            <span class="block text-[9px] uppercase text-stone-400 font-bold leading-none mb-1 truncate">Stikstofbehoefte</span>
+            <span class="font-semibold text-sm text-stone-700 leading-tight block truncate">{translateNitrogen(activePlantData.nitrogenNeed)}</span>
+        </div>
+    </div>
+</div>
 
             {#if allIssues.length > 0}
                 <div class="flex gap-2 mb-4 overflow-x-auto pb-1">
