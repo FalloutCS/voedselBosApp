@@ -1,5 +1,6 @@
 class FilterState {
     selected = $state<Record<string, string>>({});
+    searchQuery = $state("");
 
     set(key: string, value: string | null) {
         if (!value) {
@@ -11,6 +12,7 @@ class FilterState {
 
     reset() {
         this.selected = {};
+        this.searchQuery = "";
     }
 
     get(key: string) {
