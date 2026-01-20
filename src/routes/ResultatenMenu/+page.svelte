@@ -106,7 +106,7 @@
 </script>
 
 <div class="h-4/5 w-4/5 mx-auto my-auto rounded relative flex flex-col font-sans">
-  <div class="flex justify-between items-end pb-4">
+  <div class="flex justify-between items-center pb-2 relative">
     <h1 class="text-2xl font-bold text-emerald-800 leading-none mb-1">Simulatie Resultaten</h1>
 
     <div class="absolute left-1/2 top-[10%] -translate-x-1/2 -translate-y-1/2 pointer-events-none grid grid-cols-[1rem_auto_1rem] grid-rows-[1rem_auto_1rem] place-items-center text-violet-600 bg-white-50/50 p-1 rounded-full shadow-sm select-none">
