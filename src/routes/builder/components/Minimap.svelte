@@ -3,9 +3,6 @@
   let { width, height, terrain, placedPlants } = $props();
   const MINIMAP_SIZE = 208; // px
 
-  // --- Minimap Logic ---
-  let viewportW = $state(0);
-  let viewportH = $state(0);
   let scaledPixel = $derived.by(() => {
     const scaledW = MINIMAP_SIZE / width;
     const scaledH = MINIMAP_SIZE / height;
