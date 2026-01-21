@@ -10,6 +10,7 @@
     endScrollLeft,
     endScrollTop,
   } = $props();
+
   const MINIMAP_SIZE = 208; // px
 
   let scaledPixel = $derived.by(() => {
@@ -18,7 +19,10 @@
     return Math.min(scaledH, scaledW);
   });
 
-  $inspect(viewportH / scaledPixel, viewportW / scaledPixel);
+  let overlayW = $derived(viewportW / scaledPixel + 5); // 5px safety margin
+  let overlayH = $derived(viewportH / scaledPixel + 7); // 7px safety margin
+  let overlayPosTop = $derived(endScrollTop / scaledPixel);
+  let overlayPosLeft = $derived(endScrollLeft / scaledPixel);
 </script>
 
 <div
@@ -28,10 +32,10 @@
     <div
       class="absolute border z-50"
       style="
-        width: {(viewportW / scaledPixel) + 5}px; 
-        height: {(viewportH / scaledPixel) + 7}px;
-        top: {endScrollTop / scaledPixel}px;
-        left: {endScrollLeft / scaledPixel}px;
+        width: {overlayW}px; 
+        height: {overlayH}px;
+        top: {overlayPosTop}px;
+        left: {overlayPosLeft}px;
         "
     ></div>
     <Stage width={scaledPixel * width} height={scaledPixel * height}>
