@@ -4,8 +4,8 @@
   import { gethabitIcon } from "$lib/habitIcon";
   import type { TerrainType } from "$lib/server/voedselBos";
   import type { canvasProps } from "$lib/types";
-  import { Stage, Layer, Rect, Circle } from "svelte-konva";
   import type { Action } from "svelte/action";
+  import Minimap from "./Minimap.svelte";
 
   let {
     placedPlants,
@@ -23,7 +23,6 @@
   // --- Constants ---
   const CELL_SIZE = 64; // px
   const GAP_SIZE = 0; // px
-  const MINIMAP_SIZE = 208; // px
 
   // --- Drag Logic ---
   let scrollContainer: HTMLDivElement | undefined = $state();
@@ -36,11 +35,6 @@
   // --- Minimap Logic ---
   let viewportW = $state(0);
   let viewportH = $state(0);
-  let scaledPixel = $derived.by(() => {
-    const scaledW = MINIMAP_SIZE / width;
-    const scaledH = MINIMAP_SIZE / height;
-    return Math.min(scaledH, scaledW);
-  });
 
   function finishDrag() {
     if (editMode !== "view" || !scrollContainer) return;
@@ -150,43 +144,6 @@
   </form>
 
   {#if browser}
-    <div
-      class="bg-violet-50 rounded select-none border border-violet-200 shadow-inner absolute bottom-4 right-4 w-52 h-52"
-    >
-      <Stage width={scaledPixel * width} height={scaledPixel * height}>
-        <Layer>
-          {#each Object.entries(terrain) as [index, type]}
-            {@const indexNum = Number(index)}
-            {#if type === "blocked"}
-              <Rect
-                x={(indexNum % width) * scaledPixel}
-                y={Math.floor(indexNum / width) * scaledPixel}
-                width={scaledPixel}
-                height={scaledPixel}
-                fill="#62748e"
-              />
-            {:else if type === "water"}
-              <Rect
-                x={(indexNum % width) * scaledPixel}
-                y={Math.floor(indexNum / width) * scaledPixel}
-                width={scaledPixel}
-                height={scaledPixel}
-                fill="#a2f4fd"
-              />
-            {/if}
-          {/each}
-          {#each Object.entries(placedPlants) as [index, plant]}
-            {@const indexNum = Number(index)}
-            <Circle
-              x={(indexNum % width) * scaledPixel}
-              y={Math.floor(indexNum / width) * scaledPixel}
-              width={scaledPixel}
-              height={scaledPixel}
-              fill="#05df72"
-            />
-          {/each}
-        </Layer>
-      </Stage>
-    </div>
+    <Minimap {height} {width} {placedPlants} {terrain} />
   {/if}
 </div>
