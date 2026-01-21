@@ -36,6 +36,8 @@
   let viewportW = $state(0);
   let viewportH = $state(0);
 
+  $inspect(endScrollLeft, endScrollTop)
+
   function finishDrag() {
     if (editMode !== "view" || !scrollContainer) return;
     isDown = false;
@@ -61,7 +63,6 @@
     const y = e.pageY - scrollContainer.offsetTop;
     const walkX = (x - startX) * 1.5;
     const walkY = (y - startY) * 1.5;
-
     scrollContainer.scrollLeft = scrollLeft - walkX;
     scrollContainer.scrollTop = scrollTop - walkY;
   }
@@ -144,6 +145,6 @@
   </form>
 
   {#if browser}
-    <Minimap {height} {width} {placedPlants} {terrain} />
+    <Minimap {height} {width} {placedPlants} {terrain} {viewportH} {viewportW} {endScrollLeft} {endScrollTop} />
   {/if}
 </div>
