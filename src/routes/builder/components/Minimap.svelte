@@ -30,7 +30,7 @@
 >
   <div class="relative">
     <div
-      class="absolute border z-50"
+      class="absolute border-2 border-slate-500 z-50 rounded shadow-inner"
       style="
         width: {overlayW}px; 
         height: {overlayH}px;
