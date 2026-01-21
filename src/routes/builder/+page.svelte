@@ -32,7 +32,7 @@
       menuState = "";
     };
   };
-
+  
   function handleCellClick(cellIndex: number) {
     if (editMode === "planter") {
       activeCellIndex = cellIndex;

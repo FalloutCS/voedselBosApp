@@ -24,6 +24,8 @@
 		"vite": "^7.1.10"
 	},
 	"dependencies": {
-		"bits-ui": "^2.14.4"
+		"bits-ui": "^2.14.4",
+		"konva": "^10.2.0",
+		"svelte-konva": "^1.0.1"
 	}
 }

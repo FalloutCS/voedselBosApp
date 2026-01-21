@@ -1,8 +1,10 @@
 <script lang="ts">
+  import { browser } from "$app/environment";
   import { enhance } from "$app/forms";
   import { gethabitIcon } from "$lib/habitIcon";
   import type { TerrainType } from "$lib/server/voedselBos";
   import type { PlacedPlant } from "$lib/types";
+  import { Stage, Layer, Rect } from "svelte-konva";
 
   type canvasProps = {
     placedPlants: PlacedPlant;
@@ -41,6 +43,19 @@
   let startY = $state(0);
   let scrollLeft = $state(0);
   let scrollTop = $state(0);
+
+  // --- Minimap Logic ---
+  let containerHeight = $state(0);
+  let containerWidth = $state(0);
+  let scaledContainerHeight = $derived(containerHeight * 0.2);
+  let scaledContainerWidth = $derived(containerWidth * 0.2);
+  const surfaceAreaSqrt = Math.floor(Math.sqrt(surfaceArea));
+  let pixelScaledHeight = $derived(
+    Math.floor(scaledContainerHeight / surfaceAreaSqrt)
+  );
+  let pixelScaledWidth = $derived(
+    Math.floor(scaledContainerWidth / surfaceAreaSqrt)
+  );
 
   function finishDrag() {
     if (editMode !== "view" || !scrollContainer) return;
@@ -92,6 +107,8 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
   bind:this={scrollContainer}
+  bind:clientHeight={containerHeight}
+  bind:clientWidth={containerWidth}
   use:scrollToLastPos
   onmousedown={handleMouseDown}
   onmouseleave={finishDrag}
@@ -105,7 +122,7 @@
     : 'cursor-default'}"
 >
   <form
-    class="grid bg-violet-100 p-10 w-max h-max transition-opacity duration-200
+    class="grid bg-violet-100 m-10 w-max h-max transition-opacity duration-200
     {editMode === 'view' ? 'pointer-events-none opacity-90' : ''}"
     style="
       grid-template-columns: repeat({width}, {CELL_SIZE}px); 
@@ -147,4 +164,44 @@
       </button>
     {/each}
   </form>
+
+  {#if browser}
+    <div class="w-1/5 h-1/5 bg-violet-50 rounded select-none border border-violet-200 shadow-inner absolute top-4/5 left-4/5">
+      <Stage width={scaledContainerWidth} height={scaledContainerHeight}>
+        <Layer>
+          {#each Object.entries(terrain) as [index, type]}
+            {@const indexNum = Number(index)}
+            {console.log(index, type)}
+            {#if type === "blocked"}
+              <Rect
+                x={(indexNum % width) * pixelScaledWidth}
+                y={Math.floor(indexNum / width) * pixelScaledHeight}
+                width={pixelScaledWidth}
+                height={pixelScaledHeight}
+                fill="gray"
+              />
+            {:else if type === "water"}
+              <Rect
+                x={(indexNum % width) * pixelScaledWidth}
+                y={Math.floor(indexNum / width) * pixelScaledHeight}
+                width={pixelScaledWidth}
+                height={pixelScaledHeight}
+                fill="blue"
+              />
+            {/if}
+          {/each}
+          {#each Object.entries(placedPlants) as [index, plant]}
+            {@const indexNum = Number(index)}
+            <Rect
+              x={(indexNum % width) * pixelScaledWidth}
+              y={Math.floor(indexNum / width) * pixelScaledHeight}
+              width={pixelScaledWidth}
+              height={pixelScaledHeight}
+              fill="green"
+            />
+          {/each}
+        </Layer>
+      </Stage>
+    </div>
+  {/if}
 </div>
