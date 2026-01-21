@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { PageProps } from "./$types";
-  import Canvas from "$lib/components/Canvas.svelte";
+  import Canvas from "./components/Canvas.svelte";
   import ErrorMissingData from "$lib/components/Error_MissingData.svelte";
   import { type SubmitFunction } from "@sveltejs/kit";
   import PlantMenu from "$lib/components/PlantMenu.svelte";

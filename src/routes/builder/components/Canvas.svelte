@@ -3,21 +3,9 @@
   import { enhance } from "$app/forms";
   import { gethabitIcon } from "$lib/habitIcon";
   import type { TerrainType } from "$lib/server/voedselBos";
-  import type { PlacedPlant } from "$lib/types";
-  import { Stage, Layer, Rect } from "svelte-konva";
-
-  type canvasProps = {
-    placedPlants: PlacedPlant;
-    surfaceArea: number;
-    terrain: Record<number, string>;
-    width: number;
-    height: number;
-    editMode: "shovel" | "planter" | "view";
-    shovelType: TerrainType;
-    openMenu: (cellIndex: number) => void;
-    endScrollLeft: number;
-    endScrollTop: number;
-  };
+  import type { canvasProps } from "$lib/types";
+  import { Stage, Layer, Rect, Circle } from "svelte-konva";
+  import type { Action } from "svelte/action";
 
   let {
     placedPlants,
@@ -35,6 +23,7 @@
   // --- Constants ---
   const CELL_SIZE = 64; // px
   const GAP_SIZE = 0; // px
+  const MINIMAP_SIZE = 208; // px
 
   // --- Drag Logic ---
   let scrollContainer: HTMLDivElement | undefined = $state();
@@ -45,17 +34,13 @@
   let scrollTop = $state(0);
 
   // --- Minimap Logic ---
-  let containerHeight = $state(0);
-  let containerWidth = $state(0);
-  let scaledContainerHeight = $derived(containerHeight * 0.2);
-  let scaledContainerWidth = $derived(containerWidth * 0.2);
-  const surfaceAreaSqrt = Math.floor(Math.sqrt(surfaceArea));
-  let pixelScaledHeight = $derived(
-    Math.floor(scaledContainerHeight / surfaceAreaSqrt)
-  );
-  let pixelScaledWidth = $derived(
-    Math.floor(scaledContainerWidth / surfaceAreaSqrt)
-  );
+  let viewportW = $state(0);
+  let viewportH = $state(0);
+  let scaledPixel = $derived.by(() => {
+    const scaledW = MINIMAP_SIZE / width;
+    const scaledH = MINIMAP_SIZE / height;
+    return Math.min(scaledH, scaledW);
+  });
 
   function finishDrag() {
     if (editMode !== "view" || !scrollContainer) return;
@@ -87,7 +72,6 @@
     scrollContainer.scrollTop = scrollTop - walkY;
   }
 
-  import type { Action } from "svelte/action";
   const scrollToLastPos: Action = (node) => {
     // the node has been mounted in the DOM
 
@@ -107,8 +91,8 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
   bind:this={scrollContainer}
-  bind:clientHeight={containerHeight}
-  bind:clientWidth={containerWidth}
+  bind:clientHeight={viewportH}
+  bind:clientWidth={viewportW}
   use:scrollToLastPos
   onmousedown={handleMouseDown}
   onmouseleave={finishDrag}
@@ -166,38 +150,39 @@
   </form>
 
   {#if browser}
-    <div class="w-1/5 h-1/5 bg-violet-50 rounded select-none border border-violet-200 shadow-inner absolute top-4/5 left-4/5">
-      <Stage width={scaledContainerWidth} height={scaledContainerHeight}>
+    <div
+      class="bg-violet-50 rounded select-none border border-violet-200 shadow-inner absolute bottom-4 right-4 w-52 h-52"
+    >
+      <Stage width={scaledPixel * width} height={scaledPixel * height}>
         <Layer>
           {#each Object.entries(terrain) as [index, type]}
             {@const indexNum = Number(index)}
-            {console.log(index, type)}
             {#if type === "blocked"}
               <Rect
-                x={(indexNum % width) * pixelScaledWidth}
-                y={Math.floor(indexNum / width) * pixelScaledHeight}
-                width={pixelScaledWidth}
-                height={pixelScaledHeight}
-                fill="gray"
+                x={(indexNum % width) * scaledPixel}
+                y={Math.floor(indexNum / width) * scaledPixel}
+                width={scaledPixel}
+                height={scaledPixel}
+                fill="#62748e"
               />
             {:else if type === "water"}
               <Rect
-                x={(indexNum % width) * pixelScaledWidth}
-                y={Math.floor(indexNum / width) * pixelScaledHeight}
-                width={pixelScaledWidth}
-                height={pixelScaledHeight}
-                fill="blue"
+                x={(indexNum % width) * scaledPixel}
+                y={Math.floor(indexNum / width) * scaledPixel}
+                width={scaledPixel}
+                height={scaledPixel}
+                fill="#a2f4fd"
               />
             {/if}
           {/each}
           {#each Object.entries(placedPlants) as [index, plant]}
             {@const indexNum = Number(index)}
-            <Rect
-              x={(indexNum % width) * pixelScaledWidth}
-              y={Math.floor(indexNum / width) * pixelScaledHeight}
-              width={pixelScaledWidth}
-              height={pixelScaledHeight}
-              fill="green"
+            <Circle
+              x={(indexNum % width) * scaledPixel}
+              y={Math.floor(indexNum / width) * scaledPixel}
+              width={scaledPixel}
+              height={scaledPixel}
+              fill="#05df72"
             />
           {/each}
         </Layer>
