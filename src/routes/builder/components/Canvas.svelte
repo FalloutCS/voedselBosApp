@@ -1,21 +1,11 @@
 <script lang="ts">
+  import { browser } from "$app/environment";
   import { enhance } from "$app/forms";
   import { gethabitIcon } from "$lib/habitIcon";
   import type { TerrainType } from "$lib/server/voedselBos";
-  import type { PlacedPlant } from "$lib/types";
-
-  type canvasProps = {
-    placedPlants: PlacedPlant;
-    surfaceArea: number;
-    terrain: Record<number, string>;
-    width: number;
-    height: number;
-    editMode: "shovel" | "planter" | "view";
-    shovelType: TerrainType;
-    openMenu: (cellIndex: number) => void;
-    endScrollLeft: number;
-    endScrollTop: number;
-  };
+  import type { canvasProps } from "$lib/types";
+  import type { Action } from "svelte/action";
+  import Minimap from "./Minimap.svelte";
 
   let {
     placedPlants,
@@ -42,6 +32,12 @@
   let scrollLeft = $state(0);
   let scrollTop = $state(0);
 
+  // --- Minimap Logic ---
+  let viewportW = $state(0);
+  let viewportH = $state(0);
+
+  $inspect(endScrollLeft, endScrollTop)
+
   function finishDrag() {
     if (editMode !== "view" || !scrollContainer) return;
     isDown = false;
@@ -67,12 +63,10 @@
     const y = e.pageY - scrollContainer.offsetTop;
     const walkX = (x - startX) * 1.5;
     const walkY = (y - startY) * 1.5;
-
     scrollContainer.scrollLeft = scrollLeft - walkX;
     scrollContainer.scrollTop = scrollTop - walkY;
   }
 
-  import type { Action } from "svelte/action";
   const scrollToLastPos: Action = (node) => {
     // the node has been mounted in the DOM
 
@@ -92,6 +86,8 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
   bind:this={scrollContainer}
+  bind:clientHeight={viewportH}
+  bind:clientWidth={viewportW}
   use:scrollToLastPos
   onmousedown={handleMouseDown}
   onmouseleave={finishDrag}
@@ -105,7 +101,7 @@
     : 'cursor-default'}"
 >
   <form
-    class="grid bg-violet-100 p-10 w-max h-max transition-opacity duration-200
+    class="grid bg-violet-100 m-10 w-max h-max transition-opacity duration-200
     {editMode === 'view' ? 'pointer-events-none opacity-90' : ''}"
     style="
       grid-template-columns: repeat({width}, {CELL_SIZE}px); 
@@ -147,4 +143,8 @@
       </button>
     {/each}
   </form>
+
+  {#if browser}
+    <Minimap {height} {width} {placedPlants} {terrain} {viewportH} {viewportW} {endScrollLeft} {endScrollTop} />
+  {/if}
 </div>
