@@ -5,10 +5,10 @@
     height,
     terrain,
     placedPlants,
-    viewportW,
-    viewportH,
     endScrollLeft,
     endScrollTop,
+    percentageViewportW,
+    percentageViewportH,
   } = $props();
 
   const MINIMAP_SIZE = 208; // px
@@ -19,10 +19,10 @@
     return Math.min(scaledH, scaledW);
   });
 
-  let overlayW = $derived(viewportW / scaledPixel + 5); // 5px safety margin
-  let overlayH = $derived(viewportH / scaledPixel + 7); // 7px safety margin
-  let overlayPosTop = $derived(endScrollTop / scaledPixel);
-  let overlayPosLeft = $derived(endScrollLeft / scaledPixel);
+  let overlayW = $derived(MINIMAP_SIZE * percentageViewportW); // 5px safety margin
+  let overlayH = $derived(MINIMAP_SIZE * percentageViewportH); // 7px safety margin
+  let overlayPosTop = $derived((endScrollTop / 64) * scaledPixel);
+  let overlayPosLeft = $derived((endScrollLeft / 64) * scaledPixel);
 </script>
 
 <div
