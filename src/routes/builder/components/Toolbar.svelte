@@ -44,7 +44,7 @@
           class="flex items-center gap-2 px-3 py-2 text-sm rounded-lg hover:bg-violet-50 cursor-pointer outline-none"
         >
           <Prohibit class="size-4 text-gray-500" />
-          <span>Block Terrain</span>
+          <span>Blokkeer Terrein</span>
         </DropdownMenu.Item>
 
         <DropdownMenu.Item
@@ -55,7 +55,7 @@
           class="flex items-center gap-2 px-3 py-2 text-sm rounded-lg hover:bg-violet-50 cursor-pointer outline-none"
         >
           <Drop class="size-4 text-blue-500" />
-          <span>Water / Pond</span>
+          <span>Water / Sloot</span>
         </DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu.Root>

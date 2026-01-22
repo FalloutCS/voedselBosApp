@@ -20,7 +20,7 @@
   let editMode: "shovel" | "planter" | "view" = $state("view");
   let shovelType: TerrainType = $state("blocked");
   let selectedPlantName = $derived(
-    data.placedPlants[activeCellIndex]?.plant?.commonName || "Plant",
+    data.placedPlants[activeCellIndex]?.plant?.nlName || "Plant",
   );
   const loadingDuration = 2000;
   let endScrollTop = $state(0);
