@@ -35,8 +35,11 @@
   // --- Minimap Logic ---
   let viewportW = $state(0);
   let viewportH = $state(0);
+  let totalWidth = $derived(width * 64); // px
+  let totalHeight = $derived(height * 64); // px
 
-  $inspect(endScrollLeft, endScrollTop)
+  let percentageViewportW = $derived(1 - (totalWidth - viewportW) / totalWidth);
+  let percentageViewportH = $derived(1 - (totalHeight - viewportH) / totalHeight);
 
   function finishDrag() {
     if (editMode !== "view" || !scrollContainer) return;
@@ -145,6 +148,15 @@
   </form>
 
   {#if browser}
-    <Minimap {height} {width} {placedPlants} {terrain} {viewportH} {viewportW} {endScrollLeft} {endScrollTop} />
+    <Minimap
+      {height}
+      {width}
+      {placedPlants}
+      {terrain}
+      {percentageViewportW}
+      {percentageViewportH}
+      {endScrollLeft}
+      {endScrollTop}
+    />
   {/if}
 </div>
