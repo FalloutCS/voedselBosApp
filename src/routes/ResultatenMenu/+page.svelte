@@ -131,7 +131,7 @@
     </a>
   </div>
 
-  <div class="relative grow border-2 border-emerald-100 rounded-lg overflow-hidden bg-white shadow-sm">
+  <div class="relative grow  rounded-lg overflow-hidden bg-white shadow-sm">
     <ResultatenCanvas
       surfaceArea={data.surfaceArea}
       terrain={data.terrain}
