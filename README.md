@@ -3,7 +3,6 @@
 A web-based interactive tool for designing, planning, and simulating permaculture forest gardens. Built with the latest web technologies to provide a performant, infinite-canvas experience.
 
 ![Project Screenshot](static/readme_voorbeeld.png)
-*(Add a screenshot of your builder here)*
 
 ## ✨ Key Features
 
