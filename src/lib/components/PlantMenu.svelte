@@ -138,7 +138,8 @@
                     <input
                         type="text"
                         placeholder="Zoek op naam..."
-                        bind:value={filterState.searchQuery}
+                        value={filterState.searchQuery}
+                        oninput={(e) => filterState.setSearch(e.currentTarget.value)}
                         class="bg-white border border-violet-200 text-violet-900 text-sm rounded-lg focus:ring-violet-500 focus:border-violet-500 block w-full pl-9 p-1.5 hover:border-violet-400 transition-colors"
                     />
                     {#if filterState.searchQuery}
