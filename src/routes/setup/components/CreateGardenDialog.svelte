@@ -9,7 +9,7 @@
   <Dialog.Trigger
     class="bg-violet-600 hover:bg-violet-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all active:scale-95"
   >
-    Start New Garden
+    Start Een Voedselbos
   </Dialog.Trigger>
 
   <Dialog.Portal>
@@ -21,16 +21,16 @@
       class="fixed left-[50%] top-[50%] z-50 w-full max-w-md translate-x-[-50%] translate-y-[-50%] rounded-2xl bg-white p-8 shadow-2xl outline-none border border-violet-100"
     >
       <Dialog.Title class="text-2xl font-bold text-violet-900 mb-2">
-        Create New Forest
+        Creeër Uw Voedselbos
       </Dialog.Title>
       <Dialog.Description class="text-sm text-gray-500 mb-6">
-        Define the dimensions and location of your new project.
+        Bepaal de grootte en locatie van uw voedselbos
       </Dialog.Description>
 
       <form method="POST" class="flex flex-col gap-4" use:enhance>
         <div class="space-y-1">
           <label for="name" class="text-sm font-medium text-violet-700"
-            >Name</label
+            >Naam</label
           >
           <input
             id="name"
@@ -44,7 +44,7 @@
 
         <div class="space-y-1">
           <label for="location" class="text-sm font-medium text-violet-700"
-            >Location</label
+            >Locatie</label
           >
           <input
             id="location"
@@ -59,26 +59,28 @@
         <div class="grid grid-cols-2 gap-4">
           <div class="space-y-1">
             <label for="width" class="text-sm font-medium text-violet-700"
-              >Width (m)</label
+              >Breedte (m)</label
             >
             <input
               id="width"
               name="width"
               type="number"
-              min="1"
+              min="10"
+              max="50"
               placeholder="10"
               class="flex h-10 w-full rounded-lg border border-violet-200 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
             />
           </div>
           <div class="space-y-1">
             <label for="height" class="text-sm font-medium text-violet-700"
-              >Height (m)</label
+              >Hoogte (m)</label
             >
             <input
               id="height"
               name="height"
               type="number"
-              min="1"
+              min="10"
+              max="50"
               placeholder="10"
               class="flex h-10 w-full rounded-lg border border-violet-200 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
             />
@@ -90,7 +92,7 @@
           formaction="?/create"
           class="mt-4 inline-flex items-center justify-center rounded-xl bg-violet-600 px-4 py-3 text-sm font-bold text-white shadow-sm hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 transition-all active:scale-95"
         >
-          Create Forest
+          Maak Voedselbos
         </button>
       </form>
 
@@ -114,7 +116,7 @@
             y2="18"
           ></line></svg
         >
-        <span class="sr-only">Close</span>
+        <span class="sr-only">Sluiten</span>
       </Dialog.Close>
     </Dialog.Content>
   </Dialog.Portal>

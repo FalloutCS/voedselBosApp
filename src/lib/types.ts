@@ -1,3 +1,5 @@
+import type { TerrainType } from "./server/voedselBos";
+
 export type Plant = {
   id: number;
   latinName: string;
@@ -21,20 +23,20 @@ export type Plant = {
 };
 
 export type PlantBadgeConfig = {
-    key: keyof Plant;
-    prefix?: string;
-    suffix?: string;
-    classes?: string;
-    title?: string;
-    separator?: string
-    valueMap?: Record<string, { label: string, classes: string, title: string }>;
+  key: keyof Plant;
+  prefix?: string;
+  suffix?: string;
+  classes?: string;
+  title?: string;
+  separator?: string;
+  valueMap?: Record<string, { label: string; classes: string; title: string }>;
 };
 
 export type FilterConfig = {
-    key: string;
-    label: string;
-    options: { value: string, label: string }[];
-    matcher: (plant: Plant, selectedValue: string) => boolean;
+  key: string;
+  label: string;
+  options: { value: string; label: string }[];
+  matcher: (plant: Plant, selectedValue: string) => boolean;
 };
 
 export type Wind = "N" | "W" | "M" | "F";
@@ -58,7 +60,7 @@ export type Habit =
   | "Perennial Climber"
   | "Shrub"
   | "Tree";
-  
+
 export type SimulatedPlantResultDto = {
   uid: number;
   health: number;
@@ -78,12 +80,24 @@ export type PlantInfo = {
 };
 
 export type Badge = {
-        label: string;
-        classes: string;
-        title?: string;
-    };
+  label: string;
+  classes: string;
+  title?: string;
+};
 
 export type menuMode = "" | "plantMenu" | "actionMenu";
 
 export type PlacedPlant = Record<number, PlantInfo>;
 
+export type canvasProps = {
+  placedPlants: PlacedPlant;
+  surfaceArea: number;
+  terrain: Record<number, string>;
+  width: number;
+  height: number;
+  editMode: "shovel" | "planter" | "view";
+  shovelType: TerrainType;
+  openMenu: (cellIndex: number) => void;
+  endScrollLeft: number;
+  endScrollTop: number;
+};

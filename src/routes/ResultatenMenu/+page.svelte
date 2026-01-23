@@ -3,6 +3,7 @@
   import { fade, fly, slide } from "svelte/transition";
   import { getPairedIssuesForLocation, getStressLevels } from "$lib/simulationUtils";
   import ResultatenCanvas from "$lib/components/ResultatenCanvas.svelte";
+  import { CompassRose } from "phosphor-svelte";
   
   // Imports from phosphor-svelte
   import { 
@@ -105,8 +106,23 @@
 </script>
 
 <div class="h-4/5 w-4/5 mx-auto my-auto rounded relative flex flex-col font-sans">
-  <div class="flex justify-between items-center pb-4">
-    <h1 class="text-2xl font-bold text-emerald-800">Simulatie Resultaten</h1>
+  <div class="flex justify-between items-center pb-2 relative">
+    <h1 class="text-2xl font-bold text-emerald-800 leading-none mb-1">Simulatie Resultaten</h1>
+
+    <div class="absolute left-1/2 top-[10%] -translate-x-1/2 -translate-y-1/2 pointer-events-none grid grid-cols-[1rem_auto_1rem] grid-rows-[1rem_auto_1rem] place-items-center text-violet-600 bg-white-50/50 p-1 rounded-full shadow-sm select-none">
+        <span class="col-start-2 row-start-1 text-xs font-bold leading-none">N</span>
+        
+        <span class="col-start-1 row-start-2 text-xs font-bold leading-none">W</span>
+        
+        <div class="col-start-2 row-start-2 flex items-center justify-center">
+             <CompassRose size={40} weight="duotone" />
+        </div>
+
+        <span class="col-start-3 row-start-2 text-xs font-bold leading-none">E</span>
+
+        <span class="col-start-2 row-start-3 text-xs font-bold leading-none">S</span>
+    </div>
+
     <a
       href="/builder"
       class="bg-stone-500 hover:bg-stone-600 text-white font-bold py-2 px-4 rounded transition-colors shadow-sm"
