@@ -19,8 +19,8 @@
     return Math.min(scaledH, scaledW);
   });
 
-  let overlayW = $derived(MINIMAP_SIZE * percentageViewportW); // 5px safety margin
-  let overlayH = $derived(MINIMAP_SIZE * percentageViewportH); // 7px safety margin
+  let overlayW = $derived(Math.min(MINIMAP_SIZE * percentageViewportW, MINIMAP_SIZE)); // 5px safety margin
+  let overlayH = $derived(Math.min(MINIMAP_SIZE * percentageViewportH, MINIMAP_SIZE)); // 7px safety margin
   let overlayPosTop = $derived((endScrollTop / 64) * scaledPixel);
   let overlayPosLeft = $derived((endScrollLeft / 64) * scaledPixel);
 </script>
