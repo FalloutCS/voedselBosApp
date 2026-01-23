@@ -64,17 +64,17 @@
   function translateSun(code?: string): string {
     switch(code) {
         case "N": return "Volle zon";
-        case "M": return "Halfschaduw";
-        case "S": return "Schaduw";
+        case "S": return "Halfschaduw";
+        case "F": return "Schaduw";
         default: return "Onbekend";
     }
   }
 
   function translateWind(code?: string): string {
     switch(code) {
-        case "W": return "Zeer bestendig";
-        case "M": return "Matig";
-        case "S": return "Kwetsbaar";
+        case "M": return "Zeer bestendig";
+        case "W": return "Matig";
+        case "N": return "Kwetsbaar";
         default: return "Onbekend";
     }
   }
