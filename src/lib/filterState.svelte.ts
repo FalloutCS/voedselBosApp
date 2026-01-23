@@ -10,6 +10,10 @@ class FilterState {
         }
     }
 
+    setSearch(query: string) {
+        this.searchQuery = query;
+    }
+
     reset() {
         this.selected = {};
         this.searchQuery = "";
